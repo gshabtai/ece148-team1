@@ -77,7 +77,7 @@ class DetectCircle(JSONManager):
 
         # Capture new image from source
         _, frame = self.cap.read()
-        frame = cv.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv.INTER_AREA)
+        frame = cv.resize(frame, None, fx=0.25, fy=0.25, interpolation=cv.INTER_AREA)
         
         self.hsv_search(frame)
 
@@ -93,6 +93,8 @@ class DetectCircle(JSONManager):
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
 
+            print(f'Centroid found at: {(cX,cY)}')
+
             # put text and highlight the center
             cv.circle(frame, (cX, cY), 5, (255, 255, 255), -1)
             cv.putText(frame, "centroid", (cX - 25, cY - 25),cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
@@ -102,9 +104,10 @@ class DetectCircle(JSONManager):
         hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
         mask = cv.inRange(hsv, np.array([self.lower_hue1,self.lower_sat1,self.lower_val1]) , 
             np.array([self.upper_hue1, self.upper_sat1, self.upper_val1]))
-        self.moment_search(frame,mask)
-
-        cv.imshow('Mask', mask)
+        
+        if self.calibration_mode:
+            self.moment_search(frame,mask)
+            cv.imshow('Mask', mask)
 
 def main():
     detector = DetectCircle()
