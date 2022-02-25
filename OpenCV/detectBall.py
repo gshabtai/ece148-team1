@@ -79,7 +79,7 @@ class DetectCircle(JSONManager):
         _, frame = self.cap.read()
         frame = cv.resize(frame, None, fx=0.25, fy=0.25, interpolation=cv.INTER_AREA)
         
-        self.hsv_search(frame)
+        self.hsv_search(frame)    
 
         if self.calibration_mode:
             cv.imshow(self.windowName, frame)
@@ -104,10 +104,23 @@ class DetectCircle(JSONManager):
         hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
         mask = cv.inRange(hsv, np.array([self.lower_hue1,self.lower_sat1,self.lower_val1]) , 
             np.array([self.upper_hue1, self.upper_sat1, self.upper_val1]))
+       
+        # Generate intermediate image; use morphological closing to keep parts of the ball together
+        # inter = cv.morphologyEx(mask, cv.MORPH_CLOSE, cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5)))
+
+        # Find largest contour in intermediate image
+        countours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+        out = np.zeros(mask.shape, np.uint8)
+
+        if len(countours):
+            biggest_blob = max(countours, key=cv.contourArea)
+            cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
+        
+        out = cv.bitwise_and(mask, out)
         
         if self.calibration_mode:
-            self.moment_search(frame,mask)
-            cv.imshow('Mask', mask)
+            self.moment_search(frame,out)
+            cv.imshow('Mask', out)
 
 def main():
     detector = DetectCircle()
