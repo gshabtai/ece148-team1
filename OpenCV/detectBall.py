@@ -77,16 +77,16 @@ class DetectCircle(JSONManager):
 
         # Capture new image from source
         _, frame = self.cap.read()
-        frame = cv.resize(frame, None, fx=0.25, fy=0.25, interpolation=cv.INTER_AREA)
+        self.frame = cv.resize(frame, None, fx=0.25, fy=0.25, interpolation=cv.INTER_AREA)
         
-        self.hsv_search(frame)    
+        self.hsv_search()    
 
         if self.calibration_mode:
-            cv.imshow(self.windowName, frame)
+            cv.imshow(self.windowName, self.frame)
 
-    def moment_search(self,frame, mask):
+    def moment_search(self):
         '''calculate moments of binary image'''
-        M = cv.moments(mask)
+        M = cv.moments(self.mask)
 
         if int(M["m00"]) != 0:
             # calculate x,y coordinate of center
@@ -96,30 +96,30 @@ class DetectCircle(JSONManager):
             print(f'Centroid found at: {(cX,cY)}')
 
             # put text and highlight the center
-            cv.circle(frame, (cX, cY), 5, (255, 255, 255), -1)
-            cv.putText(frame, "centroid", (cX - 25, cY - 25),cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+            cv.circle(self.frame, (cX, cY), 5, (255, 255, 255), -1)
+            cv.putText(self.frame, "centroid", (cX - 25, cY - 25),cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
     
-    def hsv_search(self, frame):
+    def hsv_search(self):
         # convert to hsv colorspace
-        hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
-        mask = cv.inRange(hsv, np.array([self.lower_hue1,self.lower_sat1,self.lower_val1]) , 
+        hsv = cv.cvtColor(self.frame, cv.COLOR_BGR2HSV)
+        self.mask = cv.inRange(hsv, np.array([self.lower_hue1,self.lower_sat1,self.lower_val1]) , 
             np.array([self.upper_hue1, self.upper_sat1, self.upper_val1]))
        
         # Generate intermediate image; use morphological closing to keep parts of the ball together
         # inter = cv.morphologyEx(mask, cv.MORPH_CLOSE, cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5)))
 
         # Find largest contour in intermediate image
-        countours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
-        out = np.zeros(mask.shape, np.uint8)
+        countours, _ = cv.findContours(self.mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+        out = np.zeros(self.mask.shape, np.uint8)
 
         if len(countours):
             biggest_blob = max(countours, key=cv.contourArea)
             cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
-        out = cv.bitwise_and(mask, out)
+        out = cv.bitwise_and(self.mask, out)
         
         if self.calibration_mode:
-            self.moment_search(frame,out)
+            self.moment_search()
             cv.imshow('Mask', out)
 
 def main():
