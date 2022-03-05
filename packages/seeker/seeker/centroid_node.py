@@ -46,7 +46,7 @@ class JSONManager():
             f.close()
 class FindCentroid(Node,JSONManager):
     def __init__(self):
-        super(__class__,Node).__init__(NODE_NAME)
+        Node.__init__(NODE_NAME)
         self.centroid_publisher = self.create_publisher(Float32, CENTROID_TOPIC_NAME, 10)
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
         self.bridge = CvBridge()
