@@ -2,6 +2,8 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
+import cv2
+from cv_bridge import CvBridge
 import numpy as np
 # from geometry_msgs.msg import Twist
 import time
@@ -17,6 +19,7 @@ class FindCentroid(Node):
         super().__init__(NODE_NAME)
         self.centroid_publisher = self.create_publisher(Float32, CENTROID_TOPIC_NAME, 10)
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
+        self.bridge = CvBridge()
 
     def locate_centroid(self, data):
         # Image processing from rosparams
