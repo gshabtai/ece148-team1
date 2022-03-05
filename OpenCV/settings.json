@@ -1,5 +1,5 @@
 {
-    "calibration_mode": false,
+    "calibration_mode": true,
     "color_detection": {
         "lower_hue1": 0,
         "lower_sat1": 166,
