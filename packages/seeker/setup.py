@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'centroid_node = seeker.centroid_node:main'
         ],
     },
 )
