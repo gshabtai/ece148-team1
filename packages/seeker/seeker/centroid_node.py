@@ -57,6 +57,7 @@ class FindCentroid(Node,JSONManager):
         self.frame = self.bridge.imgmsg_to_cv2(data)
 
         self.hsv_search()
+        cv.waitKey(1)
 
     def hsv_search(self):
         # convert to hsv colorspace
