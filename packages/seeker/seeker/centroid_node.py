@@ -56,8 +56,7 @@ class FindCentroid(Node,JSONManager):
         # Image processing from rosparams
         self.frame = self.bridge.imgmsg_to_cv2(data)
 
-        print(self.lower_hue1)
-        # self.hsv_search()
+        self.hsv_search()
 
     def hsv_search(self):
         # convert to hsv colorspace
@@ -89,7 +88,7 @@ class FindCentroid(Node,JSONManager):
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
 
-            print(f'Centroid found at: {(cX,cY)}')
+            self.get_logger().info(f'Centroid found at: {(cX,cY)}')
 
             if self.calibration_mode:
                 # put text and highlight the center
