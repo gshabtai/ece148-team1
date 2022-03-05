@@ -46,7 +46,8 @@ class JSONManager():
             f.close()
 class FindCentroid(Node,JSONManager):
     def __init__(self):
-        Node.__init__(self, NODE_NAME) # Adding CHanges
+        Node.__init__(self, NODE_NAME)
+        JSONManager.__init__(self)
         self.centroid_publisher = self.create_publisher(Float32, CENTROID_TOPIC_NAME, 10)
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
         self.bridge = CvBridge()
@@ -55,6 +56,7 @@ class FindCentroid(Node,JSONManager):
         # Image processing from rosparams
         self.frame = self.bridge.imgmsg_to_cv2(data)
 
+        print(self.lower_hue1)
         # self.hsv_search()
 
     def hsv_search(self):
