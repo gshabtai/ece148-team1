@@ -17,13 +17,12 @@ class FindCentroid(Node):
         super().__init__(NODE_NAME)
         self.centroid_publisher = self.create_publisher(Float32, CENTROID_TOPIC_NAME, 10)
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
-        
 
-def locate_centroid(self, data):
-    # Image processing from rosparams
-    frame = self.bridge.imgmsg_to_cv2(data)
+    def locate_centroid(self, data):
+        # Image processing from rosparams
+        frame = self.bridge.imgmsg_to_cv2(data)
 
-    print(np.shape(frame))
+        print(np.shape(frame))
     
 def main(args=None):
     rclpy.init(args=args)
