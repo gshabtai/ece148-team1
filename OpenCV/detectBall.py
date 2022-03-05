@@ -114,6 +114,8 @@ class DetectCircle(JSONManager):
             biggest_blob = max(countours, key=cv.contourArea)
             cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
+        # cv.imshow('PreMask', self.mask)
+
         self.mask = cv.bitwise_and(self.mask, out)
 
         self.moment_search()
