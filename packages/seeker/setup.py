@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'ball_capture'
+package_name = 'seeker'
 
 setup(
     name=package_name,
