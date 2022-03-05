@@ -26,6 +26,8 @@ class FindCentroid(Node):
         frame = self.bridge.imgmsg_to_cv2(data)
 
         print(np.shape(frame))
+        cv2.imshow('img', frame)
+        cv2.waitKey(1)
     
 def main(args=None):
     rclpy.init(args=args)
@@ -35,6 +37,7 @@ def main(args=None):
     except KeyboardInterrupt:
         centroid_publisher.destroy_node()
         rclpy.shutdown()
+        cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main()
