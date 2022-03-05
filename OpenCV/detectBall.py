@@ -95,18 +95,16 @@ class DetectCircle(JSONManager):
 
             print(f'Centroid found at: {(cX,cY)}')
 
-            # put text and highlight the center
-            cv.circle(self.frame, (cX, cY), 5, (255, 255, 255), -1)
-            cv.putText(self.frame, "centroid", (cX - 25, cY - 25),cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+            if self.calibration_mode:
+                # put text and highlight the center
+                cv.circle(self.frame, (cX, cY), 5, (255, 255, 255), -1)
+                cv.putText(self.frame, "centroid", (cX - 25, cY - 25),cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
     
     def hsv_search(self):
         # convert to hsv colorspace
         hsv = cv.cvtColor(self.frame, cv.COLOR_BGR2HSV)
         self.mask = cv.inRange(hsv, np.array([self.lower_hue1,self.lower_sat1,self.lower_val1]) , 
             np.array([self.upper_hue1, self.upper_sat1, self.upper_val1]))
-       
-        # Generate intermediate image; use morphological closing to keep parts of the ball together
-        # inter = cv.morphologyEx(mask, cv.MORPH_CLOSE, cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5)))
 
         # Find largest contour in intermediate image
         countours, _ = cv.findContours(self.mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
@@ -116,10 +114,11 @@ class DetectCircle(JSONManager):
             biggest_blob = max(countours, key=cv.contourArea)
             cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
-        out = cv.bitwise_and(self.mask, out)
+        self.mask = cv.bitwise_and(self.mask, out)
+
+        self.moment_search()
         
         if self.calibration_mode:
-            self.moment_search()
             cv.imshow('Mask', out)
 
 def main():
