@@ -16,7 +16,7 @@ CENTROID_TOPIC_NAME = '/centroid'
 
 class JSONManager():
     def __init__(self):
-        f = open('settings.json')
+        f = open('/home/projects/ros2_ws/src/ece148-team1/OpenCV/settings.json')
         self.settings = json.load(f)
         f.close
 
