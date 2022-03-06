@@ -3,6 +3,8 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Float64MultiArray
+
 import time
 import os
 
@@ -15,7 +17,7 @@ class CaptureControl(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
-        self.centroid_subscription = self.create_subscription(Float32, CENTROID_TOPIC_NAME, self.computeCapture, 10)
+        self.centroid_subscription = self.create_subscription(Float64MultiArray, CENTROID_TOPIC_NAME, self.computeCapture, 10)
         self.twist_cmd = Twist()
 
         # Default actuator values
