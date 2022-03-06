@@ -25,6 +25,7 @@ class Robocar_Seek(Node):
 
     def send_request(self):
         # send the request
+        self.req.data = bool(1)
         self.future = self.client.call_async(self.req)
         print(self.future.result())
         self.get_logger().info(self.future.result())

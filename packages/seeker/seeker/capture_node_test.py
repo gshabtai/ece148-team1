@@ -70,9 +70,12 @@ class CaptureControl(Node):
         #self.twist_publisher.publish(self.twist_cmd)
 
     def capture_callback(self, request, response):
-        print("Made it here")
+        self.activated_ = request.data
         response.success = True
-        response.message = "Hi there"
+        if self.activated_:
+            response.message = "Robot has been activated"
+        else:
+            response.message = "Robot has been deactivated"
         return response
 
     def computeCapture(self, data):
