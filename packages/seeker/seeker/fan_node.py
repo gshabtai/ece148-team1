@@ -25,7 +25,7 @@ class AdafruitFan(Node):
             ])
         self.bus_num = int(self.get_parameter('bus_num').value)
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
-        self.fan2_channel = int(self.get_parameter('fan2_hannel').value)
+        self.fan2_channel = int(self.get_parameter('fan2_channel').value)
 
         if self.bus_num == 0:
             i2c_bus0 = (busio.I2C(board.SCL_1, board.SDA_1))
