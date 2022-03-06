@@ -11,7 +11,7 @@ def generate_launch_description():
     act_calibration_file = 'adafruit_twist_calibration.yaml'
 
     capture_node_name = 'fan_node'
-    centroid_node_name = 'centroid_name'
+    centroid_node_name = 'centroid_node'
     fan_node_name = 'fan_node'
     actuator_node_name = 'adafruit_twist_node'
 
