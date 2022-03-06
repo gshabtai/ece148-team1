@@ -59,29 +59,29 @@ def main(args=None):
     # run the send_request() method
     client.send_request()
 
-    while rclpy.ok():
-            # pause the program execution, waits for a request to kill the node (ctrl+c)
-            rclpy.spin_once(client)
-            if client.future.done():
-                try:
-                    # checks the future for a response from the service
-                    # while the system is running. 
-                    # If the service has sent a response, the result will be written
-                    # to a log message.
-                    response = client.future.result()
-                except Exception as e:
-                    # Display the message on the console
-                    client.get_logger().info(
-                        'Service call failed %r' % (e,))
-                else:
-                    # Display the message on the console
-                    client.get_logger().info(
-                        'the robot is moving' ) 
-                break
+    # while rclpy.ok():
+    #         # pause the program execution, waits for a request to kill the node (ctrl+c)
+    #         rclpy.spin_once(client)
+    #         if client.future.done():
+    #             try:
+    #                 # checks the future for a response from the service
+    #                 # while the system is running. 
+    #                 # If the service has sent a response, the result will be written
+    #                 # to a log message.
+    #                 response = client.future.result()
+    #             except Exception as e:
+    #                 # Display the message on the console
+    #                 client.get_logger().info(
+    #                     'Service call failed %r' % (e,))
+    #             else:
+    #                 # Display the message on the console
+    #                 client.get_logger().info(
+    #                     'the robot is moving' ) 
+    #             break
 
-        client.destroy_node()
-        # shutdown the ROS communication
-        rclpy.shutdown()
+    #     client.destroy_node()
+    #     # shutdown the ROS communication
+    #     rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
