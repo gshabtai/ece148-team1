@@ -91,6 +91,7 @@ def main(args=None):
         centroid_publisher.destroy_node()
         rclpy.shutdown()
         cv.destroyAllWindows()
+        robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
 
 if __name__ == '__main__':
     main()

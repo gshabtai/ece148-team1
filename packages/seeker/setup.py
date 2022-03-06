@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'centroid_node = seeker.centroid_node:main',
             'capture_node = seeker.capture_node:main',
+            'capture_node_test = seeker.capture_node_test:main',
             'fan_node = seeker.fan_node:main'
         ],
     },
