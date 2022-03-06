@@ -49,11 +49,12 @@ def main(args=None):
         rclpy.spin_once(robocar_seek)
         if robocar_seek.future.done():
             try:
-                response = robocar_seek.future.result()
+                response = robocar_seek.future.result()        
             except Exception as e:
                 robocar_seek.get_logger().info('Service call failed %r' % (e,))
-        else:
-            robocar_seek.get_logger().info('Success')
+            else:
+                robocar_seek.get_logger().info("RESULT: %d" % int(response.success))
+                robocar_seek.get_logger().info('Success')
         break
 
     robocar_seek.destroy_node()
