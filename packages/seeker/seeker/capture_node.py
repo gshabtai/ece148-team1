@@ -70,10 +70,7 @@ class CaptureControl(Node):
 
     def computeCapture(self, data):
         # setting up PID control
-        print(type(data.data[1]))
-        print(data.data[0])
-        print(data.data)
-        self.ek = data.data[0]
+        self.ek = float(data.data[0])
 
         # Throttle gain scheduling (function of error)
         self.inf_throttle = self.min_throttle - (self.min_throttle - self.max_throttle) / (1 - self.error_threshold)
@@ -123,7 +120,6 @@ def main(args=None):
     except KeyboardInterrupt:
         twist_publisher.destroy_node()
         rclpy.shutdown()
-        cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main()
