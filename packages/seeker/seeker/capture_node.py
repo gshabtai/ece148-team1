@@ -70,7 +70,7 @@ class CaptureControl(Node):
 
     def computeCapture(self, data):
         # setting up PID control
-        self.ek = data.data[0]
+        self.ek = float(data.data[0] / 200)
 
         # Throttle gain scheduling (function of error)
         self.inf_throttle = self.min_throttle - (self.min_throttle - self.max_throttle) / (1 - self.error_threshold)
@@ -88,7 +88,7 @@ class CaptureControl(Node):
         # Publish values
         try:
             # publish control signals
-            self.twist_cmd.linear.y = 1
+            self.twist_cmd.linear.y = float(1)
             self.twist_cmd.angular.z = steering_float
             self.twist_cmd.linear.x = throttle_float
             self.twist_publisher.publish(self.twist_cmd)
@@ -98,7 +98,7 @@ class CaptureControl(Node):
 
         except KeyboardInterrupt:
             self.twist_cmd.linear.x = self.zero_throttle
-            self.twist_cmd.linear.y = 0
+            self.twist_cmd.linear.y = float(0)
             self.twist_publisher.publish(self.twist_cmd)
 
     def clamp(self, value, upper_bound, lower_bound=None):
@@ -120,7 +120,6 @@ def main(args=None):
     except KeyboardInterrupt:
         twist_publisher.destroy_node()
         rclpy.shutdown()
-        cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main()
