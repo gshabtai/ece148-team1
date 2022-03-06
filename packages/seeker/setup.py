@@ -24,8 +24,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'centroid_node = seeker.centroid_node:main'
-            'capture_node = seeker.capture_node:main'
+            'centroid_node = seeker.centroid_node:main',
+            'capture_node = seeker.capture_node:main',
             'fan_node = seeker.fan_node:main'
         ],
     },
