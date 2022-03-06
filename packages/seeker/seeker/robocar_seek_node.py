@@ -26,8 +26,8 @@ class Robocar_Seek(Node):
     def send_request(self):
         # send the request
         self.future = self.client.call_async(self.req)
-        print(self.req.message)
-        self.get_logger().info(self.req.message)
+        print(self.future.message)
+        self.get_logger().info(self.future.message)
 
     def move_bot(self, data):
         self.ball_dis = data.linear.z
