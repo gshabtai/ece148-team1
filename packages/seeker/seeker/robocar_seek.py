@@ -1,8 +1,6 @@
-from urllib import response
 import rclpy
 from rclpy.node import Node
-from std_srvs.srv import Empty
-from std_msgs.msg import Float32
+from std_srvs.srv import SetBool
 from geometry_msgs.msg import Twist
 import board
 import busio
@@ -14,7 +12,7 @@ ACTUATOR_TOPIC_NAME = '/cmd_vel'
 class Robocar_Seek(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
-        self.client = self.create_client(Empty, 'capture')
+        self.client = self.create_client(SetBool, 'capture')
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
         self.find_ball_subscriber = self.create_subscription(Twist, BALL_TOPIC_NAME, self.move_bot, 10)
 
@@ -23,12 +21,13 @@ class Robocar_Seek(Node):
             self.get_logger().info('service not available, waiting again...')
 
         # create a Empty request
-        self.req = Empty.Request()
+        self.req = SetBool.Request()
 
     def send_request(self):
         # send the request
         self.future = self.client.call_async(self.req)
         print(self.req.message)
+        self.get_logger().info(self.req.message)
 
     def move_bot(self, data):
         self.ball_dis = data.linear.z
@@ -43,9 +42,9 @@ class Robocar_Seek(Node):
 def main(args=None):
     rclpy.init(args=args)
     robocar_seek = Robocar_Seek()
+    robocar_seek.send_request()
+    robocar_seek.get_logger().info(f'{NODE_NAME} client service request sent')
     try:
-        # response = client.send_request()
-        # client.get_logger().info(f'{NODE_NAME} client service request sent')
         rclpy.spin(robocar_seek)
     except KeyboardInterrupt:
         robocar_seek.destroy_node()
