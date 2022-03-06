@@ -9,6 +9,7 @@ import numpy as np
 import time
 import os
 import json
+from std_msgs.msg import Float64MultiArray
 
 NODE_NAME = 'centroid_node'
 CAMERA_TOPIC_NAME = '/camera/color/image_raw'
@@ -17,7 +18,7 @@ CENTROID_TOPIC_NAME = '/centroid'
 class FindCentroid(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
-        self.centroid_publisher = self.create_publisher(Float32, CENTROID_TOPIC_NAME, 10)
+        self.centroid_publisher = self.create_publisher(Float64MultiArray, CENTROID_TOPIC_NAME, 10)
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
         self.bridge = CvBridge()
         # Set Color detection paramenters
@@ -27,6 +28,9 @@ class FindCentroid(Node):
         self.upper_hue1 = 180
         self.upper_sat1 = 240
         self.upper_val1 = 148
+        self.calibration_mode = False
+        # Centroid data
+        self.centroid_info = Float32()
 
     def locate_centroid(self, data):
         # Image processing from rosparams
@@ -65,8 +69,14 @@ class FindCentroid(Node):
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
 
-            self.get_logger().info(f'Centroid found at: {(cX,cY)}')
+            # self.get_logger().info(f'Centroid found at: {(cX-400,cY-300)}')
 
+            # Publish centroid data
+            msg = Float64MultiArray()
+            data = [cX-400.0, cY-300.0]
+            msg.data = data
+            self.centroid_publisher.publish(msg)
+            
             if self.calibration_mode:
                 # put text and highlight the center
                 cv.circle(self.frame, (cX, cY), 5, (255, 255, 255), -1)
