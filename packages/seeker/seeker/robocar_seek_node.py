@@ -45,22 +45,37 @@ def main(args=None):
     robocar_seek = Robocar_Seek()
     robocar_seek.send_request()
 
-    while rclpy.ok():
-        rclpy.spin_once(robocar_seek)
-        if robocar_seek.future.done():
-            try:
-                response = robocar_seek.future.result()        
-            except Exception as e:
-                robocar_seek.get_logger().info('Service call failed %r' % (e,))
-            else:
-                robocar_seek.get_logger().info("RESULT: %d" % int(response.success))
-                robocar_seek.get_logger().info('Success')
-        break
+    # while rclpy.ok():
+    #     rclpy.spin_once(robocar_seek)
+    #     if robocar_seek.future.done():
+    #         try:
+    #             response = robocar_seek.future.result()        
+    #         except Exception as e:
+    #             robocar_seek.get_logger().info('Service call failed %r' % (e,))
+    #         else:
+    #             robocar_seek.get_logger().info("RESULT: %d" % int(response.success))
+    #             robocar_seek.get_logger().info('Success')
+    #     break
 
-    robocar_seek.destroy_node()
-    rclpy.shutdown()
-    robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
-
+    # robocar_seek.destroy_node()
+    # rclpy.shutdown()
+    # robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
+    try:
+        rclpy.spin(robocar_seek)
+        while rclpy.ok():
+            if robocar_seek.future.done():
+                try:
+                    response = robocar_seek.future.result()        
+                except Exception as e:
+                    robocar_seek.get_logger().info('Service call failed %r' % (e,))
+                else:
+                    robocar_seek.get_logger().info("RESULT: %d" % int(response.success))
+                    robocar_seek.get_logger().info('Success')
+            break
+    except KeyboardInterrupt:
+        robocar_seek.destroy_node()
+        rclpy.shutdown()
+        robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
 
 if __name__ == '__main__':
     main()
