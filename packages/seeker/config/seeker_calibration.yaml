@@ -1,0 +1,16 @@
+capture_node:
+  ros__parameters:
+    Kp_steering : 0.8 
+    Ki_steering : 0.0 
+    Kd_steering : 0.0 
+    zero_throttle  : 0 
+    max_throttle : 0.45199999999999996 
+    min_throttle : 0.363 
+    error_threshold : 0.16 
+    max_right_steering : 0.75
+    max_left_steering : -0.75
+fan_node:
+  ros__parameter:
+    bus_num : 1
+    fan1_channel : 14
+    fan2_channel : 15

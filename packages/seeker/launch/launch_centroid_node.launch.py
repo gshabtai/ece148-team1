@@ -7,4 +7,12 @@ def generate_launch_description():
 
     cap = LaunchDescription()
 
+    capture_node = Node(
+        package = seeker_package,
+        executable = cap_node_name,
+        output='screen',
+    )
+    
+    cap.add_action(capture_node)
+
     return cap
