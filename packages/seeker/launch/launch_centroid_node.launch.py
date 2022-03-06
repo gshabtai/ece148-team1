@@ -3,16 +3,16 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     seeker_package = 'seeker'
-    cap_node_name = 'centroid_node'
+    cen_node_name = 'centroid_node'
 
-    cap = LaunchDescription()
+    cen = LaunchDescription()
 
-    capture_node = Node(
+    centroid_node = Node(
         package = seeker_package,
-        executable = cap_node_name,
+        executable = cen_node_name,
         output='screen',
     )
     
-    cap.add_action(capture_node)
+    cen.add_action(centroid_node)
 
-    return cap
+    return cen

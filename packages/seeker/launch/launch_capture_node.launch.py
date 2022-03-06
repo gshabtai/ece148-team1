@@ -20,6 +20,7 @@ def generate_launch_description():
         package = seeker_package,
         executable = cap_node_name,
         output='screen',
+        parameters = [config]
     )
     
     cap.add_action(capture_node)
