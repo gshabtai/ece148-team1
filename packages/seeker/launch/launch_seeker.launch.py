@@ -54,14 +54,14 @@ def generate_launch_description():
         package = actuator_pkg,
         executable = actuator_node_name,
         output='screen',
-        #parameters=[config_actuator]
+        parameters=[config_actuator]
     )
 
     webcam_node = Node(
         package = sensor_pkg,
         executable = webcam_node_name,
         output='screen',
-        #parameters=[config_actuator]
+        parameters=[config_actuator]
     )
     
     ld.add_action(capture_node)
