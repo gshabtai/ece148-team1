@@ -14,43 +14,19 @@ NODE_NAME = 'centroid_node'
 CAMERA_TOPIC_NAME = '/camera/color/image_raw'
 CENTROID_TOPIC_NAME = '/centroid'
 
-class JSONManager():
+class FindCentroid(Node):
     def __init__(self):
-        f = open('/home/projects/ros2_ws/src/ece148-team1/OpenCV/settings.json')
-        self.settings = json.load(f)
-        f.close
-
-        # Set global parameters
-        self.calibration_mode = self.settings['calibration_mode']
-
-        # Set Color detection paramenters
-        self.lower_hue1 = self.settings['color_detection']['lower_hue1']
-        self.lower_sat1 = self.settings['color_detection']['lower_sat1']
-        self.lower_val1 = self.settings['color_detection']['lower_val1']
-        self.upper_hue1 = self.settings['color_detection']['upper_hue1']
-        self.upper_sat1 = self.settings['color_detection']['upper_sat1']
-        self.upper_val1 = self.settings['color_detection']['upper_val1']
-
-    def save_settings(self):
-        if self.calibration_mode:
-            # Save color detection parameters
-            self.settings['color_detection']['lower_hue1'] = self.lower_hue1
-            self.settings['color_detection']['lower_sat1'] = self.lower_sat1
-            self.settings['color_detection']['lower_val1'] = self.lower_val1
-            self.settings['color_detection']['upper_hue1'] = self.upper_hue1
-            self.settings['color_detection']['upper_sat1'] = self.upper_sat1
-            self.settings['color_detection']['upper_val1'] = self.upper_val1
-
-            f = open('settings.json','w')
-            f.write(json.dumps(self.settings, indent=4))
-            f.close()
-class FindCentroid(Node,JSONManager):
-    def __init__(self):
-        Node.__init__(self, NODE_NAME)
-        JSONManager.__init__(self)
+        super().__init__(NODE_NAME)
         self.centroid_publisher = self.create_publisher(Float32, CENTROID_TOPIC_NAME, 10)
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
         self.bridge = CvBridge()
+        # Set Color detection paramenters
+        self.lower_hue1 = 164
+        self.lower_sat1 = 212
+        self.lower_val1 = 125
+        self.upper_hue1 = 180
+        self.upper_sat1 = 240
+        self.upper_val1 = 148
 
     def locate_centroid(self, data):
         # Image processing from rosparams
