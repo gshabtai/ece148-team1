@@ -62,7 +62,7 @@ def main(args=None):
     # robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
     
     while rclpy.ok():
-        rclpy.spin(robocar_seek)
+        rclpy.spin_once(robocar_seek)
         if robocar_seek.future.done():
             try:
                 response = robocar_seek.future.result()        
