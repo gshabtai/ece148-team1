@@ -60,7 +60,6 @@ def main(args=None):
     # robocar_seek.destroy_node()
     # rclpy.shutdown()
     # robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
-    rclpy.spin(robocar_seek)
     
     while rclpy.ok():
         rclpy.spin_once(robocar_seek)
@@ -72,7 +71,6 @@ def main(args=None):
             else:
                 robocar_seek.get_logger().info("RESULT: %d" % int(response.success))
                 robocar_seek.get_logger().info('Success')
-        break
 
     robocar_seek.destroy_node()
     rclpy.shutdown()
