@@ -10,7 +10,7 @@ def generate_launch_description():
     seeker_calibration_file = 'seeker_calibration.yaml'
     act_calibration_file = 'adafruit_twist_calibration.yaml'
 
-    capture_node_name = 'fan_node'
+    capture_node_name = 'capture_node'
     centroid_node_name = 'centroid_node'
     fan_node_name = 'fan_node'
     actuator_node_name = 'adafruit_twist_node'
