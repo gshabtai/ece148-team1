@@ -5,7 +5,7 @@ from geometry_msgs.msg import Twist
 import board
 import busio
 
-NODE_NAME = 'robocar_node'
+NODE_NAME = 'seeker_node'
 BALL_TOPIC_NAME = '/ball'
 ACTUATOR_TOPIC_NAME = '/cmd_vel'
 
