@@ -70,6 +70,7 @@ class CaptureControl(Node):
 
     def computeCapture(self, data):
         # setting up PID control
+        print(data.data)
         self.ek = data.data[0]
 
         # Throttle gain scheduling (function of error)
