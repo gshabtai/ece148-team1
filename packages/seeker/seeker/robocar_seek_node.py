@@ -29,7 +29,7 @@ class Robocar_Seek(Node):
         self.future = self.client.call_async(self.req)
         response = self.future.result()
         print(type(response))
-        #self.get_logger().info()
+        self.get_logger().info('RESPONSE: %d' % int(response.success))
 
     def move_bot(self, data):
         self.ball_dis = data.linear.z
