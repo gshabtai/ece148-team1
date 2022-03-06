@@ -71,6 +71,7 @@ def main(args=None):
                 else:
                     robocar_seek.get_logger().info("RESULT: %d" % int(response.success))
                     robocar_seek.get_logger().info('Success')
+                break
     except KeyboardInterrupt:
         robocar_seek.destroy_node()
         rclpy.shutdown()
