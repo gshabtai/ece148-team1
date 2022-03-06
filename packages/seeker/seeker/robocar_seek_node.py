@@ -27,8 +27,8 @@ class Robocar_Seek(Node):
         # send the request
         self.req.data = bool(1)
         self.future = self.client.call_async(self.req)
-        response = self.future.result()
-        self.get_logger().info('RESPONSE: %d' % int(response.success))
+        # response = self.future.result()
+        # self.get_logger().info('RESPONSE: %d' % int(response.success))
 
     def move_bot(self, data):
         self.ball_dis = data.linear.z
@@ -44,7 +44,7 @@ def main(args=None):
     rclpy.init(args=args)
     robocar_seek = Robocar_Seek()
     robocar_seek.send_request()
-    
+
     while rclpy.ok():
         rclpy.spin_once(robocar_seek)
         if robocar_seek.future.done():
