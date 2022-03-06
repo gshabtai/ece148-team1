@@ -10,7 +10,7 @@ capture_node:
     max_right_steering : 0.75
     max_left_steering : -0.75
 fan_node:
-  ros__parameter:
+  ros__parameters:
     bus_num : 1
     fan1_channel : 14
     fan2_channel : 15
