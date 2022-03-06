@@ -33,21 +33,21 @@ def generate_launch_description():
         package = seeker_pkg,
         executable = capture_node_name,
         output='screen',
-        #parameters=[config_seeker]
+        parameters=[config_seeker]
     )
 
     centroid_node = Node(
         package = seeker_pkg,
         executable = centroid_node_name,
         output='screen',
-        #parameters=[config_seeker]
+        parameters=[config_seeker]
     )
 
     fan_node = Node(
         package = seeker_pkg,
         executable = fan_node_name,
         output='screen',
-        #parameters=[config_seeker]
+        parameters=[config_seeker]
     )
 
     act_node = Node(
