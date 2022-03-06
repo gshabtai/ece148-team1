@@ -16,6 +16,7 @@ class CaptureControl(Node):
         super().__init__(NODE_NAME)
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
         self.centroid_subscription = self.create_subscription(Float32, CENTROID_TOPIC_NAME, self.computeCapture, 10)
+        self.twist_cmd = Twist()
 
         # Default actuator values
         self.declare_parameters(
@@ -62,8 +63,8 @@ class CaptureControl(Node):
             f'\nmax_left_steering: {self.max_left_steering}'
         )
 
-        self.twist_cmd.linear.y = 1
-        self.twist_publisher.publish(self.twist_cmd)
+        #self.twist_cmd.linear.y = 1
+        #self.twist_publisher.publish(self.twist_cmd)
 
     def computeCapture(self, data):
         # setting up PID control
@@ -85,6 +86,7 @@ class CaptureControl(Node):
         # Publish values
         try:
             # publish control signals
+            self.twist_cmd.linear.y = 1
             self.twist_cmd.angular.z = steering_float
             self.twist_cmd.linear.x = throttle_float
             self.twist_publisher.publish(self.twist_cmd)
