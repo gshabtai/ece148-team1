@@ -7,6 +7,7 @@ import yaml
 def generate_launch_description():
     seeker_pkg = 'seeker'
     actuator_pkg = 'ucsd_robocar_actuator2_pkg'
+    sensor_pkg = 'ucsd_robocar_sensor2_pkg'
     seeker_calibration_file = 'seeker_calibration.yaml'
     act_calibration_file = 'adafruit_twist_calibration.yaml'
 
@@ -14,6 +15,7 @@ def generate_launch_description():
     centroid_node_name = 'centroid_node'
     fan_node_name = 'fan_node'
     actuator_node_name = 'adafruit_twist_node'
+    webcam_node_name = 'webcam_node'
 
     ld = LaunchDescription()
 
@@ -54,10 +56,18 @@ def generate_launch_description():
         output='screen',
         #parameters=[config_actuator]
     )
+
+    webcam_node = Node(
+        package = sensor_pkg,
+        executable = webcam_node_name,
+        output='screen',
+        #parameters=[config_actuator]
+    )
     
     ld.add_action(capture_node)
     ld.add_action(centroid_node)
     ld.add_action(fan_node)
     ld.add_action(act_node)
+    ld.add_action(webcam_node)
 
     return ld
