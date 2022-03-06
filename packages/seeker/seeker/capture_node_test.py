@@ -77,7 +77,7 @@ class CaptureControl(Node):
         else:
             response.message = "Robot has been deactivated"
         self.get_logger().info(f'{NODE_NAME} MADE IT HERE')
-        self.get_logger().info(request.data)
+        self.get_logger().info(string(request.data))
         return response
 
     def computeCapture(self, data):
