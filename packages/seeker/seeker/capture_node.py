@@ -70,7 +70,7 @@ class CaptureControl(Node):
 
     def computeCapture(self, data):
         # setting up PID control
-        print(data.data[1])
+        print(type(data.data[1]))
         print(data.data[0])
         print(data.data)
         self.ek = data.data[0]
@@ -91,7 +91,7 @@ class CaptureControl(Node):
         # Publish values
         try:
             # publish control signals
-            self.twist_cmd.linear.y = 1
+            self.twist_cmd.linear.y = float(1)
             self.twist_cmd.angular.z = steering_float
             self.twist_cmd.linear.x = throttle_float
             self.twist_publisher.publish(self.twist_cmd)
@@ -101,7 +101,7 @@ class CaptureControl(Node):
 
         except KeyboardInterrupt:
             self.twist_cmd.linear.x = self.zero_throttle
-            self.twist_cmd.linear.y = 0
+            self.twist_cmd.linear.y = float(0)
             self.twist_publisher.publish(self.twist_cmd)
 
     def clamp(self, value, upper_bound, lower_bound=None):
