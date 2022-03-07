@@ -23,5 +23,5 @@ align_node:
 fan_node:
   ros__parameters:
     bus_num : 1
-    fan1_channel : 14
+    fan1_channel : 13
     fan2_channel : 15
