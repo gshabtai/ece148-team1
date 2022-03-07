@@ -1,9 +1,9 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64MultiArray
+from std_srvs.srv import Trigger
 from .dynamic_centering_control import DynamicCenteringControl
 
 # import time
@@ -17,7 +17,7 @@ ACTUATOR_TOPIC_NAME = '/cmd_vel'
 class CaptureControl(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
-        self.srv = self.create_service(SetBool, 'capture', self.capture_callback)
+        self.srv = self.create_service(Trigger, 'capture', self.capture_callback)
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
         self.centroid_subscription = self.create_subscription(Float64MultiArray, CENTROID_TOPIC_NAME, self.compute_capture, 10)
         self.twist_cmd = Twist()
