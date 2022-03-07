@@ -4,7 +4,7 @@ from std_srvs.srv import Trigger
 from geometry_msgs.msg import Twist, Point
 from std_msgs.msg import Bool
 from .dynamic_centering_control import DynamicCenteringControl
-from .parameter import Parameters
+from .parameters import Parameters
 
 NODE_NAME = 'align_node'
 BALL_TOPIC_NAME = '/ball_found'

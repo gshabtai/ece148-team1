@@ -5,7 +5,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64MultiArray
 from std_srvs.srv import Trigger
 from .dynamic_centering_control import DynamicCenteringControl
-from .parameter import Parameters
+from .parameters import Parameters
 
 # import time
 # import os
