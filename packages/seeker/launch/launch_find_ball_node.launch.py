@@ -3,16 +3,16 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     seeker_package = 'seeker'
-    cen_node_name = 'seeker_node'
+    ball_node_name = 'centroid_node'
 
-    cen = LaunchDescription()
+    ball = LaunchDescription()
 
-    centroid_node = Node(
+    find_ball_node = Node(
         package = seeker_package,
-        executable = cen_node_name,
+        executable = ball_node_name,
         output='screen',
     )
     
-    cen.add_action(centroid_node)
+    ball.add_action(find_ball_node)
 
-    return cen
+    return ball

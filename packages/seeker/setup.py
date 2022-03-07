@@ -24,11 +24,12 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'centroid_node = seeker.centroid_node:main',
             'capture_node = seeker.capture_node:main',
-            'capture_node_test = seeker.capture_node_test:main',
+            'centroid_node = seeker.centroid_node:main',
             'fan_node = seeker.fan_node:main',
-            'seeker_node = seeker.robocar_seek_node:main'
+            'find_ball_node = seeker.find_ball_node:main',
+            'align_node = seeker.robocar_align_node:main',
+            'seek_node = seeker.robocar_seek_node:main'
         ],
     },
 )

@@ -4,9 +4,10 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64MultiArray
+from dynamic_centering_control import DynamicCenteringControl
 
-import time
-import os
+# import time
+# import os
 
 NODE_NAME = 'capture_node'
 CENTROID_TOPIC_NAME = '/centroid'
@@ -16,9 +17,13 @@ ACTUATOR_TOPIC_NAME = '/cmd_vel'
 class CaptureControl(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
+        self.srv = self.create_service(SetBool, 'capture', self.capture_callback)
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
-        self.centroid_subscription = self.create_subscription(Float64MultiArray, CENTROID_TOPIC_NAME, self.computeCapture, 10)
+        self.centroid_subscription = self.create_subscription(Float64MultiArray, CENTROID_TOPIC_NAME, self.compute_capture, 10)
         self.twist_cmd = Twist()
+
+        self.conduct = 0
+        self.ek = 0
 
         # Default actuator values
         self.declare_parameters(
@@ -43,16 +48,19 @@ class CaptureControl(Node):
         self.min_throttle = self.get_parameter('min_throttle').value # between [-1,1]
         self.max_right_steering = self.get_parameter('max_right_steering').value # between [-1,1]
         self.max_left_steering = self.get_parameter('max_left_steering').value # between [-1,1]
-
-        # initializing PID control
-        self.Ts = float(1/20)
-        self.ek = 0 # current error
-        self.ek_1 = 0 # previous error
-        self.proportional_error = 0 # proportional error term for steering
-        self.derivative_error = 0 # derivative error term for steering
-        self.integral_error = 0 # integral error term for steering
-        self.integral_max = 1E-8
         
+        self.parameters.Kp = self.Kp
+        self.parameters.Ki = self.Ki
+        self.parameters.Kd = self.Kd
+        self.parameters.error_threshold = self.error_threshold
+        self.parameters.zero_throttle = self.zero_throttle
+        self.parameters.max_throttle = self.max_throttle
+        self.parameters.min_throttle = self.min_throttle
+        self.parameters.max_right_steering = self.max_right_steering
+        self.parameters.max_left_steering = self.max_left_steering
+
+        self.dyn_cmd = DynamicCenteringControl(self.parameters)
+
         self.get_logger().info(
             f'\nKp_steering: {self.Kp}'
             f'\nKi_steering: {self.Ki}'
@@ -65,52 +73,47 @@ class CaptureControl(Node):
             f'\nmax_left_steering: {self.max_left_steering}'
         )
 
-        #self.twist_cmd.linear.y = 1
-        #self.twist_publisher.publish(self.twist_cmd)
+    def capture_callback(self, request, response):
 
-    def computeCapture(self, data):
+        # # Publish values
+        # try:
+        #     # publish control signals
+        #     self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek, self.parameters)
+        #     self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek, self.parameters)
+        #     self.twist_publisher.publish(self.twist_cmd)
+
+        #     # shift current time and error values to previous values
+        #     update_ek_1(self.ek)
+
+        # except KeyboardInterrupt:
+        #     self.twist_cmd.linear.x = self.zero_throttle
+        #     self.twist_publisher.publish(self.twist_cmd)
+    
+        # return response
+        pass
+
+    #Update ek (Dont know if this works)
+    # def compute_capture(self, data):
+    #     self.ek = float(data.data[0] / 200)
+
+    # Does computation for to align robot
+    def compute_capture(self, data):
         # setting up PID control
         self.ek = float(data.data[0] / 200)
-
-        # Throttle gain scheduling (function of error)
-        self.inf_throttle = self.min_throttle - (self.min_throttle - self.max_throttle) / (1 - self.error_threshold)
-        throttle_float_raw = (self.min_throttle - self.max_throttle) * abs(self.ek) + self.inf_throttle
-        throttle_float = self.clamp(throttle_float_raw, self.max_throttle, self.min_throttle)
-
-        # Steering PID terms
-        self.proportional_error = self.Kp * self.ek
-        self.derivative_error = self.Kd * (self.ek - self.ek_1) / self.Ts
-        self.integral_error += self.Ki * self.ek * self.Ts
-        self.integral_error = self.clamp(self.integral_error, self.integral_max)
-        steering_float_raw = self.proportional_error + self.derivative_error + self.integral_error
-        steering_float = self.clamp(steering_float_raw, self.max_right_steering, self.max_left_steering)
 
         # Publish values
         try:
             # publish control signals
-            self.twist_cmd.linear.y = float(0)
-            self.twist_cmd.angular.z = steering_float
-            self.twist_cmd.linear.x = throttle_float
+            self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek, self.parameters)
+            self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek, self.parameters)
             self.twist_publisher.publish(self.twist_cmd)
 
             # shift current time and error values to previous values
-            self.ek_1 = self.ek
+            update_ek_1(self.ek)
 
         except KeyboardInterrupt:
             self.twist_cmd.linear.x = self.zero_throttle
-            self.twist_cmd.linear.y = float(1)
             self.twist_publisher.publish(self.twist_cmd)
-
-    def clamp(self, value, upper_bound, lower_bound=None):
-        if lower_bound==None:
-            lower_bound = -upper_bound # making lower bound symmetric about zero
-        if value < lower_bound:
-            value_c = lower_bound
-        elif value > upper_bound:
-            value_c = upper_bound
-        else:
-            value_c = value
-        return value_c 
     
 def main(args=None):
     rclpy.init(args=args)
@@ -120,6 +123,7 @@ def main(args=None):
     except KeyboardInterrupt:
         twist_publisher.destroy_node()
         rclpy.shutdown()
+        robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
 
 if __name__ == '__main__':
     main()
