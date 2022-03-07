@@ -26,7 +26,7 @@ class AdafruitFan(Node):
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
         self.fan2_channel = int(self.get_parameter('fan2_channel').value)
 
-        GPIO.setmode(GPIO.BCB)
+        GPIO.setmode(GPIO.BCD)
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
         # if self.bus_num == 0:
