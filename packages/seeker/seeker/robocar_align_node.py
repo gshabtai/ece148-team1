@@ -3,7 +3,7 @@ from rclpy.node import Node
 from std_srvs.srv import Trigger
 from geometry_msgs.msg import Twist, Point
 from std_msgs.msg import Bool
-import dynamic_centering_control
+from .dynamic_centering_control import DynamicCenteringControl
 
 NODE_NAME = 'align_node'
 BALL_TOPIC_NAME = '/ball_found'
