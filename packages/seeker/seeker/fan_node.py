@@ -38,7 +38,7 @@ class AdafruitFan(Node):
     def send_values_to_adafruit(self, data):
         fan_power = data.linear.y
 
-        if (fan_power):
+        if (fan_power == 1):
             GPIO.output(self.fan1_channel, GPIO.HIGH)
         else:
             GPIO.output(self.fan1_channel, GPIO.LOW)
