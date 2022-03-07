@@ -4,7 +4,7 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64MultiArray
-import dynamic_centering_control
+from .dynamic_centering_control import DynamicCenteringControl
 
 # import time
 # import os
