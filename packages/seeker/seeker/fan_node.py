@@ -12,7 +12,7 @@ TOPIC_NAME = '/cmd_vel'
 
 class AdafruitFan(Node):
     def __init__(self):
-        super().__init__(NODE_NAME)
+        super().__init__(NODE_NAME)''
         self.fan_subscriber = self.create_subscription(Twist, TOPIC_NAME, self.send_values_to_adafruit, 10)
 
         self.declare_parameters(
@@ -26,7 +26,7 @@ class AdafruitFan(Node):
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
         self.fan2_channel = int(self.get_parameter('fan2_channel').value)
 
-        GPIO.setmode(GPIO.BCM)
+        # GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
         # if self.bus_num == 0:
