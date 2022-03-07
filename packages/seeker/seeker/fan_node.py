@@ -19,7 +19,7 @@ class AdafruitFan(Node):
             namespace='',
             parameters=[
                 ('bus_num', int(1)),
-                ('fan1_channel', int(14)),
+                ('fan1_channel', int(194)),
                 ('fan2_channel', int(15))
             ])
         self.bus_num = int(self.get_parameter('bus_num').value)
