@@ -19,14 +19,14 @@ class AdafruitFan(Node):
             namespace='',
             parameters=[
                 ('bus_num', int(1)),
-                ('fan1_channel', int(194)),
+                ('fan1_channel', int(13)),
                 ('fan2_channel', int(15))
             ])
         self.bus_num = int(self.get_parameter('bus_num').value)
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
         self.fan2_channel = int(self.get_parameter('fan2_channel').value)
 
-        GPIO.setmode(GPIO.BCM)
+        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
         # if self.bus_num == 0:
