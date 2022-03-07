@@ -28,6 +28,7 @@ class DynamicCenteringControl():
         self.inf_throttle = self.min_throttle - (self.min_throttle - self.max_throttle) / (1 - self.error_threshold)
         throttle_float_raw = (self.min_throttle - self.max_throttle) * abs(ek) + self.inf_throttle
         throttle_float = self.clamp(throttle_float_raw, self.max_throttle, self.min_throttle)
+        return float(throttle_float)
 
     def cal_steering(self, ek):
         self.proportional_error = self.Kp * ek
@@ -36,6 +37,7 @@ class DynamicCenteringControl():
         self.integral_error = self.clamp(self.integral_error, self.integral_max)
         steering_float_raw = self.proportional_error + self.derivative_error + self.integral_error
         steering_float = self.clamp(steering_float_raw, self.max_right_steering, self.max_left_steering)
+        return float(steering_float)
 
     def clamp(self, value, upper_bound, lower_bound=None):
         if lower_bound==None:
