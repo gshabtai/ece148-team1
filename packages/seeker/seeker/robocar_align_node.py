@@ -92,8 +92,8 @@ class Robocar_align(Node):
                 # Publish values
                 try:
                     # publish control signals
-                    self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.cen.x, self.parameters)
-                    self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.cen.x, self.parameters)
+                    self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.cen.x)
+                    self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.cen.x)
                     self.twist_publisher.publish(self.twist_cmd)
 
                     # shift current time and error values to previous values

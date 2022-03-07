@@ -27,7 +27,7 @@ class CaptureControl(Node):
         self.ek = 0
 
         self.param = Parameters()
-        
+
         self.declare_parameters(
             namespace='',
             parameters=[
@@ -96,8 +96,8 @@ class CaptureControl(Node):
         # Publish values
         try:
             # publish control signals
-            self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek, self.parameters)
-            self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek, self.parameters)
+            self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
+            self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek)
             self.twist_publisher.publish(self.twist_cmd)
 
             # shift current time and error values to previous values
