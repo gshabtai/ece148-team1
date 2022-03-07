@@ -27,7 +27,20 @@ class CaptureControl(Node):
         self.ek = 0
 
         self.param = Parameters()
-
+        
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('Kp_steering', 1),
+                ('Ki_steering', 0),
+                ('Kd_steering', 0),
+                ('error_threshold', 0.15),
+                ('zero_throttle',0.0),
+                ('max_throttle', 0.2),
+                ('min_throttle', 0.1),
+                ('max_right_steering', 1.0),
+                ('max_left_steering', -1.0)
+            ])
         self.param.upd_Kp( self.get_parameter('Kp_steering').value) # between [0,1]
         self.param.upd_Ki( self.get_parameter('Ki_steering').value) # between [0,1]
         self.param.upd_Kd( self.get_parameter('Kd_steering').value) # between [0,1]
