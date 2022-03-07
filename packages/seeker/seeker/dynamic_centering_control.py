@@ -32,7 +32,7 @@ class DynamicCenteringControl():
 
     def cal_steering(self, ek):
         self.proportional_error = self.Kp * ek
-        self.derivative_error = self.Kd * (ek - ek_1) / self.Ts
+        self.derivative_error = self.Kd * (ek - self.ek_1) / self.Ts
         self.integral_error += self.Ki * ek * self.Ts
         self.integral_error = self.clamp(self.integral_error, self.integral_max)
         steering_float_raw = self.proportional_error + self.derivative_error + self.integral_error
