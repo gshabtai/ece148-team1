@@ -97,7 +97,7 @@ class Robocar_align(Node):
                     self.twist_publisher.publish(self.twist_cmd)
 
                     # shift current time and error values to previous values
-                    update_ek_1(self.cen.x)
+                    self.dyn_cmd.update_ek_1(self.cen.x)
 
                 except KeyboardInterrupt:
                     self.twist_cmd.linear.x = self.zero_throttle

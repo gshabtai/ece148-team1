@@ -101,7 +101,7 @@ class CaptureControl(Node):
             self.twist_publisher.publish(self.twist_cmd)
 
             # shift current time and error values to previous values
-            update_ek_1(self.ek)
+            self.dyn_cmd.update_ek_1(self.ek)
 
         except KeyboardInterrupt:
             self.twist_cmd.linear.x = self.zero_throttle
