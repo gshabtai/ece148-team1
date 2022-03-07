@@ -12,7 +12,7 @@ TOPIC_NAME = '/cmd_vel'
 
 class AdafruitFan(Node):
     def __init__(self):
-        super().__init__(NODE_NAME)''
+        super().__init__(NODE_NAME)
         self.fan_subscriber = self.create_subscription(Twist, TOPIC_NAME, self.send_values_to_adafruit, 10)
 
         self.declare_parameters(
