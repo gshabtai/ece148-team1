@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32
-from adafruit_servokit import ServoKit
+# from adafruit_servokit import ServoKit
 from geometry_msgs.msg import Twist
 # import board
 # import busio
@@ -26,7 +26,7 @@ class AdafruitFan(Node):
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
         self.fan2_channel = int(self.get_parameter('fan2_channel').value)
 
-        # GPIO.setmode(GPIO.BCM)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
         # if self.bus_num == 0:
