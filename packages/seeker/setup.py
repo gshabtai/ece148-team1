@@ -24,7 +24,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'webcam_publish_centroid = seeker.webcam_publish_centroid:main'
+            'webcam_publish_centroid = seeker.webcam_publish_centroid:main',
+            'collision_avoidance = seeker.collsion_avoidance:main'
         ],
     },
 )
