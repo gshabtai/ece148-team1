@@ -50,8 +50,7 @@ def generate_launch_description():
     webcam_publish_centroid_node = Node(
         package = seeker_pkg,
         executable = webcam_publish_centroid_node_name,
-        # output='void',
-        emulate_tty=False,
+        output='screen',
         parameters=[config_seeker]
     )
 
