@@ -56,7 +56,7 @@ def generate_launch_description():
     # )
 
     adafruit_node = Node(
-        Package = actuator_pkg,
+        package = actuator_pkg,
         executable = actuator_node_name,
         output='screen',
         parameters=[config_actuator]
