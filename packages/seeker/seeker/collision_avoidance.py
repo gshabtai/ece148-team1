@@ -32,7 +32,7 @@ class CollisionAvoidance(Node):
         else:
             self.get_logger().info("Angle: " + str(angle) + ", Distance: " + str(minVal))
 
-      if minVal < r_outer:
+        if minVal < r_outer:
             steering_out(distance = minVal, angle = angle, index = index)
 
 
