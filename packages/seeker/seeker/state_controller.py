@@ -9,19 +9,19 @@ class StateController(Node):
         self.state_publisher = self.create_publisher(String, '/state', 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
-        self.next_state = 'idle'
+        self.next_state = 'noop'
         self.msg = String()
-        
+
         # Set starting params
         self.number_loaded_ball = 0
 
     def update(self):
         self.next_state = self.calc_next_state()
         self.msg.data = self.next_state
-        self.state_publisher.publish(self.msg)
         
         if self.current_state != self.next_state:
-            self.get_logger().info(f'{self.next_state}')
+            self.get_logger().info(f'Changing state from: {self.current_state} to {self.next_state}')
+            self.state_publisher.publish(self.msg)
 
         self.current_state = self.next_state
 
