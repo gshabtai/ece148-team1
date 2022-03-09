@@ -17,8 +17,8 @@ class StateController(Node):
 
     def update(self):
         self.next_state = self.calc_next_state()
-        # self.msg.data = self.next_state
-        # self.state_publisher(self.msg)
+        self.msg.data = self.next_state
+        self.state_publisher.publish(self.msg)
         self.get_logger().info(f'{self.next_state}')
 
     def calc_next_state(self):
