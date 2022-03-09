@@ -25,7 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'webcam_publish_centroid = seeker.webcam_publish_centroid:main',
-            'collision_avoidance = seeker.collsion_avoidance:main'
+            'collision_avoidance = seeker.collision_avoidance:main'
         ],
     },
 )
