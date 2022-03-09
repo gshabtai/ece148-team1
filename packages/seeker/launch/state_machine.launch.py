@@ -51,6 +51,7 @@ def generate_launch_description():
         package = seeker_pkg,
         executable = webcam_publish_centroid_node_name,
         # output='void',
+        emulate_tty=True,
         parameters=[config_seeker]
     )
 
