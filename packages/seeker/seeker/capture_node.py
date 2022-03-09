@@ -83,7 +83,7 @@ class CaptureControl(Node):
         #     self.twist_publisher.publish(self.twist_cmd)
     
         # return response
-        return success
+        return response
 
     #Update ek (Dont know if this works)
     # def compute_capture(self, data):
@@ -116,7 +116,7 @@ def main(args=None):
     except KeyboardInterrupt:
         twist_publisher.destroy_node()
         rclpy.shutdown()
-        robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
+        twist_publisher.get_logger().info(f'{NODE_NAME} shut down successfully.')
 
 if __name__ == '__main__':
     main()
