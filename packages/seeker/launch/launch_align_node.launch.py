@@ -3,12 +3,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     seeker_package = 'seeker'
-    seek_node_name = 'align_node'
+    align_node_name = 'align_node'
 
     align = LaunchDescription()
 
     align_node = Node(
-        package = aligner_package,
+        package = seeker_package,
         executable = align_node_name,
         output='screen',
     )
