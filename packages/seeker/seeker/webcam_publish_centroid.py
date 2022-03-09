@@ -5,10 +5,6 @@ from std_msgs.msg import Float32
 import cv2 as cv
 from cv_bridge import CvBridge
 import numpy as np
-# from geometry_msgs.msg import Twist
-import time
-import os
-import json
 from std_msgs.msg import Float64MultiArray
 
 NODE_NAME = 'centroid_node'

@@ -3,7 +3,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     seeker_package = 'seeker'
-    cen_node_name = 'centroid_node'
+    cen_node_name = 'webcam_publish_centroid'
 
     cen = LaunchDescription()
 
