@@ -84,7 +84,7 @@ class Robocar_align(Node):
         response = self.future.result()
         # suc = response.success
         self.get_logger().info(f"{response}")
-        self.get_logger().info('%d' % int(suc))
+        # self.get_logger().info('%d' % int(suc))
 
     def update_ball(self, data):
         self.ball = bool(data.data)
