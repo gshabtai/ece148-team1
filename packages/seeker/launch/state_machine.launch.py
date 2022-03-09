@@ -9,6 +9,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import os
 import yaml
 
+from packages.seeker.seeker import collision_avoidance
+
 def generate_launch_description():
     # Define package names
     seeker_pkg = 'seeker'
@@ -22,7 +24,6 @@ def generate_launch_description():
     lidar_config_file = 'ld06.yaml'
 
     # Define node names
-    collision_avoidance_node_name = 'collision_avoidance'
     fan_controller_node_name = 'fan_controller'
 
     # Define Intel launch file
@@ -82,6 +83,12 @@ def generate_launch_description():
         parameters=[config_seeker]
     )
 
+    collision_avoidance_node = Node(
+        package = sensor_pkg,
+        executable = 'collision_avoidance',
+        output = 'screen'
+    )
+
     # intel_launch = IncludeLaunchDescription(
     #         PythonLaunchDescriptionSource(
     #             os.path.join(
@@ -102,5 +109,6 @@ def generate_launch_description():
     # Ours
     ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
+    ld.add_action(collision_avoidance_node)
 
     return ld
