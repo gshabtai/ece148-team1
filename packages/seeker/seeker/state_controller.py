@@ -17,9 +17,10 @@ class StateController(Node):
 
     def update(self):
         self.next_state = self.calc_next_state()
-        # self.msg.data = self.next_state
-        # self.state_publisher(self.msg)
+        self.msg.data = self.next_state
+        self.state_publisher.publish(self.msg)
         self.get_logger().info(f'{self.next_state}')
+        self.current_state = self.next_state
 
     def calc_next_state(self):
         if self.current_state == 'idle' and self.number_loaded_ball < 4:
@@ -27,6 +28,11 @@ class StateController(Node):
         elif self.current_state == 'idle' and self.number_loaded_ball >= 4:
             return 'idle'
         
+        if self.current_state == 'search_mode':
+            return 'noop'
+
+        if self.current_state == 'noop':
+            return 'noop'
         # Default parameter
         return 'idle'
 
