@@ -1,3 +1,4 @@
+from time import sleep
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
@@ -29,14 +30,14 @@ class AdafruitFan(Node):
         relX = int(data.data[0])
         relY = int(data.data[1])
 
-        self.get_logger().info(f'{data.data}')
-
         if (abs(relX) < 30 and abs(relY) < 40 and fan_power):
             GPIO.output(self.fan1_channel, GPIO.HIGH)
             self.get_logger().info('On')
+            sleep(5)
         else:
             GPIO.output(self.fan1_channel, GPIO.LOW)
             self.get_logger().info('Off')
+            sleep(0.5)
 
 def main(args=None):
     rclpy.init(args=args)

@@ -27,8 +27,8 @@ class FindCentroid(Node):
         self.msg = Float64MultiArray()
 
         # Initial moment value
-        self.relX = -50
-        self.relY = -50
+        self.relX = -50.0
+        self.relY = -50.0
         self.detected = 0.0
 
     def locate_centroid(self, data):
@@ -67,8 +67,8 @@ class FindCentroid(Node):
             self.detected = 1.0
 
             h, w = np.shape(self.mask)
-            self.relX = 100.0*(cX - w/2)/w
-            self.relY = 100.0*(h-cY)/h
+            self.relX = 100.0*((cX - w/2)/w)
+            self.relY = 100.0*((h-cY)/h)
 
             # Publish centroid data
             self.msg.data = [self.relX, self.relY, self.detected]
@@ -79,7 +79,7 @@ class FindCentroid(Node):
         self.centroid_publisher.publish(self.msg)
 
         # Debugging
-        self.get_logger().info(f'Centroid found at: {(self.relX,self.relY,self.detected)}')
+        # self.get_logger().info(f'Centroid found at: {(self.relX,self.relY,self.detected)}')
     
 def main(args=None):
     rclpy.init(args=args)
