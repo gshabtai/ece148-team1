@@ -15,6 +15,8 @@ def generate_launch_description():
     actuator_pkg = 'ucsd_robocar_actuator2_pkg'
     sensor_pkg = 'ucsd_robocar_sensor2_pkg'
     intel_pkg_name = 'realsense2_camera'
+
+    # Define yaml config files
     seeker_calibration_file = 'seeker_calibration.yaml'
     act_calibration_file = 'adafruit_twist_calibration.yaml'
     lidar_config_file = 'ld06.yaml'
@@ -57,7 +59,7 @@ def generate_launch_description():
     )
 
     lidar_node = Node(
-        package = sensor_pkg,
+        package = 'ldlidar',
         executable = lidar_node_name,
         output='screen',
         parameters=[config_lidar]
