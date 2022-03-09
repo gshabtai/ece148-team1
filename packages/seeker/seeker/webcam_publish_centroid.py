@@ -27,8 +27,8 @@ class FindCentroid(Node):
         self.msg = Float64MultiArray()
 
         # Initial moment value
-        self.relX = -50
-        self.relY = -50
+        self.relX = -50.0
+        self.relY = -50.0
         self.detected = 0.0
 
     def locate_centroid(self, data):
