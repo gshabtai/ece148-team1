@@ -25,28 +25,28 @@ class CollisionAvoidance(Node):
 #        filtered_data = np.where(filtered_data < np.zeros((1,len(filtered_data))) + 0.45, filtered_data, 999)
         minVal = min(filtered_data)
         index = filtered_data.index(minVal)
+        angle = index - 90
 
         if minVal > r_outer:
-            self.get_logger().info("No Object Detected")
+            self.get_logger().info("No Object Within Range")
         else:
-            self.get_logger().info("Angle: " + str(index) + ", Distance: " + str(minVal))
+            self.get_logger().info("Angle: " + str(angle) + ", Distance: " + str(minVal))
 
-      #  if minVal < r_outer:
-      #      steering_out(distance = minVal, angle = index)
+        if minVal < r_outer:
+            steering_out(distance = minVal, angle = angle, index = index)
 
 
-    def steering_out(self,distance,angle):
+    def steering_out(self,distance,angle,index):
         sensitivity = 1
 
         # Publish values
         try:
-            # publish control signals
             #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
-            self.twist_cmd.angular.z = angle + (1/distance)**sensitivity
+            self.twist_cmd.angular.z = (angle + (1/distance)**sensitivity)/90
             self.twist_publisher.publish(self.twist_cmd)
 
         except KeyboardInterrupt:
-            self.twist_cmd.linear.x = self.zero_throttle
+            #self.twist_cmd.linear.x = self.zero_throttle
             self.twist_publisher.publish(self.twist_cmd)
             
 def main(args=None):
