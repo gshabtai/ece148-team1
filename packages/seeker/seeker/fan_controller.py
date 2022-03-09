@@ -1,19 +1,15 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float32
-# from adafruit_servokit import ServoKit
-from geometry_msgs.msg import Twist
-# import board
-# import busio
+from std_msgs.msg import Float64MultiArray
 import RPi.GPIO as GPIO
 
 NODE_NAME = 'fan_node'
-TOPIC_NAME = '/cmd_vel'
+TOPIC_NAME = '/webcam_centroid'
 
 class AdafruitFan(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
-        self.fan_subscriber = self.create_subscription(Twist, TOPIC_NAME, self.send_values_to_adafruit, 10)
+        self.webcam_subscriber = self.create_subscription(Float64MultiArray, TOPIC_NAME, self.send_values_to_adafruit, 10)
 
         self.declare_parameters(
             namespace='',
@@ -24,35 +20,23 @@ class AdafruitFan(Node):
             ])
         self.bus_num = int(self.get_parameter('bus_num').value)
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
-        self.fan2_channel = int(self.get_parameter('fan2_channel').value)
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
-        # if self.bus_num == 0:
-        #     i2c_bus0 = (busio.I2C(board.SCL_1, board.SDA_1))
-        #     self.kit = ServoKit(channels=16, i2c=i2c_bus0)
-        # else:
-        #     self.kit = ServoKit(channels=16)
-
     def send_values_to_adafruit(self, data):
-        fan_power = int(data.linear.y)
+        fan_power = int(data[2])
 
         if (fan_power == int(1)):
             GPIO.output(self.fan1_channel, GPIO.HIGH)
         else:
             GPIO.output(self.fan1_channel, GPIO.LOW)
 
-        # self.kit.continuous_servo[self.fan1_channel].throttle = fan_power
-        # self.kit.continuous_servo[self.fan2_channel].throttle = fan_power
-
 def main(args=None):
     rclpy.init(args=args)
     adafruit_fan = AdafruitFan()
     try:
         rclpy.spin(adafruit_fan)
-        adafruit_fan.destroy_node()
-        rclpy.shutdown()
     except KeyboardInterrupt:
         adafruit_fan.get_logger().info(f'Could not connect to Adafruit, Shutting down {NODE_NAME}...')
         adafruit_fan.destroy_node()

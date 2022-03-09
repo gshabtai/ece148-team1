@@ -12,7 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
             (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
-            # (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
+            (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
@@ -25,7 +25,8 @@ setup(
     entry_points={
         'console_scripts': [
             'webcam_publish_centroid = seeker.webcam_publish_centroid:main',
-            'collision_avoidance = seeker.collision_avoidance:main'
+            'collision_avoidance = seeker.collision_avoidance:main',
+            'fan_controller = seeker.fan_controller:main'
         ],
     },
 )

@@ -9,7 +9,7 @@ from std_msgs.msg import Float64MultiArray
 
 NODE_NAME = 'centroid_node'
 CAMERA_TOPIC_NAME = '/camera/color/image_raw'
-CENTROID_TOPIC_NAME = '/centroid'
+CENTROID_TOPIC_NAME = '/webcam_centroid'
 
 class FindCentroid(Node):
     def __init__(self):
