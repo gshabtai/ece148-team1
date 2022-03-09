@@ -1,7 +1,7 @@
 import rclpy 
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-import numpy
+import numpy as np
 
  
 class CollisionAvoidance(Node):
@@ -12,9 +12,11 @@ class CollisionAvoidance(Node):
 
  
     def talker_callback(self, data):
-        filtered_data = data.ranges[280:359] + data.ranges[0:80]
-        minVal = min(filtered_data)
+        filtered_data = data.ranges[270:359] + data.ranges[0:90]
+        np.mininmum(filtered_data,np.zeros(len(filtered_data)),where=True) = 999
+        minVal = filtered_data
         index = filtered_data.index(minVal)
+    
         self.get_logger().info(str(index) + ": " + str(minVal))
             
 def main(args=None):
