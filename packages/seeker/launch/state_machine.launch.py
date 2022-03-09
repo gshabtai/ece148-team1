@@ -95,6 +95,7 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(webcam_node)
     ld.add_action(webcam_publish_centroid_node)
+    ld.add_action(state_machine)
     # ld.add_action(fan_node)
     # ld.add_action(act_node)
     # ld.add_action(webcam_node)
