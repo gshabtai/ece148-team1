@@ -1,4 +1,5 @@
 from http.server import executable
+from importlib.resources import Package
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
@@ -23,6 +24,7 @@ def generate_launch_description():
     actuator_node_name = 'adafruit_twist_node'
     webcam_node_name = 'webcam_node'
     state_machine_node_name = 'state_controller'
+    lidar_node_name = 'ldlidar'
 
     # Define Intel launch file
     intel_launch_file = 'rs_launch.py'
@@ -42,6 +44,19 @@ def generate_launch_description():
     webcam_node = Node(
         package = sensor_pkg,
         executable = webcam_node_name,
+        output='screen',
+        parameters=[config_actuator]
+    )
+
+    lidar_node = Node(
+        package = sensor_pkg,
+        executable = lidar_node_name,
+        output='screen'
+    )
+
+    adafruit_node = Node(
+        package = actuator_pkg,
+        executable = actuator_node_name,
         output='screen',
         parameters=[config_actuator]
     )
@@ -93,12 +108,14 @@ def generate_launch_description():
     
     # Add actions to launch description
     ld = LaunchDescription()
-    ld.add_action(webcam_node)
-    ld.add_action(webcam_publish_centroid_node)
-    ld.add_action(state_machine)
-    # ld.add_action(fan_node)
-    # ld.add_action(act_node)
+
+    # Dominic
     # ld.add_action(webcam_node)
-    # ls.add_action(intel_launch)
+    # ld.add_action(adafruit_node)
+    ld.add_action(lidar_node)
+
+    # Ours
+    # ld.add_action(webcam_publish_centroid_node)
+    # ld.add_action(state_machine)
 
     return ld
