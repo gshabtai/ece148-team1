@@ -25,9 +25,9 @@ class AdafruitFan(Node):
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
     def send_values_to_adafruit(self, data):
-        fan_power = int(data.data[2])
-
-        if (fan_power == int(1)):
+        fan_power = data.data[2]
+        self.get_logger().info(f'{fan_power}')
+        if (abs(fan_power)>0.5):
             GPIO.output(self.fan1_channel, GPIO.HIGH)
             self.get_logger().info('On')
         else:
@@ -40,6 +40,7 @@ def main(args=None):
     try:
         rclpy.spin(adafruit_fan)
     except KeyboardInterrupt:
+        GPIO.output(int(13), GPIO.LOW)
         adafruit_fan.get_logger().info(f'Could not connect to Adafruit, Shutting down {NODE_NAME}...')
         adafruit_fan.destroy_node()
         rclpy.shutdown()
