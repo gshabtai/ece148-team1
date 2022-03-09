@@ -25,13 +25,13 @@ class AdafruitFan(Node):
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
     def send_values_to_adafruit(self, data):
-        fan_power = data.data[2]
-        relX = data.data[0]
-        relY = data.data[1]
+        fan_power = int(data.data[2])
+        relX = int(data.data[0])
+        relY = int(data.data[1])
 
         self.get_logger().info(f'{data.data}')
 
-        if (abs(relX) < 15 and abs(relY) < 20 and fan_power):
+        if (abs(relX) < 30 and abs(relY) < 40 and fan_power):
             GPIO.output(self.fan1_channel, GPIO.HIGH)
             self.get_logger().info('On')
         else:
