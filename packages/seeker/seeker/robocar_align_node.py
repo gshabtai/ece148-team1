@@ -82,7 +82,8 @@ class Robocar_align(Node):
         # send the request
         self.future = self.client.call_async(self.req)
         response = self.future.result()
-        suc = response.success
+        # suc = response.success
+        self.get_logger().info(f"{response}")
         self.get_logger().info('%d' % int(suc))
 
     def update_ball(self, data):
