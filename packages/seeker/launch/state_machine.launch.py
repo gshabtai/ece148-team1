@@ -48,12 +48,11 @@ def generate_launch_description():
         parameters=[config_actuator]
     )
 
-    # lidar_node = Node(
-    #     Package = sensor_pkg,
-    #     executable = lidar_node_name,
-    #     output='screen',
-    #     parameters=[]
-    # )
+    lidar_node = Node(
+        package = sensor_pkg,
+        executable = lidar_node_name,
+        output='screen'
+    )
 
     adafruit_node = Node(
         package = actuator_pkg,
@@ -109,13 +108,14 @@ def generate_launch_description():
     
     # Add actions to launch description
     ld = LaunchDescription()
+
+    # Dominic
     ld.add_action(webcam_node)
+    ld.add_action(adafruit_node)
+    ld.add_action(lidar_node)
+
+    # Ours
     ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
-    ld.add_action(adafruit_node)
-    # ld.add_action(fan_node)
-    # ld.add_action(act_node)
-    # ld.add_action(webcam_node)
-    # ls.add_action(intel_launch)
 
     return ld
