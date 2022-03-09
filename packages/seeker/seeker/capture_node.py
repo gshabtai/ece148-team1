@@ -66,7 +66,8 @@ class CaptureControl(Node):
         )
 
     def capture_callback(self, request, response):
-
+        req = request
+        response.success = bool(1)
         # # Publish values
         # try:
         #     # publish control signals
@@ -82,7 +83,7 @@ class CaptureControl(Node):
         #     self.twist_publisher.publish(self.twist_cmd)
     
         # return response
-        pass
+        return success
 
     #Update ek (Dont know if this works)
     # def compute_capture(self, data):
