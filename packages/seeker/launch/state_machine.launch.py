@@ -9,8 +9,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import os
 import yaml
 
-from packages.seeker.seeker import collision_avoidance
-
 def generate_launch_description():
     # Define package names
     seeker_pkg = 'seeker'
