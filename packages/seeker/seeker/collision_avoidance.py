@@ -14,18 +14,22 @@ class CollisionAvoidance(Node):
 
  
     def talker_callback(self, data):
-        r_outer = 2
-        r_inner = .45
+        r_outer = .5
+        r_inner = .15
         filtered_data = data.ranges[270:359] + data.ranges[0:90]
         # to-do: optimization
         for num in filtered_data:
             if num < r_inner:
                 filtered_data[filtered_data.index(num)] = 999
+
 #        filtered_data = np.where(filtered_data < np.zeros((1,len(filtered_data))) + 0.45, filtered_data, 999)
         minVal = min(filtered_data)
         index = filtered_data.index(minVal)
-    
-        self.get_logger().info("Angle: " + str(index) + ", Distance: " + str(minVal))
+
+        if minVal > r_outer:
+            self.get_logger().info("No Object Detected")
+        else:
+            self.get_logger().info("Angle: " + str(index) + ", Distance: " + str(minVal))
 
       #  if minVal < r_outer:
       #      steering_out(distance = minVal, angle = index)
