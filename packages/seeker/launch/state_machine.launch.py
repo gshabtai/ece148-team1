@@ -55,12 +55,12 @@ def generate_launch_description():
     #     parameters=[]
     # )
 
-    # adafruit_node = Node(
-    #     Package = actuator_pkg,
-    #     executable = actuator_node_name,
-    #     output='screen',
-    #     parameters=[act_calibration_file]
-    # )
+    adafruit_node = Node(
+        Package = actuator_pkg,
+        executable = actuator_node_name,
+        output='screen',
+        parameters=[config_actuator]
+    )
 
     # Define nodes
     webcam_publish_centroid_node = Node(
