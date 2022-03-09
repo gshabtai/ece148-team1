@@ -26,7 +26,8 @@ setup(
         'console_scripts': [
             'webcam_publish_centroid = seeker.webcam_publish_centroid:main',
             'collision_avoidance = seeker.collision_avoidance:main',
-            'fan_controller = seeker.fan_controller:main'
+            'fan_controller = seeker.fan_controller:main',
+            'state_controller = seeker.state_controller:main'
         ],
     },
 )

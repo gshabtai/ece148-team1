@@ -1,3 +1,4 @@
+from http.server import executable
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
@@ -21,6 +22,7 @@ def generate_launch_description():
     webcam_publish_centroid_node_name = 'webcam_publish_centroid'
     actuator_node_name = 'adafruit_twist_node'
     webcam_node_name = 'webcam_node'
+    state_machine_node_name = 'state_controller'
 
     # Define Intel launch file
     intel_launch_file = 'rs_launch.py'
@@ -48,7 +50,14 @@ def generate_launch_description():
     webcam_publish_centroid_node = Node(
         package = seeker_pkg,
         executable = webcam_publish_centroid_node_name,
-        output='screen',
+        # output='screen',
+        parameters=[config_seeker]
+    )
+
+    state_machine = Node(
+        package = seeker_pkg,
+        executable = state_machine_node_name,
+        output = 'screen',
         parameters=[config_seeker]
     )
 
