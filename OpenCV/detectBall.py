@@ -77,7 +77,7 @@ class DetectCircle(JSONManager):
 
         # Capture new image from source
         _, frame = self.cap.read()
-        self.frame = cv.resize(frame, None, fx=0.2, fy=0.2, interpolation=cv.INTER_AREA)
+        self.frame = cv.resize(frame, None, fx=0.25, fy=0.25, interpolation=cv.INTER_AREA)
         
         self.hsv_search()    
 
@@ -93,7 +93,13 @@ class DetectCircle(JSONManager):
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
 
-            print(f'Centroid found at: {(cX,cY)}')
+            h, w = np.shape(self.mask)
+            relX = (cX - w/2)/w
+            relY = (h-cY)/h
+
+            print((int(relX*100),int(relY*100)))
+
+            # print(f'Centroid found at: {(cX-h/2,cY)}')
 
             if self.calibration_mode:
                 # put text and highlight the center
