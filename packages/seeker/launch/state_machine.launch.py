@@ -110,12 +110,12 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Dominic
-    ld.add_action(webcam_node)
-    ld.add_action(adafruit_node)
+    # ld.add_action(webcam_node)
+    # ld.add_action(adafruit_node)
     ld.add_action(lidar_node)
 
     # Ours
-    ld.add_action(webcam_publish_centroid_node)
-    ld.add_action(state_machine)
+    # ld.add_action(webcam_publish_centroid_node)
+    # ld.add_action(state_machine)
 
     return ld
