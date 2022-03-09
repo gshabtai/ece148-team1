@@ -67,8 +67,8 @@ class FindCentroid(Node):
             self.detected = 1.0
 
             h, w = np.shape(self.mask)
-            self.relX = 100.0*(cX - w/2)/w
-            self.relY = 100.0*(h-cY)/h
+            self.relX = 100.0*((cX - w/2)/w)
+            self.relY = 100.0*((h-cY)/h)
 
             # Publish centroid data
             self.msg.data = [self.relX, self.relY, self.detected]
