@@ -25,9 +25,9 @@ class AdafruitFan(Node):
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
     def send_values_to_adafruit(self, data):
-        fan_power = data.data[2]
-        relX = data.data[0]
-        relY = data.data[1]
+        fan_power = int(data.data[2])
+        relX = int(data.data[0])
+        relY = int(data.data[1])
 
         self.get_logger().info(f'{data.data}')
 
