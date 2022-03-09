@@ -17,13 +17,13 @@ class Robocar_align(Node):
         super().__init__(NODE_NAME)
         self.client = self.create_client(Trigger, 'capture')
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
-        self.find_ball_subscriber = self.create_subscription(Bool, BALL_TOPIC_NAME, self.update_ball, 10)
-        self.ball_cen_subscriber = self.create_subscription(Point, BALL_CEN_TOPIC_NAME, self.update_ball_cen, 10)
+        #self.find_ball_subscriber = self.create_subscription(Bool, BALL_TOPIC_NAME, self.update_ball, 10)
+        #self.ball_cen_subscriber = self.create_subscription(Point, BALL_CEN_TOPIC_NAME, self.update_ball_cen, 10)
 
-        self.ball = 0
-        self.cen.x = 0
-        self.cen.y = 0
-        self.cen.depth = 0
+        # self.ball = 0
+        # self.cen.x = 0
+        # self.cen.y = 0
+        # self.cen.depth = 0
         self.twist_cmd = Twist()
 
         self.param = Parameters()
