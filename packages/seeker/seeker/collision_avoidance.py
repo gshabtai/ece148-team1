@@ -12,7 +12,19 @@ class CollisionAvoidance(Node):
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
- 
+    def steering_out(self,distance,angle,index):
+        sensitivity = 1
+
+        # Publish values
+        try:
+            #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
+            self.twist_cmd.angular.z = (angle + (1/distance)**sensitivity)/90
+            self.twist_publisher.publish(self.twist_cmd)
+
+        except KeyboardInterrupt:
+            #self.twist_cmd.linear.x = self.zero_throttle
+            self.twist_publisher.publish(self.twist_cmd)
+
     def talker_callback(self, data):
         r_outer = .5
         r_inner = .15
@@ -35,19 +47,6 @@ class CollisionAvoidance(Node):
         if minVal < r_outer:
             steering_out(distance = minVal, angle = angle, index = index)
 
-
-    def steering_out(self,distance,angle,index):
-        sensitivity = 1
-
-        # Publish values
-        try:
-            #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
-            self.twist_cmd.angular.z = (angle + (1/distance)**sensitivity)/90
-            self.twist_publisher.publish(self.twist_cmd)
-
-        except KeyboardInterrupt:
-            #self.twist_cmd.linear.x = self.zero_throttle
-            self.twist_publisher.publish(self.twist_cmd)
             
 def main(args=None):
     rclpy.init(args=args) # initialize the ROS communication
