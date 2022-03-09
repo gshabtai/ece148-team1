@@ -78,6 +78,13 @@ class Robocar_align(Node):
         response = self.future.result()
         return response.success
 
+    def test_send_request(self):
+        # send the request
+        self.future = self.client.call_async(self.req)
+        response = self.future.result()
+        suc = response.success
+        self.get_logger().info('%d' % int(suc))
+
     def update_ball(self, data):
         self.ball = bool(data.data)
 
@@ -124,7 +131,7 @@ class Robocar_align(Node):
 def main(args=None):
     rclpy.init(args=args)
     robocar_seek = Robocar_align()
-    robocar_seek.send_request()
+    robocar_seek.test_send_request()
 
     try:
         rclpy.spin_once(robocar_seek)
