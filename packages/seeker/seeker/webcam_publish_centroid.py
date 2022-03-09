@@ -65,7 +65,7 @@ class FindCentroid(Node):
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
 
-            # self.get_logger().info(f'Centroid found at: {(cX-400,cY-300)}')
+            self.get_logger().info(f'Centroid found at: {(cX-400,cY-300)}')
 
             # Publish centroid data
             msg = Float64MultiArray()
