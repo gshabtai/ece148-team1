@@ -1,3 +1,4 @@
+from distutils.command.config import config
 from http.server import executable
 from importlib.resources import Package
 from launch import LaunchDescription
@@ -16,6 +17,7 @@ def generate_launch_description():
     intel_pkg_name = 'realsense2_camera'
     seeker_calibration_file = 'seeker_calibration.yaml'
     act_calibration_file = 'adafruit_twist_calibration.yaml'
+    lidar_config_file = 'ld06.yaml'
 
     # Define node names
     collision_avoidance_node_name = 'collision_avoidance'
@@ -40,6 +42,12 @@ def generate_launch_description():
         'config',
         act_calibration_file)
 
+    config_lidar = os.path.join(
+        get_package_share_directory(sensor_pkg),
+        'config',
+        lidar_config_file)
+
+
     # Define nodes provided by the Dominic
     webcam_node = Node(
         package = sensor_pkg,
@@ -51,7 +59,8 @@ def generate_launch_description():
     lidar_node = Node(
         package = sensor_pkg,
         executable = lidar_node_name,
-        output='screen'
+        output='screen',
+        parameters=[config_lidar]
     )
 
     adafruit_node = Node(
