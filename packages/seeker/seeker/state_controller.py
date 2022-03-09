@@ -11,7 +11,7 @@ class StateController(Node):
         self.current_state = 'idle'
         self.next_state = 'idle'
         self.msg = String()
-
+        
         # Set starting params
         self.number_loaded_ball = 0
 
@@ -19,7 +19,10 @@ class StateController(Node):
         self.next_state = self.calc_next_state()
         self.msg.data = self.next_state
         self.state_publisher.publish(self.msg)
-        self.get_logger().info(f'{self.next_state}')
+        
+        if self.current_state != self.next_state:
+            self.get_logger().info(f'{self.next_state}')
+
         self.current_state = self.next_state
 
     def calc_next_state(self):
