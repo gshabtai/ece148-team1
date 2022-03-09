@@ -51,7 +51,8 @@ def generate_launch_description():
     lidar_node = Node(
         Package = sensor_pkg,
         executable = lidar_node_name,
-        output='screen'
+        output='screen',
+        parameters=[]
     )
 
     # adafruit_node = Node(
@@ -111,6 +112,7 @@ def generate_launch_description():
     ld.add_action(webcam_node)
     ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
+    ld.add_action(lidar_node)
     # ld.add_action(fan_node)
     # ld.add_action(act_node)
     # ld.add_action(webcam_node)
