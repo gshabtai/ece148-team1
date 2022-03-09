@@ -19,10 +19,11 @@ class CollisionAvoidance(Node):
 
     def steering_out(self,distance,angle,index):
         sensitivity = 1.5
-        polarity = angle/abs(angle)
+        
 
         # Publish values
         try:
+            polarity = angle/abs(angle)
             #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
             self.twist_cmd.angular.z = (angle + polarity*(1/distance)**sensitivity)/90
             self.twist_publisher.publish(self.twist_cmd)
