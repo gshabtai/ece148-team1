@@ -48,19 +48,19 @@ def generate_launch_description():
         parameters=[config_actuator]
     )
 
-    lidar_node = Node(
-        Package = sensor_pkg,
-        executable = lidar_node_name,
-        output='screen',
-        parameters=[]
-    )
-
-    # adafruit_node = Node(
-    #     Package = actuator_pkg,
-    #     executable = actuator_node_name,
+    # lidar_node = Node(
+    #     Package = sensor_pkg,
+    #     executable = lidar_node_name,
     #     output='screen',
-    #     parameters=[act_calibration_file]
+    #     parameters=[]
     # )
+
+    adafruit_node = Node(
+        Package = actuator_pkg,
+        executable = actuator_node_name,
+        output='screen',
+        parameters=[act_calibration_file]
+    )
 
     # Define nodes
     webcam_publish_centroid_node = Node(
@@ -112,7 +112,7 @@ def generate_launch_description():
     ld.add_action(webcam_node)
     ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
-    ld.add_action(lidar_node)
+    ld.add_action(adafruit_node)
     # ld.add_action(fan_node)
     # ld.add_action(act_node)
     # ld.add_action(webcam_node)
