@@ -20,7 +20,7 @@ class CollisionAvoidance(Node):
         # to-do: optimization
         for num in filtered_data:
             if num < r_inner:
-                filtered_data[filtered_data.index(num)] = NaN
+                filtered_data[filtered_data.index(num)] = 999
 #        filtered_data = np.where(filtered_data < np.zeros((1,len(filtered_data))) + 0.45, filtered_data, 999)
         minVal = min(filtered_data)
         index = filtered_data.index(minVal)
