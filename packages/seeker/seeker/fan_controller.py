@@ -26,6 +26,7 @@ class AdafruitFan(Node):
 
     def send_values_to_adafruit(self, data):
         fan_power = int(data[2])
+        self.get_logger().info(f'{fan_power}')
 
         if (fan_power == int(1)):
             GPIO.output(self.fan1_channel, GPIO.HIGH)
