@@ -50,7 +50,7 @@ class DetectCircle(JSONManager):
         super().__init__()
 
         # Sequester the video capture device
-        self.cap = cv.VideoCapture(0)
+        self.cap = cv.VideoCapture(1)
 
         # Check if the webcam is opened correctly
         if not self.cap.isOpened():
@@ -77,7 +77,7 @@ class DetectCircle(JSONManager):
 
         # Capture new image from source
         _, frame = self.cap.read()
-        self.frame = cv.resize(frame, None, fx=0.25, fy=0.25, interpolation=cv.INTER_AREA)
+        self.frame = cv.resize(frame, None, fx=0.2, fy=0.2, interpolation=cv.INTER_AREA)
         
         self.hsv_search()    
 
@@ -114,7 +114,7 @@ class DetectCircle(JSONManager):
             biggest_blob = max(countours, key=cv.contourArea)
             cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
-        # cv.imshow('PreMask', self.mask)
+        cv.imshow('PreMask', self.mask)
 
         self.mask = cv.bitwise_and(self.mask, out)
 
