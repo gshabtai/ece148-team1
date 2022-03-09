@@ -25,15 +25,14 @@ class AdafruitFan(Node):
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
     def send_values_to_adafruit(self, data):
-        # fan_power = int(data[2])
-        self.get_logger().info(str(data))
+        fan_power = int(data.data[2])
 
-        # if (fan_power == int(1)):
-        #     GPIO.output(self.fan1_channel, GPIO.HIGH)
-        #     self.get_logger().info('On')
-        # else:
-        #     GPIO.output(self.fan1_channel, GPIO.LOW)
-        #     self.get_logger().info('Off')
+        if (fan_power == int(1)):
+            GPIO.output(self.fan1_channel, GPIO.HIGH)
+            self.get_logger().info('On')
+        else:
+            GPIO.output(self.fan1_channel, GPIO.LOW)
+            self.get_logger().info('Off')
 
 def main(args=None):
     rclpy.init(args=args)
