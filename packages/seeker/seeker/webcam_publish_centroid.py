@@ -27,9 +27,9 @@ class FindCentroid(Node):
         self.msg = Float64MultiArray()
 
         # Initial moment value
-        self.cX = 400
-        self.cY = 300
-        self.detected = 0
+        self.cX = 400.0
+        self.cY = 300.0
+        self.detected = 0.0
 
     def locate_centroid(self, data):
         # Image processing from rosparams
@@ -64,17 +64,17 @@ class FindCentroid(Node):
             # calculate x,y coordinate of center
             self.cX = int(M["m10"] / M["m00"])
             self.cY = int(M["m01"] / M["m00"])
-            self.detected = 1
+            self.detected = 1.0
 
             # Publish centroid data
             self.msg.data = [self.cX-400.0, self.cY-300.0, self.detected]
             self.centroid_publisher.publish(self.msg)
         else:
-            self.detected = 0
+            self.detected = 0.0
             self.msg.data = [self.cX-400.0, self.cY-300.0, self.detected]
 
         # Debugging
-        self.get_logger().info(f'Centroid found at: {(self.cX-400,self.cY-300),self.detected}')
+        self.get_logger().info(f'Centroid found at: {(self.cX-400,self.cY-300,self.detected)}')
     
 def main(args=None):
     rclpy.init(args=args)
