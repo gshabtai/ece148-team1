@@ -3,6 +3,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import numpy as np
+import std_msgs.msg import Bool
 
  
 class CollisionAvoidance(Node):
@@ -10,17 +11,20 @@ class CollisionAvoidance(Node):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
         super().__init__('counter_publisher')
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
-        
-        self.twist_cmd = Twist()
+        self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
+        self.bool_cmd = Bool()
+        self.twist_cmd = Twist()
+
     def steering_out(self,distance,angle,index):
-        sensitivity = 1
+        sensitivity = 1.5
+        polarity = angle/abs(angle)
 
         # Publish values
         try:
             #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
-            self.twist_cmd.angular.z = (angle + (1/distance)**sensitivity)/90
+            self.twist_cmd.angular.z = (angle + polarity*(1/distance)**sensitivity)/90
             self.twist_publisher.publish(self.twist_cmd)
 
         except KeyboardInterrupt:
@@ -31,6 +35,7 @@ class CollisionAvoidance(Node):
         r_outer = .5
         r_inner = .15
         filtered_data = data.ranges[270:359] + data.ranges[0:90]
+
         # to-do: optimization
         for num in filtered_data:
             if num < r_inner:
@@ -43,8 +48,10 @@ class CollisionAvoidance(Node):
 
         if minVal > r_outer:
             self.get_logger().info("No Object Within Range")
+            self.bool_cmd = bool(0)
         else:
             self.get_logger().info("Angle: " + str(angle) + ", Distance: " + str(minVal))
+            self.bool_cmd = bool(1)
 
         if minVal < r_outer:
             self.steering_out(distance = minVal, angle = angle, index = index)
