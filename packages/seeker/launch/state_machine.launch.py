@@ -24,7 +24,7 @@ def generate_launch_description():
     actuator_node_name = 'adafruit_twist_node'
     webcam_node_name = 'webcam_node'
     state_machine_node_name = 'state_controller'
-    lidar_node_name = 'lidar_ld06'
+    lidar_node_name = 'ld06'
 
     # Define Intel launch file
     intel_launch_file = 'rs_launch.py'
