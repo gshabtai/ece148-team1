@@ -24,11 +24,6 @@ def generate_launch_description():
     # Define node names
     collision_avoidance_node_name = 'collision_avoidance'
     fan_controller_node_name = 'fan_controller'
-    webcam_publish_centroid_node_name = 'webcam_publish_centroid'
-    actuator_node_name = 'adafruit_twist_node'
-    webcam_node_name = 'webcam_node'
-    state_machine_node_name = 'state_controller'
-    lidar_node_name = 'ldlidar'
 
     # Define Intel launch file
     intel_launch_file = 'rs_launch.py'
@@ -53,21 +48,21 @@ def generate_launch_description():
     # Define nodes provided by the Dominic
     webcam_node = Node(
         package = sensor_pkg,
-        executable = webcam_node_name,
+        executable = 'webcam_node',
         output='screen',
         parameters=[config_actuator]
     )
 
     lidar_node = Node(
         package = 'ldlidar',
-        executable = lidar_node_name,
+        executable = 'ldlidar',
         output='screen',
         parameters=[config_lidar]
     )
 
     adafruit_node = Node(
         package = actuator_pkg,
-        executable = actuator_node_name,
+        executable = 'adafruit_twist_node',
         output='screen',
         parameters=[config_actuator]
     )
@@ -75,38 +70,17 @@ def generate_launch_description():
     # Define nodes
     webcam_publish_centroid_node = Node(
         package = seeker_pkg,
-        executable = webcam_publish_centroid_node_name,
+        executable = 'webcam_publish_centroid',
         output='screen',
         parameters=[config_seeker]
     )
 
     state_machine = Node(
         package = seeker_pkg,
-        executable = state_machine_node_name,
+        executable = 'state_controller',
         output = 'screen',
         parameters=[config_seeker]
     )
-
-    # centroid_node = Node(
-    #     package = seeker_pkg,
-    #     executable = centroid_node_name,
-    #     output='screen',
-    #     parameters=[config_seeker]
-    # )
-
-    # fan_node = Node(
-    #     package = seeker_pkg,
-    #     executable = fan_node_name,
-    #     output='screen',
-    #     parameters=[config_seeker]
-    # )
-
-    # act_node = Node(
-    #     package = actuator_pkg,
-    #     executable = actuator_node_name,
-    #     output='screen',
-    #     parameters=[config_actuator]
-    # )
 
     # intel_launch = IncludeLaunchDescription(
     #         PythonLaunchDescriptionSource(
