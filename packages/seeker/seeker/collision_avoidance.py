@@ -12,10 +12,9 @@ class CollisionAvoidance(Node):
 
  
     def talker_callback(self, data):
-        filtered_data = data.ranges[270:359]
-        filtered_data.append(data.ranges[0:90])
+        filtered_data = data.ranges[270:359] + data.ranges[0:90]
         [minVal, index] = min(filtered_data)
-        self.get_logger().info(str((minVal,index)))
+        self.get_logger().info(str(index,minVal))
             
 def main(args=None):
     rclpy.init(args=args) # initialize the ROS communication
