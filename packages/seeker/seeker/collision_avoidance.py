@@ -10,6 +10,8 @@ class CollisionAvoidance(Node):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
         super().__init__('counter_publisher')
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
+        
+        self.twist_cmd = Twist()
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
     def steering_out(self,distance,angle,index):
