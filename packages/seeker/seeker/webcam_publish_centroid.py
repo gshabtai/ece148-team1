@@ -74,7 +74,7 @@ class FindCentroid(Node):
             self.msg.data = [self.cX-400.0, self.cY-300.0, self.detected]
 
         # Debugging
-        self.get_logger().info(f'Centroid found at: {(self.cX-400,self.cY-300),self.detected}')
+        self.get_logger().info(f'Centroid found at: {(self.cX-400,self.cY-300,self.detected)}')
     
 def main(args=None):
     rclpy.init(args=args)
