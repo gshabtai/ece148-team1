@@ -68,10 +68,11 @@ class FindCentroid(Node):
 
             # Publish centroid data
             self.msg.data = [self.cX-400.0, self.cY-300.0, self.detected]
-            self.centroid_publisher.publish(self.msg)
         else:
             self.detected = 0.0
             self.msg.data = [self.cX-400.0, self.cY-300.0, self.detected]
+
+        self.centroid_publisher.publish(self.msg)
 
         # Debugging
         self.get_logger().info(f'Centroid found at: {(self.cX-400,self.cY-300,self.detected)}')
