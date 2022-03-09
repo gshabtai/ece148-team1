@@ -12,10 +12,11 @@ class CollisionAvoidance(Node):
 
  
     def talker_callback(self, data):
-        filtered_angle_data = data.ranges[270:359] + data.ranges[0:90]
-        np.mininmum(filtered_angle_data,where=(filtered_num_data<0.45) = 999
-        minVal = filtered_num_data
-        index = filtered_num_data.index(minVal)
+        filtered_data = data.ranges[270:359] + data.ranges[0:90]
+        np.mininmum(filtered_data,where=(filtered_data<0.45) = 999
+        minVal = filtered_data
+        index = filtered_data.index(minVal)
+    
         self.get_logger().info(str(index) + ": " + str(minVal))
             
 def main(args=None):
