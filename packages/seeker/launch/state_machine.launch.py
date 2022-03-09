@@ -59,7 +59,7 @@ def generate_launch_description():
         Package = actuator_pkg,
         executable = actuator_node_name,
         output='screen',
-        parameters=[config_actuator]
+        parameters=[config_seeker]
     )
 
     # Define nodes
