@@ -82,7 +82,7 @@ def generate_launch_description():
     )
 
     collision_avoidance_node = Node(
-        package = sensor_pkg,
+        package = seeker_pkg,
         executable = 'collision_avoidance',
         output = 'screen'
     )
