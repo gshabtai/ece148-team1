@@ -1,3 +1,4 @@
+from nis import match
 import rclpy 
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -32,17 +33,18 @@ class StateController(Node):
         self.current_state = self.next_state
 
     def calc_next_state(self):
-
+        
         # This is the point where the state machine ask to go into search mode
         # This happens right after launching this script
-        if self.current_state == 'idle' and self.number_loaded_ball < 4:
-            return 'search_mode'
-        elif self.current_state == 'idle' and self.number_loaded_ball >= 4:
-            return 'idle'
+        if self.current_state == 'idle':
+            if self.number_loaded_ball <= 4:
+                return 'search_mode'
+            else:
+                return 'idle'
         
         # This is an override, since collision avoidance has asked to
         # take over the system.
-        if self.current_state != 'idle' and self.collision_override:
+        if self.collision_override:
             return 'collision_avoidance'
 
         # Default parameter
