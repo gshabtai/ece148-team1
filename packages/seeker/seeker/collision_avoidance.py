@@ -20,7 +20,7 @@ class CollisionAvoidance(Node):
 
         self.data_range = 10
         self.count = 0
-        self.collected_data_log = np.zeros((1,self.data_range))
+        self.collected_data_log = np.zeros(self.data_range)
 
         self.bool_cmd = Bool()
         self.twist_cmd = Twist()
