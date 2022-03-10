@@ -31,7 +31,7 @@ class CollisionAvoidance(Node):
 
         # Publish values
         try:
-            #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
+            self.twist_cmd.linear.x = .035
             self.twist_cmd.angular.z = -(abs(angle) - 90)*math.copysign(1/90,angle)
             self.twist_publisher.publish(self.twist_cmd)
 
