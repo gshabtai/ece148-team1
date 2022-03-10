@@ -54,7 +54,7 @@ class CollisionAvoidance(Node):
         collected_data = data.ranges[270:359] + data.ranges[0:90]
 
         # to-do: optimization
-        r_outer = .5
+        r_outer = .3
         r_inner = .15
         for num in collected_data:
             if num < r_inner:
