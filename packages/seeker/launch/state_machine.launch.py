@@ -89,7 +89,7 @@ def generate_launch_description():
 
     search_node = Node(
         package = seeker_pkg,
-        executable = 'search_mode',
+        executable = 'search_node',
         output = 'screen'
     )
 
