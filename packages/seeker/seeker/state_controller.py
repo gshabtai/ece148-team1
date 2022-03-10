@@ -15,6 +15,7 @@ class StateController(Node):
 
         # Set starting params
         self.number_loaded_ball = 0
+        self.collision_override = False
 
     def collison_update(self,data):
         self.collision_override = data.data
