@@ -22,7 +22,7 @@ class StateController(Node):
         self.collision_avoidance_state = self.create_subscription(Bool,'/collision_avoidance_state', self.collison_update, 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
-        self.next_state = 'noop'
+        self.next_state = 'idle'
         self.msg = String()
         self.time_threshold = 5
         self.ball_lost_time = 0 # Init time var
