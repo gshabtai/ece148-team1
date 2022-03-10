@@ -28,7 +28,7 @@ setup(
             'collision_avoidance = seeker.collision_avoidance:main',
             'fan_controller = seeker.fan_controller:main',
             'state_controller = seeker.state_controller:main',
-            'search_node = seeker.search_mode:main'
+            'simple_states = seeker.simple_modes:main'
         ],
     },
 )
