@@ -11,7 +11,7 @@ class SearchMode(Node):
         self.twist = Twist()
         # self.create_timer(0.2, self.update)
 
-    def set_twist(self):
+    def set_twist(self, data):
         self.get_logger().info('Searching')
 
 def main(args=None):
