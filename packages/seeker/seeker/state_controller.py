@@ -1,5 +1,3 @@
-from doctest import FAIL_FAST
-from nis import match
 import rclpy 
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -26,7 +24,7 @@ class StateController(Node):
         self.current_state = 'idle'
         self.next_state = 'idle'
         self.msg = String()
-        self.time_threshold = 5
+        self.time_threshold = 2
         self.ball_lost_time = 0 # Init time var
 
         # Set starting params
