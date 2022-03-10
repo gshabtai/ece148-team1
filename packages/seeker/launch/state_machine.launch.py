@@ -90,7 +90,7 @@ def generate_launch_description():
     search_node = Node(
         package = seeker_pkg,
         executable = 'search_mode',
-        ouput = 'screen'
+        output = 'screen'
     )
 
     # intel_launch = IncludeLaunchDescription(
