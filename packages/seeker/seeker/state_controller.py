@@ -21,7 +21,8 @@ class StateController(Node):
         
         if self.current_state != self.next_state:
             self.get_logger().info(f'Changing state from: {self.current_state} to {self.next_state}')
-            self.state_publisher.publish(self.msg)
+        
+        self.state_publisher.publish(self.msg)
 
         self.current_state = self.next_state
 
