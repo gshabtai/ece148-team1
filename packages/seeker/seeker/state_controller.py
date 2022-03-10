@@ -4,6 +4,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from std_msgs.msg import Bool
+from std_msgs.msg import Float64MultiArray
 from time import time
 
 STATE = {
@@ -20,6 +21,7 @@ class StateController(Node):
         super().__init__('state_controller')
         self.state_publisher = self.create_publisher(String, '/state', 10)
         self.collision_avoidance_state = self.create_subscription(Bool,'/collision_avoidance_state', self.collison_update, 10)
+        self.webcam_subscriber = self.create_subsctions(Float64MultiArray, '/webcam_centroid', self.set_webcam_sees_ball, 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
         self.next_state = 'idle'
@@ -32,6 +34,9 @@ class StateController(Node):
         self.proposed_num_collected_balls = 0
         self.imminent_collision = False
         self.webcam_sees_ball = False
+
+    def set_webcam_sees_ball(self, obj):
+        self.webcam_sees_ball = obj.data[3] == 1.0
 
     def collison_update(self,data):
         self.imminent_collision = data.data
