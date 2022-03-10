@@ -36,7 +36,7 @@ class StateController(Node):
         self.webcam_sees_ball = False
 
     def set_webcam_sees_ball(self, obj):
-        self.webcam_sees_ball = obj.data[3] == 1.0
+        self.webcam_sees_ball = obj.data[2] == 1.0
 
     def collison_update(self,data):
         self.imminent_collision = data.data
