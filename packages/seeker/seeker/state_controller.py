@@ -9,7 +9,7 @@ class StateController(Node):
         self.state_publisher = self.create_publisher(String, '/state', 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
-        self.next_state = 'idle'
+        self.next_state = 'noop'
         self.msg = String()
 
         # Set starting params
@@ -18,8 +18,12 @@ class StateController(Node):
     def update(self):
         self.next_state = self.calc_next_state()
         self.msg.data = self.next_state
+        
+        if self.current_state != self.next_state:
+            self.get_logger().info(f'Changing state from: {self.current_state} to {self.next_state}')
+        
         self.state_publisher.publish(self.msg)
-        self.get_logger().info(f'{self.next_state}')
+
         self.current_state = self.next_state
 
     def calc_next_state(self):
@@ -29,10 +33,8 @@ class StateController(Node):
             return 'idle'
         
         if self.current_state == 'search_mode':
-            return 'noop'
+            return 'search_mode'
 
-        if self.current_state == 'noop':
-            return 'noop'
         # Default parameter
         return 'idle'
 

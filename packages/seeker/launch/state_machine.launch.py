@@ -1,3 +1,4 @@
+from distutils.command.config import config
 from http.server import executable
 from importlib.resources import Package
 from launch import LaunchDescription
@@ -14,17 +15,14 @@ def generate_launch_description():
     actuator_pkg = 'ucsd_robocar_actuator2_pkg'
     sensor_pkg = 'ucsd_robocar_sensor2_pkg'
     intel_pkg_name = 'realsense2_camera'
+
+    # Define yaml config files
     seeker_calibration_file = 'seeker_calibration.yaml'
     act_calibration_file = 'adafruit_twist_calibration.yaml'
+    lidar_config_file = 'ld06.yaml'
 
     # Define node names
-    collision_avoidance_node_name = 'collision_avoidance'
     fan_controller_node_name = 'fan_controller'
-    webcam_publish_centroid_node_name = 'webcam_publish_centroid'
-    actuator_node_name = 'adafruit_twist_node'
-    webcam_node_name = 'webcam_node'
-    state_machine_node_name = 'state_controller'
-    lidar_node_name = 'ldlidar'
 
     # Define Intel launch file
     intel_launch_file = 'rs_launch.py'
@@ -40,23 +38,30 @@ def generate_launch_description():
         'config',
         act_calibration_file)
 
+    config_lidar = os.path.join(
+        get_package_share_directory(sensor_pkg),
+        'config',
+        lidar_config_file)
+
+
     # Define nodes provided by the Dominic
     webcam_node = Node(
         package = sensor_pkg,
-        executable = webcam_node_name,
+        executable = 'webcam_node',
         output='screen',
         parameters=[config_actuator]
     )
 
     lidar_node = Node(
-        package = sensor_pkg,
-        executable = lidar_node_name,
-        output='screen'
+        package = 'ldlidar',
+        executable = 'ldlidar',
+        output='screen',
+        parameters=[config_lidar]
     )
 
     adafruit_node = Node(
         package = actuator_pkg,
-        executable = actuator_node_name,
+        executable = 'adafruit_twist_node',
         output='screen',
         parameters=[config_actuator]
     )
@@ -64,38 +69,29 @@ def generate_launch_description():
     # Define nodes
     webcam_publish_centroid_node = Node(
         package = seeker_pkg,
-        executable = webcam_publish_centroid_node_name,
+        executable = 'webcam_publish_centroid',
         output='screen',
         parameters=[config_seeker]
     )
 
     state_machine = Node(
         package = seeker_pkg,
-        executable = state_machine_node_name,
+        executable = 'state_controller',
         output = 'screen',
         parameters=[config_seeker]
     )
 
-    # centroid_node = Node(
-    #     package = seeker_pkg,
-    #     executable = centroid_node_name,
-    #     output='screen',
-    #     parameters=[config_seeker]
-    # )
+    collision_avoidance_node = Node(
+        package = seeker_pkg,
+        executable = 'collision_avoidance',
+        output = 'screen'
+    )
 
-    # fan_node = Node(
-    #     package = seeker_pkg,
-    #     executable = fan_node_name,
-    #     output='screen',
-    #     parameters=[config_seeker]
-    # )
-
-    # act_node = Node(
-    #     package = actuator_pkg,
-    #     executable = actuator_node_name,
-    #     output='screen',
-    #     parameters=[config_actuator]
-    # )
+    search_node = Node(
+        package = seeker_pkg,
+        executable = 'search_node',
+        output = 'screen'
+    )
 
     # intel_launch = IncludeLaunchDescription(
     #         PythonLaunchDescriptionSource(
@@ -110,12 +106,14 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Dominic
-    # ld.add_action(webcam_node)
-    # ld.add_action(adafruit_node)
+    ld.add_action(webcam_node)
+    ld.add_action(adafruit_node)
     ld.add_action(lidar_node)
 
     # Ours
     # ld.add_action(webcam_publish_centroid_node)
-    # ld.add_action(state_machine)
+    ld.add_action(state_machine)
+    ld.add_action(search_node)
+    # ld.add_action(collision_avoidance_node)
 
     return ld

@@ -3,7 +3,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import numpy as np
-import std_msgs.msg import Bool
+from std_msgs.msg import Bool
 
  
 class CollisionAvoidance(Node):
