@@ -54,22 +54,24 @@ class CollisionAvoidance(Node):
         index = collected_data.index(minVal)
         angle = index - 90
 
-        self.collected_data_log[self.count] = minVal
-        self.count = self.count + 1
+        filtered_data = minVal
 
-        if self.count == self.data_range - 1:
-            self.count = 0
-            filtered_data = sum(self.collected_data_log)/self.data_range
-        else:
-            filtered_data = 999
+        #self.collected_data_log[self.count] = minVal
+        #self.count = self.count + 1
+
+        #if self.count == self.data_range:
+        #    self.count = 0
+        #    filtered_data = sum(self.collected_data_log)/self.data_range
+        #else:
+        #    filtered_data = 999
 
 # possibly put these lines into steering_out() vvv
         if filtered_data > r_outer:
             self.get_logger().info("No Object Within Range")
-            self.bool_cmd = bool(0)
+            self.collision__avoidance_state.publish(bool(0))
         else:
             self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
-            self.bool_cmd = bool(1)
+            self.collision__avoidance_state.publish(bool(1))
             self.steering_out(distance = filtered_data, angle = angle, index = index)          
 
             
