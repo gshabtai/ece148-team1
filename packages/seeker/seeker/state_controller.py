@@ -12,7 +12,7 @@ STATE = {
     'collision_avoidance':          'collision_avoidance',
     'search_mode':                  'search_mode',
     'collect_ball':                 'collect_ball',
-    'drive_back':                   'drive_ball'
+    'drive_back':                   'drive_back'
 }
 
 
