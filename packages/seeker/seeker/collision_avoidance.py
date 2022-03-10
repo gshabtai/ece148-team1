@@ -59,7 +59,7 @@ class CollisionAvoidance(Node):
 
         if self.count == self.data_range - 1:
             self.count = 0
-            filtered_data = sum(collected_data_log)/self.data_range
+            filtered_data = sum(self.collected_data_log)/self.data_range
         else:
             filtered_data = 999
 
