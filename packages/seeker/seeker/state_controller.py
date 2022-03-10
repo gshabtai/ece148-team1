@@ -1,13 +1,17 @@
+from doctest import FAIL_FAST
 from nis import match
 import rclpy 
 from rclpy.node import Node
 from std_msgs.msg import String
 from std_msgs.msg import Bool
+from time import time
 
 STATE = {
     'idle':                         'idle',
     'collision_avoidance':          'collision_avoidance',
-    'search_mode':                  'search_mode'
+    'search_mode':                  'search_mode',
+    'collect_ball':                 'collect_ball',
+    'drive_back':                   'drive_ball'
 }
 
 
@@ -20,49 +24,88 @@ class StateController(Node):
         self.current_state = 'idle'
         self.next_state = 'noop'
         self.msg = String()
+        self.time_threshold = 5
+        self.ball_lost_time = 0 # Init time var
 
         # Set starting params
         self.number_loaded_ball = 0
-        self.collision_override = False
+        self.proposed_num_collected_balls = 0
+        self.imminent_collision = False
+        self.webcam_sees_ball = False
 
     def collison_update(self,data):
-        self.collision_override = data.data
+        self.imminent_collision = data.data
 
     def update(self):
-        self.next_state = self.calc_next_state()
-
-        if self.current_state != self.next_state:
+        if self.current_state != self.next_state: # Log to console if state has changed
             self.get_logger().info(f'Changing state from: {self.current_state} to {self.next_state}')
         
+        # Calculate the next state
+        self.next_state = self.calc_next_state()
+
+        # Let all other nodes know that the state has change
         self.msg.data = self.next_state
         self.state_publisher.publish(self.msg)
 
+        # Set next_state as current_state
         self.current_state = self.next_state
 
     def calc_next_state(self):
 
-        self.get_logger().info(STATE['idle'])
-        
-        # This is the point where the state machine ask to go into search mode
-        # This happens right after launching this script
-        if self.current_state == 'idle':
-            if self.number_loaded_ball <= 4:
-                return 'search_mode'
+        ########## ON IDLE ##########
+        if self.current_state == STATE['idle']:
+            if self.number_loaded_ball < 4:
+                return STATE['search_mode']
             else:
-                return 'idle'
+                return STATE['idle']
+
+        ########## ON COLLISION AVOIDANCE MODE ##########
+        elif self.current_state == STATE['collision_avoidance']:
+            if self.imminent_collision:
+                return STATE['collision_avoidance']
+            else:
+                if self.webcam_sees_ball:
+                    return STATE['collect_ball']
+                else:
+                    return STATE['search_mode']
         
-        # This is an override, since collision avoidance has asked to
-        # take over the system.
-        if self.collision_override:
-            return 'collision_avoidance'
-        if self.current_state == 'collision_avoidance':
-            return 'search_mode'
+        ########## ON SEARCH MODE ##########
+        elif self.current_state == STATE['search_mode']:
+            if self.imminent_collision:
+                return STATE['collision_avoidance']
+            elif self.webcam_sees_ball:
+                return STATE['collect_ball']
+            else:
+                return STATE['search_mode']
 
-        if self.current_state == 'search_mode':
-            return 'search_mode'
-
-        # Default parameter
-        return 'idle'
+        ########## ON COLLECT BALL MODE ##########
+        elif self.current_state == STATE['collect_ball']:
+            if self.number_loaded_ball >= 4:
+                return STATE['idle']
+            elif self.imminent_collision:
+                return STATE['collision_avoidance']
+            elif self.number_loaded_ball != self.proposed_num_collected_balls: # Success in ball collections
+                self.number_loaded_ball = self.proposed_num_collected_balls
+                return STATE['search_mode']
+            elif not self.webcam_sees_ball:
+                self.ball_lost_time = time() # Start time
+                return STATE['drive_back']
+            else:
+                return STATE['collect_ball']
+            
+        
+        ########## ON DRIVE BACK MODE ##########
+        elif self.current_state == STATE['drive_back']:
+            if abs(time()-self.ball_lost_time) > self.time_threshold: # Ball has been lost for this much time
+                return STATE['search_mode']
+            elif self.webcam_sees_ball:
+                return STATE['collect_ball']
+            else:
+                return STATE['drive_back']
+        
+        ########## ON INVALID STATE, RETURN TO IDLE ##########
+        else:
+            return STATE['idle']
 
 
 def main(args=None):
