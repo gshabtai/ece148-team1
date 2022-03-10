@@ -87,6 +87,12 @@ def generate_launch_description():
         output = 'screen'
     )
 
+    search_node = Node(
+        package = seeker_pkg,
+        executable = 'search_mode',
+        ouput = 'screen'
+    )
+
     # intel_launch = IncludeLaunchDescription(
     #         PythonLaunchDescriptionSource(
     #             os.path.join(
@@ -105,8 +111,9 @@ def generate_launch_description():
     ld.add_action(lidar_node)
 
     # Ours
-    ld.add_action(webcam_publish_centroid_node)
+    # ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
-    ld.add_action(collision_avoidance_node)
+    ld.add_action(search_node)
+    # ld.add_action(collision_avoidance_node)
 
     return ld
