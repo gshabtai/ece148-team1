@@ -111,9 +111,9 @@ def generate_launch_description():
     ld.add_action(lidar_node)
 
     # Ours
-    # ld.add_action(webcam_publish_centroid_node)
+    ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
     ld.add_action(simples_states_node)
-    # ld.add_action(collision_avoidance_node)
+    ld.add_action(collision_avoidance_node)
 
     return ld
