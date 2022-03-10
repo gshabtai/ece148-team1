@@ -7,8 +7,8 @@ from std_msgs.msg import Bool
 
  
 class CollisionAvoidance(Node):
-    count = 0
-    data_range = 10
+    
+    
     
 
     def __init__(self):
@@ -18,7 +18,9 @@ class CollisionAvoidance(Node):
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
-        self.collected_data_log = np.zeros((1,data_range))
+        self.data_range = 10
+        self.count = 0
+        self.collected_data_log = np.zeros((1,self.data_range))
 
         self.bool_cmd = Bool()
         self.twist_cmd = Twist()
@@ -52,12 +54,12 @@ class CollisionAvoidance(Node):
         index = collected_data.index(minVal)
         angle = index - 90
 
-        self.collected_data_log[count] = minVal
-        count = count + 1
+        self.collected_data_log[self.count] = minVal
+        self.count = self.count + 1
 
-        if count == data_range - 1:
-            count = 0
-            filtered_data = sum(collected_data_log)/data_range
+        if self.count == self.data_range - 1:
+            self.count = 0
+            filtered_data = sum(collected_data_log)/self.data_range
         else:
             filtered_data = 999
 
