@@ -52,7 +52,7 @@ class CollisionAvoidance(Node):
         collected_data_log[count] = minVal
         count = count + 1
 
-        if count = data_range - 1:
+        if count == data_range - 1:
             count = 0
             filtered_data = sum(collected_data_log)/data_range
         else:
