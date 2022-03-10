@@ -33,10 +33,8 @@ class StateController(Node):
             return 'idle'
         
         if self.current_state == 'search_mode':
-            return 'noop'
+            return 'search_mode'
 
-        if self.current_state == 'noop':
-            return 'noop'
         # Default parameter
         return 'idle'
 
