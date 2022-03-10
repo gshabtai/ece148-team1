@@ -21,7 +21,7 @@ class StateController(Node):
         super().__init__('state_controller')
         self.state_publisher = self.create_publisher(String, '/state', 10)
         self.collision_avoidance_state = self.create_subscription(Bool,'/collision_avoidance_state', self.collison_update, 10)
-        self.webcam_subscriber = self.create_subsctions(Float64MultiArray, '/webcam_centroid', self.set_webcam_sees_ball, 10)
+        self.webcam_subscriber = self.create_subscription(Float64MultiArray, '/webcam_centroid', self.set_webcam_sees_ball, 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
         self.next_state = 'idle'
