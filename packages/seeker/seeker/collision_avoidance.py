@@ -4,6 +4,7 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import numpy as np
 from std_msgs.msg import Bool
+import math
 
  
 class CollisionAvoidance(Node):
@@ -27,12 +28,11 @@ class CollisionAvoidance(Node):
 
     def steering_out(self,distance,angle,index):
         sensitivity = 1.5
-        polarity = angle/abs(angle)
 
         # Publish values
         try:
             #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
-            self.twist_cmd.angular.z = (angle + polarity*(1/distance)**sensitivity)/90
+            self.twist_cmd.angular.z = -(((1/distance)**sensitivity) - (abs(angle)/90 - 1))*math.copysign(angle)
             self.twist_publisher.publish(self.twist_cmd)
 
         except KeyboardInterrupt:
