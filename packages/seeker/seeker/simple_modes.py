@@ -3,7 +3,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 
-class SearchMode(Node):
+class SimpleModes(Node):
     def __init__(self):
         super().__init__('search_node')
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -24,9 +24,9 @@ class SearchMode(Node):
 
 def main(args=None):
     rclpy.init(args=args) # initialize the ROS communication
-    searchObj = SearchMode() # declare the node constructor
-    rclpy.spin(searchObj) # pause the program execution, waits for a request to kill the node (ctrl+c)
-    searchObj.destroy_node() # Explicitly destroy the node
+    simple_states = SimpleModes() # declare the node constructor
+    rclpy.spin(simple_states) # pause the program execution, waits for a request to kill the node (ctrl+c)
+    simple_states.destroy_node() # Explicitly destroy the node
     rclpy.shutdown() # shutdown the ROS communication
  
 if __name__ == '__main__':

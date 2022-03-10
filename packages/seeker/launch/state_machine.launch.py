@@ -87,9 +87,9 @@ def generate_launch_description():
         output = 'screen'
     )
 
-    search_node = Node(
+    simples_states_node = Node(
         package = seeker_pkg,
-        executable = 'search_node',
+        executable = 'simple_states',
         output = 'screen'
     )
 
@@ -113,7 +113,7 @@ def generate_launch_description():
     # Ours
     # ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
-    ld.add_action(search_node)
+    ld.add_action(simples_states_node)
     # ld.add_action(collision_avoidance_node)
 
     return ld
