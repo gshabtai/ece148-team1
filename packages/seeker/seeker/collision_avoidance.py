@@ -4,6 +4,7 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import numpy as np
 from std_msgs.msg import Bool
+from std_msgs.msg import String
 import math
 
  
