@@ -12,7 +12,7 @@ class SearchMode(Node):
         # self.create_timer(0.2, self.update)
 
     def set_twist(self, data):
-        self.get_logger().info('Searching')
+        self.get_logger().info(f'Searching: {data}')
 
 def main(args=None):
     rclpy.init(args=args) # initialize the ROS communication
