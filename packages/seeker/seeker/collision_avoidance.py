@@ -18,15 +18,23 @@ class CollisionAvoidance(Node):
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
 
         self.data_range = 10
         self.count = 0
         self.collected_data_log = np.zeros(self.data_range)
+        self.onoff = "Idle"
 
         self.bool_cmd = Bool()
         self.twist_cmd = Twist()
 
+    def set_state(self,data)
+        self.onoff = data.data
+
     def steering_out(self,distance,angle,index):
+        if self.onoff != "collision_avoidance":
+            return
+
         sensitivity = 1.5
 
         # Publish values
@@ -40,6 +48,8 @@ class CollisionAvoidance(Node):
             self.twist_publisher.publish(self.twist_cmd)
 
     def talker_callback(self, data):
+        
+
         collected_data = data.ranges[270:359] + data.ranges[0:90]
 
         # to-do: optimization
