@@ -41,7 +41,7 @@ class StateController(Node):
 
     def calc_next_state(self):
 
-        print(STATE['idle'])
+        self.get_logger().info(STATE['idle'])
         
         # This is the point where the state machine ask to go into search mode
         # This happens right after launching this script

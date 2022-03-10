@@ -78,11 +78,11 @@ class CollisionAvoidance(Node):
 
 # possibly put these lines into steering_out() vvv
         if filtered_data > r_outer:
-            self.get_logger().info("No Object Within Range")
+            # self.get_logger().info("No Object Within Range")
             self.bool_cmd.data = False
             self.collision__avoidance_state.publish(self.bool_cmd)
         else:
-            self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
+            # self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
             self.bool_cmd.data = True
             self.collision__avoidance_state.publish(self.bool_cmd)
             self.steering_out(distance = filtered_data, angle = angle, index = index)          
