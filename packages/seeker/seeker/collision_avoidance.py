@@ -28,7 +28,7 @@ class CollisionAvoidance(Node):
         self.bool_cmd = Bool()
         self.twist_cmd = Twist()
 
-    def set_state(self,data)
+    def set_state(self,data):
         self.onoff = data.data
 
     def steering_out(self,distance,angle,index):
