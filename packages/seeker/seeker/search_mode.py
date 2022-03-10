@@ -9,7 +9,7 @@ class SearchMode(Node):
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
         self.subscriber = self.create_subscription(String, '/state', self.set_twist,10)
         self.twist = Twist()
-        self.create_timer(0.2, self.update)
+        # self.create_timer(0.2, self.update)
 
     def set_twist(self):
         self.get_logger().info('Searching')
