@@ -9,7 +9,7 @@ from std_msgs.msg import Bool
 class CollisionAvoidance(Node):
     count = 0
     data_range = 10
-    self.collected_data_log = np.zeros((1,data_range))
+    
 
     def __init__(self):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
@@ -17,6 +17,8 @@ class CollisionAvoidance(Node):
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+
+        self.collected_data_log = np.zeros((1,data_range))
 
         self.bool_cmd = Bool()
         self.twist_cmd = Twist()
