@@ -23,11 +23,11 @@ class StateController(Node):
 
     def update(self):
         self.next_state = self.calc_next_state()
-        self.msg.data = self.next_state
-        
+
         if self.current_state != self.next_state:
             self.get_logger().info(f'Changing state from: {self.current_state} to {self.next_state}')
         
+        self.msg.data = self.next_state
         self.state_publisher.publish(self.msg)
 
         self.current_state = self.next_state
@@ -45,6 +45,8 @@ class StateController(Node):
         # This is an override, since collision avoidance has asked to
         # take over the system.
         if self.collision_override:
+            return 'collision_avoidance'
+        if self.current_state == 'collision_avoidance':
             return 'collision_avoidance'
 
         # Default parameter
