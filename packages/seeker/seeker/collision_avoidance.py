@@ -9,7 +9,7 @@ from std_msgs.msg import Bool
 class CollisionAvoidance(Node):
     count = 0
     data_range = 10
-    collected_data_log = np.zeros((1,data_range))
+    self.collected_data_log = np.zeros((1,data_range))
 
     def __init__(self):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
@@ -50,7 +50,7 @@ class CollisionAvoidance(Node):
         index = collected_data.index(minVal)
         angle = index - 90
 
-        collected_data_log[count] = minVal
+        self.collected_data_log[count] = minVal
         count = count + 1
 
         if count == data_range - 1:
