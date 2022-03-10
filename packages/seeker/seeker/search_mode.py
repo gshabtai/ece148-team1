@@ -18,8 +18,8 @@ class SearchMode(Node):
         if state != 'search_mode':
             return
 
-        self.twist_cmd.angular.z = -1.0
-        self.twist_publisher.publish(self.twist_cmd)
+        self.twist.angular.z = -1.0
+        self.twist_publisher.publish(self.twist)
         self.get_logger().info(f'Searching: {state}')
 
 def main(args=None):
