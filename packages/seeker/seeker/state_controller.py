@@ -4,6 +4,13 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from std_msgs.msg import Bool
 
+STATE = {
+    'idle':                         'idle',
+    'collision_avoidance':          'collision_avoidance',
+    'search_mode':                  'search_mode'
+}
+
+
 class StateController(Node):
     def __init__(self) -> None:
         super().__init__('state_controller')
@@ -33,6 +40,8 @@ class StateController(Node):
         self.current_state = self.next_state
 
     def calc_next_state(self):
+
+        print(STATE['idle'])
         
         # This is the point where the state machine ask to go into search mode
         # This happens right after launching this script
