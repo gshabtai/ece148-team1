@@ -47,7 +47,10 @@ class StateController(Node):
         if self.collision_override:
             return 'collision_avoidance'
         if self.current_state == 'collision_avoidance':
-            return 'collision_avoidance'
+            return 'search_mode'
+
+        if self.current_state == 'search_mode':
+            return 'search_mode'
 
         # Default parameter
         return 'idle'
