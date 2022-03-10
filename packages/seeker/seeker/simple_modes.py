@@ -15,12 +15,25 @@ class SimpleModes(Node):
         state = data.data
 
         # Do nothing if not in search mode
-        if state != 'search_mode':
-            return
+        if state == 'search_mode':
+            self.twist.angular.x = 0.0
+            self.twist.angular.y = 0.0
+            self.twist.angular.z = -1.0
+            self.twist.linear.x = 0.05
+            self.twist.linear.y = 0.0
+            self.twist.linear.z = 0.0
+            self.twist_publisher.publish(self.twist)
+        
+        if state == 'idle':
+            self.twist.angular.x = 0.0
+            self.twist.angular.y = 0.0
+            self.twist.angular.z = 0.0
+            self.twist.linear.x = 0.0
+            self.twist.linear.y = 0.0
+            self.twist.linear.z = 0.0
+            self.twist_publisher.publish(self.twist)
 
-        self.twist.angular.z = -1.0
-        self.twist.linear.x = 0.05
-        self.twist_publisher.publish(self.twist)
+        
 
 def main(args=None):
     rclpy.init(args=args) # initialize the ROS communication
