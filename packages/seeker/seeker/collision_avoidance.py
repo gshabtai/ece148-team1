@@ -32,7 +32,7 @@ class CollisionAvoidance(Node):
         # Publish values
         try:
             #self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
-            self.twist_cmd.angular.z = -(((1/distance)**sensitivity) - (abs(angle)/90 - 1))*math.copysign(1,angle)
+            self.twist_cmd.angular.z = -(((1/distance)**sensitivity) - (abs(angle) - 90))*math.copysign(1/90,angle)
             self.twist_publisher.publish(self.twist_cmd)
 
         except KeyboardInterrupt:
