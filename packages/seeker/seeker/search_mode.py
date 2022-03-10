@@ -19,7 +19,7 @@ class SearchMode(Node):
             return
 
         self.twist.angular.z = -1.0
-        self.twist.linear.x = 0.04
+        self.twist.linear.x = 0.05
         self.twist_publisher.publish(self.twist)
 
 def main(args=None):
