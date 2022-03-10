@@ -1,12 +1,13 @@
 import rclpy 
 from rclpy.node import Node
 from std_msgs.msg import String
-
+from std_msgs.msg import Bool
 
 class StateController(Node):
     def __init__(self) -> None:
         super().__init__('state_controller')
         self.state_publisher = self.create_publisher(String, '/state', 10)
+        self.collision_avoidance_state = self.create_subscription(Bool,'/collision_avoidance_state', self.collison_update, 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
         self.next_state = 'noop'
@@ -14,6 +15,9 @@ class StateController(Node):
 
         # Set starting params
         self.number_loaded_ball = 0
+
+    def collison_update(self,data):
+        self.collision_override = data.data
 
     def update(self):
         self.next_state = self.calc_next_state()
@@ -27,13 +31,18 @@ class StateController(Node):
         self.current_state = self.next_state
 
     def calc_next_state(self):
+
+        # This is the point where the state machine ask to go into search mode
+        # This happens right after launching this script
         if self.current_state == 'idle' and self.number_loaded_ball < 4:
             return 'search_mode'
         elif self.current_state == 'idle' and self.number_loaded_ball >= 4:
             return 'idle'
         
-        if self.current_state == 'search_mode':
-            return 'search_mode'
+        # This is an override, since collision avoidance has asked to
+        # take over the system.
+        if self.current_state != 'idle' and self.collision_override:
+            return 'collision_avoidance'
 
         # Default parameter
         return 'idle'
