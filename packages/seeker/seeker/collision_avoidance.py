@@ -7,12 +7,20 @@ from std_msgs.msg import Bool
 
  
 class CollisionAvoidance(Node):
+    
+    
+    
+
     def __init__(self):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
         super().__init__('counter_publisher')
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+
+        self.data_range = 10
+        self.count = 0
+        self.collected_data_log = np.zeros(self.data_range)
 
         self.bool_cmd = Bool()
         self.twist_cmd = Twist()
@@ -32,29 +40,37 @@ class CollisionAvoidance(Node):
             self.twist_publisher.publish(self.twist_cmd)
 
     def talker_callback(self, data):
-        r_outer = .5
-        r_inner = .15
-        filtered_data = data.ranges[270:359] + data.ranges[0:90]
+        collected_data = data.ranges[270:359] + data.ranges[0:90]
 
         # to-do: optimization
-        for num in filtered_data:
+        r_outer = .5
+        r_inner = .15
+        for num in collected_data:
             if num < r_inner:
-                filtered_data[filtered_data.index(num)] = 999
+                collected_data[collected_data.index(num)] = 999
 
-#        filtered_data = np.where(filtered_data < np.zeros((1,len(filtered_data))) + 0.45, filtered_data, 999)
-        minVal = min(filtered_data)
-        index = filtered_data.index(minVal)
+#        collected_data = np.where(collected_data < np.zeros((1,len(collected_data))) + 0.45, collected_data, 999)
+        minVal = min(collected_data)
+        index = collected_data.index(minVal)
         angle = index - 90
 
-        if minVal > r_outer:
+        self.collected_data_log[self.count] = minVal
+        self.count = self.count + 1
+
+        if self.count == self.data_range - 1:
+            self.count = 0
+            filtered_data = sum(self.collected_data_log)/self.data_range
+        else:
+            filtered_data = 999
+
+# possibly put these lines into steering_out() vvv
+        if filtered_data > r_outer:
             self.get_logger().info("No Object Within Range")
             self.bool_cmd = bool(0)
         else:
-            self.get_logger().info("Angle: " + str(angle) + ", Distance: " + str(minVal))
+            self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
             self.bool_cmd = bool(1)
-
-        if minVal < r_outer:
-            self.steering_out(distance = minVal, angle = angle, index = index)
+            self.steering_out(distance = filtered_data, angle = angle, index = index)          
 
             
 def main(args=None):
