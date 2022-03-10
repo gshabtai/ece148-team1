@@ -19,8 +19,8 @@ class SearchMode(Node):
             return
 
         self.twist.angular.z = -1.0
+        self.twist.linear.x = 0.05
         self.twist_publisher.publish(self.twist)
-        self.get_logger().info(f'Searching: {state}')
 
 def main(args=None):
     rclpy.init(args=args) # initialize the ROS communication
