@@ -9,14 +9,16 @@ import math
 from rcl_interfaces.msg import ParameterType
 
 
-NODE_NAME = 'collision_node'
+NODE_NAME = 'collision_avoidance_node'
  
 class CollisionAvoidance(Node):
     def __init__(self):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
         super().__init__(NODE_NAME)
 
-        self.declare_parameter('r_outer',.5)
+        self.declare_parameter('r_outer')
+        self.declare_parameter('r_inner')
+        self.declare_parameter('r_reverse')
 
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
@@ -60,8 +62,8 @@ class CollisionAvoidance(Node):
 
         # to-do: optimization
         r_outer = self.get_parameter('r_outer')
-        r_reverse = .2
-        r_inner = .15
+        r_reverse = self.get_parameter('r_reverse')
+        r_inner = self.get_parameter('r_inner')
         for num in collected_data:
             if num < r_inner:
                 collected_data[collected_data.index(num)] = 999
