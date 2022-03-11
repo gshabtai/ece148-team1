@@ -9,10 +9,6 @@ import math
 
  
 class CollisionAvoidance(Node):
-    
-    
-    
-
     def __init__(self):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
         super().__init__('counter_publisher')
