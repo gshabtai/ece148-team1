@@ -1,13 +1,18 @@
+from packages.seeker.seeker.state_machine import STATE_TPOIC_NAME
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 
+NODE_NAME = 'simple_states_node'
+TWIST_TOPIC_NAME = '/cmd_vel'
+STATE_TPOIC_NAME = '/state'
+
 class SimpleModes(Node):
     def __init__(self):
         super().__init__('search_node')
-        self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.subscriber = self.create_subscription(String, '/state', self.set_twist,10)
+        self.twist_publisher = self.create_publisher(Twist, TWIST_TOPIC_NAME, 10)
+        self.subscriber = self.create_subscription(String, STATE_TPOIC_NAME, self.set_twist,10)
         self.twist = Twist()
         # self.create_timer(0.2, self.update)
 

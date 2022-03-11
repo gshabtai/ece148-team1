@@ -7,7 +7,7 @@ import yaml
 def generate_launch_description():
     # Define package names
     pkg = 'seeker'
-    node_name = 'state_machine_node'
+    node_name = 'intake_system_node'
 
     # Define yaml config files
     # config_file = ''
@@ -16,11 +16,11 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # config = os.path.join(
-    #     get_package_share_directory(pkg),
+    #     get_package_share_directory(sensor_pkg),
     #     'config',
     #     config_file)
 
-    state_machine_node = Node(
+    intake_system_node = Node(
         package = pkg,
         executable = node_name,
         output = 'screen',
@@ -28,6 +28,6 @@ def generate_launch_description():
     )
     
     # Add actions to launch description
-    ld.add_action(state_machine_node)
+    ld.add_action(intake_system_node)
 
     return ld

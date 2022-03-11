@@ -4,7 +4,7 @@ from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
 import RPi.GPIO as GPIO
 
-NODE_NAME = 'fan_node'
+NODE_NAME = 'intake_system_node'
 TOPIC_NAME = '/webcam_centroid'
 
 class AdafruitFan(Node):

@@ -1,18 +1,33 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+#from ament_index_python.packages import get_package_share_directory
+import os
+import yaml
 
 def generate_launch_description():
-    seeker_package = 'seeker'
-    cen_node_name = 'webcam_publish_centroid'
+    # Define package names
+    pkg = 'seeker'
+    node_name = 'webcam_centroid_node'
 
-    cen = LaunchDescription()
+    # Define yaml config files
+    # config_file = ''
 
-    centroid_node = Node(
-        package = seeker_package,
-        executable = cen_node_name,
-        output='screen',
+    # Lanuch Descriptions
+    ld = LaunchDescription()
+
+    # config = os.path.join(
+    #     get_package_share_directory(sensor_pkg),
+    #     'config',
+    #     config_file)
+
+    collision_avoidance_node = Node(
+        package = pkg,
+        executable = node_name,
+        output = 'screen'
+        #parameter=[config]
     )
     
-    cen.add_action(centroid_node)
+    # Add actions to launch description
+    ld.add_action(collision_avoidance_node)
 
-    return cen
+    return ld
