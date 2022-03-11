@@ -11,10 +11,21 @@ def generate_launch_description():
 
     cap = LaunchDescription()
 
-    config = os.path.join(
-        get_package_share_directory(seeker_package),
+    sensor_pkg = 'ucsd_robocar_sensor2_pkg'
+    actuator_pkg = 'ucsd_robocar_actuator2_pkg'
+    act_calibration_file = 'adafruit_twist_calibration.yaml'
+
+    config_actuator = os.path.join(
+        get_package_share_directory(actuator_pkg),
         'config',
-        calibration_file)
+        act_calibration_file)
+
+    webcam_node = Node(
+        package = sensor_pkg,
+        executable = 'webcam_node',
+        output='screen',
+        parameters=[config_actuator]
+    )
 
     capture_node = Node(
         package = seeker_package,
@@ -23,5 +34,6 @@ def generate_launch_description():
     )
     
     cap.add_action(capture_node)
+    cap.add_action(webcam_node)
 
     return cap
