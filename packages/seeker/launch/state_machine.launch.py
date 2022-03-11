@@ -22,7 +22,7 @@ def generate_launch_description():
     lidar_config_file = 'ld06.yaml'
 
     # Define node names
-    fan_controller_node_name = 'fan_controller'
+    fan_controller_node_name = 'intake_system'
 
     # Define Intel launch file
     intel_launch_file = 'rs_launch.py'
