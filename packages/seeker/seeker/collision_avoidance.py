@@ -7,7 +7,7 @@ from std_msgs.msg import Bool
 from std_msgs.msg import String
 import math
 
- 
+#hi 
 class CollisionAvoidance(Node):
     def __init__(self):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
@@ -75,13 +75,12 @@ class CollisionAvoidance(Node):
         #else:
         #    filtered_data = 999
 
-# possibly put these lines into steering_out() vvv
         if filtered_data > r_outer:
-            # self.get_logger().info("No Object Within Range")
+            self.get_logger().info("No Object Within Range")
             self.bool_cmd.data = False
             self.collision__avoidance_state.publish(self.bool_cmd)
         else:
-            # self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
+            self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
             self.bool_cmd.data = True
             self.collision__avoidance_state.publish(self.bool_cmd)
             self.steering_out(distance = filtered_data, angle = angle, index = index, reverse = math.copysign(1,(filtered_data - r_reverse)))          
