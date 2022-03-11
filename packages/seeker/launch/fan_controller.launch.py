@@ -27,6 +27,19 @@ def generate_launch_description():
         parameters=[config_actuator]
     )
 
+    seeker_pkg = 'seeker'
+    seeker_calibration_file = 'seeker_calibration.yaml'
+    config_seeker = os.path.join(
+        get_package_share_directory(seeker_pkg),
+        'config',
+        seeker_calibration_file)
+    webcam_publish_centroid_node = Node(
+        package = seeker_pkg,
+        executable = 'webcam_publish_centroid',
+        output='screen',
+        parameters=[config_seeker]
+    )
+
     capture_node = Node(
         package = seeker_package,
         executable = cap_node_name,
@@ -35,5 +48,6 @@ def generate_launch_description():
     
     cap.add_action(capture_node)
     cap.add_action(webcam_node)
+    cap.add_action(webcam_publish_centroid_node)
 
     return cap
