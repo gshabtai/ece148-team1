@@ -3,80 +3,7 @@ from rclpy.node import Node
 from std_srvs.srv import Trigger
 from geometry_msgs.msg import Twist, Point
 from std_msgs.msg import Bool
-
-class DynamicCenteringControl():
-    '''Caculate needed throttle and steering to center robocar on ball'''
-    def __init__(self, param):
-        # initializing PID control
-        self.Ts = float(1/20)
-        self.ek = 0 # current error
-        self.ek_1 = 0 # previous error
-        self.proportional_error = 0 # proportional error term for steering
-        self.derivative_error = 0 # derivative error term for steering
-        self.integral_error = 0 # integral error term for steering
-        self.integral_max = 1E-8
-
-        self.Kp = param.Kp
-        self.Ki = param.Ki
-        self.Kd = param.Kd
-        self.error_threshold = param.error_threshold
-        self.zero_throttle = param.zero_throttle
-        self.max_throttle = param.max_throttle
-        self.min_throttle = param.min_throttle
-        self.max_right_steering = param.max_right_steering
-        self.max_left_steering = param.max_left_steering
-
-    def update_ek_1(self, ek_1):
-        self.ek_1 = ek_1
-
-    def cal_throttle(self, ek):
-        self.inf_throttle = self.min_throttle - (self.min_throttle - self.max_throttle) / (1 - self.error_threshold)
-        throttle_float_raw = (self.min_throttle - self.max_throttle) * abs(ek) + self.inf_throttle
-        throttle_float = self.clamp(throttle_float_raw, self.max_throttle, self.min_throttle)
-        return float(throttle_float)
-
-    def cal_steering(self, ek):
-        self.proportional_error = self.Kp * ek
-        self.derivative_error = self.Kd * (ek - self.ek_1) / self.Ts
-        self.integral_error += self.Ki * ek * self.Ts
-        self.integral_error = self.clamp(self.integral_error, self.integral_max)
-        steering_float_raw = self.proportional_error + self.derivative_error + self.integral_error
-        steering_float = self.clamp(steering_float_raw, self.max_right_steering, self.max_left_steering)
-        return float(steering_float)
-
-    def clamp(self, value, upper_bound, lower_bound=None):
-        if lower_bound==None:
-            lower_bound = -upper_bound # making lower bound symmetric about zero
-        if value < lower_bound:
-            value_c = lower_bound
-        elif value > upper_bound:
-            value_c = upper_bound
-        else:
-            value_c = value
-        return value_c 
-
-class Parameters():
-
-    def __init__(self):
-        self.Kp = 1
-        self.Ki = 0
-        self.Kd = 0
-        self.error_threshold = 0.15
-        self.zero_throttle = 0.0
-        self.max_throttle = 0.2
-        self.min_throttle = 0.1
-        self.max_right_steering = 1.0
-        self.max_left_steering = -1.0
-
-    def upd_Kp(self, val): self.Kp = val
-    def upd_Ki(self, val): self.Ki = val
-    def upd_Kd(self, val): self.Kd = val
-    def upd_error_threshold(self, val): self.error_threshold = val
-    def upd_zero_throttle(self, val): self.zero_throttle = val
-    def upd_max_throttle(self, val): self.max_throttle = val
-    def upd_min_throttle(self, val): self.min_throttle = val
-    def upd_max_right_steering(self, val): self.max_right_steering = val
-    def upd_max_left_steering(self, val): self.max_left_steering = val
+from .dynamic_centering_control import DynamicCenteringControl
 
 NODE_NAME = 'align_node'
 BALL_TOPIC_NAME = '/ball_found'
@@ -89,20 +16,8 @@ class Robocar_align(Node):
         super().__init__(NODE_NAME)
         self.client = self.create_client(Trigger, 'capture')
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
-        #self.find_ball_subscriber = self.create_subscription(Bool, BALL_TOPIC_NAME, self.update_ball, 10)
-        #self.ball_cen_subscriber = self.create_subscription(Point, BALL_CEN_TOPIC_NAME, self.update_ball_cen, 10)
 
-        # self.ball = 0
-        # self.cen.x = 0
-        # self.cen.y = 0
-        # self.cen.depth = 0
         self.twist_cmd = Twist()
-
-        self.param = Parameters()
-
-        while not self.client.wait_for_service(timeout_sec=1.0):
-            # if it is not available, a message is displayed
-            self.get_logger().info('service not available, waiting again...')
 
         # create a Empty request
         self.req = Trigger.Request()
@@ -120,17 +35,17 @@ class Robocar_align(Node):
                 ('max_right_steering', 1.0),
                 ('max_left_steering', -1.0)
             ])
-        self.param.upd_Kp( self.get_parameter('Kp_steering').value) # between [0,1]
-        self.param.upd_Ki( self.get_parameter('Ki_steering').value) # between [0,1]
-        self.param.upd_Kd( self.get_parameter('Kd_steering').value) # between [0,1]
-        self.param.upd_error_threshold( self.get_parameter('error_threshold').value) # between [0,1]
-        self.param.upd_zero_throttle( self.get_parameter('zero_throttle').value) # between [-1,1] but should be around 0
-        self.param.upd_max_throttle( self.get_parameter('max_throttle').value) # between [-1,1]
-        self.param.upd_min_throttle( self.get_parameter('min_throttle').value) # between [-1,1]
-        self.param.upd_max_right_steering( self.get_parameter('max_right_steering').value) # between [-1,1]
-        self.param.upd_max_left_steering( self.get_parameter('max_left_steering').value) # between [-1,1]
-
-        self.dyn_cmd = DynamicCenteringControl(self.param)
+        self.dyn_cmd = DynamicCenteringControl()
+        
+        self.dyn_cmd.Kp_steering( self.get_parameter('Kp_steering').value) # between [0,1]
+        self.dyn_cmd.Ki_steering( self.get_parameter('Ki_steering').value) # between [0,1]
+        self.dyn_cmd.Kd_steering( self.get_parameter('Kd_steering').value) # between [0,1]
+        self.dyn_cmd.error_threshold( self.get_parameter('error_threshold').value) # between [0,1]
+        self.dyn_cmd.zero_throttle( self.get_parameter('zero_throttle').value) # between [-1,1] but should be around 0
+        self.dyn_cmd.max_throttle( self.get_parameter('max_throttle').value) # between [-1,1]
+        self.dyn_cmd.min_throttle( self.get_parameter('min_throttle').value) # between [-1,1]
+        self.dyn_cmd.max_right_steering( self.get_parameter('max_right_steering').value) # between [-1,1]
+        self.dyn_cmd.max_left_steering( self.get_parameter('max_left_steering').value) # between [-1,1]
 
         self.get_logger().info(
             f'\nKp_steering: {self.param.Kp}'
