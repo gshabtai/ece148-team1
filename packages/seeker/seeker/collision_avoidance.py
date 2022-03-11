@@ -3,8 +3,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import numpy as np
-from std_msgs.msg import Bool
-from std_msgs.msg import String
+from std_msgs.msg import Bool, String
 import math
 from rcl_interfaces.msg import ParameterType
 
