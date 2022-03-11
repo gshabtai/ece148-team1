@@ -10,6 +10,7 @@ NODE_NAME = 'capture_node'
 CENTROID_TOPIC_NAME = '/webcam_centroid'
 ACTUATOR_TOPIC_NAME = '/cmd_vel'
 STATE_TOPIC_NAME = '/state'
+
 class CaptureControl(Node):
     def __init__(self):
         super().__init__(NODE_NAME)

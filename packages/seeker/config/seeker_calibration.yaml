@@ -9,7 +9,7 @@ capture_node:
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
-align_node:
+robocar_align_node:
   ros__parameters:
     Kp_steering : 0.8 
     Ki_steering : 0.0 
@@ -20,8 +20,13 @@ align_node:
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
-fan_node:
+intake_system_node:
   ros__parameters:
     bus_num : 1
     fan1_channel : 13
     fan2_channel : 15
+collision_node:
+  ros__parameters:
+    r_outer: .5
+    r_inner: .15
+    r_reverse: .25

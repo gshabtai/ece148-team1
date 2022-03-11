@@ -5,7 +5,7 @@ from geometry_msgs.msg import Twist, Point
 from std_msgs.msg import Bool
 from .dynamic_centering_control import DynamicCenteringControl
 
-NODE_NAME = 'align_node'
+NODE_NAME = 'robocar_align_node'
 BALL_TOPIC_NAME = '/ball_found'
 BALL_CEN_TOPIC_NAME = '/ball_centroid'
 

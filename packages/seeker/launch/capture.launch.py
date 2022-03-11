@@ -7,10 +7,10 @@ import yaml
 def generate_launch_description():
     # Define package names
     pkg = 'seeker'
-    node_name = 'collision_avoidance_node'
+    node_name = 'capture_node'
 
     # Define yaml config files
-    config_file = 'seeker.config.yaml'
+    config_file = 'config.yaml'
 
     # Lanuch Descriptions
     ld = LaunchDescription()
