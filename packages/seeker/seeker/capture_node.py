@@ -18,6 +18,7 @@ class CaptureControl(Node):
         self.state_subscription = self.create_subscription(String, STATE_TOPIC_NAME, self.update_state, 10)
         self.twist_cmd = Twist()
 
+        self.state = ''
         self.conduct = 0
         self.ek = 0
 
@@ -64,23 +65,27 @@ class CaptureControl(Node):
 
     def compute_capture(self, data):
         '''PID Controler and Twist Pulbisher for ball capture'''
-        # setting up PID control
-        scale = 50
-        self.ek = float(data.data[0] / scale)
 
-        # Publish values
-        try:
-            # publish control signals
-            self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
-            self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek)
-            self.twist_publisher.publish(self.twist_cmd)
+        if self.state != 'collect_ball':
+            return
+        else:
+            # setting up PID control
+            scale = 50
+            self.ek = float(data.data[0] / scale)
+            
+            # Publish values
+            try:
+                # publish control signals
+                self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
+                self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek)
+                self.twist_publisher.publish(self.twist_cmd)
 
-            # shift current time and error values to previous values
-            self.dyn_cmd.ek_1 = self.ek
+                # shift current time and error values to previous values
+                self.dyn_cmd.ek_1 = self.ek
 
-        except KeyboardInterrupt:
-            self.twist_cmd.linear.x = self.zero_throttle
-            self.twist_publisher.publish(self.twist_cmd)
+            except KeyboardInterrupt:
+                self.twist_cmd.linear.x = self.zero_throttle
+                self.twist_publisher.publish(self.twist_cmd)
 
 def main(args=None):
     rclpy.init(args=args)
