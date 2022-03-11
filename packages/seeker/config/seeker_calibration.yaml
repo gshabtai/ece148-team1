@@ -27,4 +27,6 @@ intake_system_node:
     fan2_channel : 15
 collision_node:
   ros__parameters:
-    r_outer:
+    r_outer: .5
+    r_inner: .15
+    r_reverse: .25
