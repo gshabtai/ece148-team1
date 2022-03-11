@@ -6,6 +6,7 @@ import numpy as np
 from std_msgs.msg import Bool
 from std_msgs.msg import String
 import math
+from rcl_interfaces.msg import ParameterType
 
 
 NODE_NAME = 'collision_node'
@@ -19,9 +20,10 @@ class CollisionAvoidance(Node):
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
         self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
 
-        self.data_range = 10
+        self.data_range = 10 #these will be used if I decide to filter out data
         self.count = 0
         self.collected_data_log = np.zeros(self.data_range)
+
         self.onoff = "Idle"
 
         self.bool_cmd = Bool()
@@ -30,16 +32,18 @@ class CollisionAvoidance(Node):
     def set_state(self,data):
         self.onoff = data.data
 
-    def steering_out(self,distance,angle,index):
+    def steering_out(self,distance,angle,index,reverse):
         if self.onoff != "collision_avoidance":
             return
 
-        sensitivity = 1.5
+        sensitivity_turn = .25
+        sensitivity_forward = .04
+        speed = sensitivity_forward*(distance)^reverse
 
         # Publish values
         try:
-            self.twist_cmd.linear.x = .035
-            self.twist_cmd.angular.z = -(abs(angle) - 90)*math.copysign(1/90,angle)
+            self.twist_cmd.linear.x = speed*reverse
+            self.twist_cmd.angular.z = -(abs(angle) - 90)*math.copysign(sensitivity_turn/90,angle)*(reverse+1)
             self.twist_publisher.publish(self.twist_cmd)
 
         except KeyboardInterrupt:
@@ -52,7 +56,8 @@ class CollisionAvoidance(Node):
         collected_data = data.ranges[270:359] + data.ranges[0:90]
 
         # to-do: optimization
-        r_outer = .3
+        r_outer = self.get_parameter('r_outer')
+        r_reverse = .2
         r_inner = .15
         for num in collected_data:
             if num < r_inner:
@@ -74,16 +79,15 @@ class CollisionAvoidance(Node):
         #else:
         #    filtered_data = 999
 
-# possibly put these lines into steering_out() vvv
         if filtered_data > r_outer:
-            # self.get_logger().info("No Object Within Range")
+            self.get_logger().info("No Object Within Range")
             self.bool_cmd.data = False
             self.collision__avoidance_state.publish(self.bool_cmd)
         else:
-            # self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
+            self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
             self.bool_cmd.data = True
             self.collision__avoidance_state.publish(self.bool_cmd)
-            self.steering_out(distance = filtered_data, angle = angle, index = index)          
+            self.steering_out(distance = filtered_data, angle = angle, index = index, reverse = math.copysign(1,(filtered_data - r_reverse)))          
 
             
 def main(args=None):
