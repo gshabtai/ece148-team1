@@ -7,7 +7,7 @@ import yaml
 def generate_launch_description():
     seeker_package = 'seeker'
     calibration_file = 'seeker_calibration.yaml'
-    cap_node_name = 'fan_controller'
+    cap_node_name = 'intake_system'
 
     cap = LaunchDescription()
 
