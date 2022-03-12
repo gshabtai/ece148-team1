@@ -15,6 +15,7 @@ packages_info_path = '/home/projects/ros2_ws/src/ece148-team1/packages/seeker/co
 def update_parameters(parameter_input_path):
         with open(parameter_input_path, "r") as file:
             inputs = yaml.load(file, Loader=yaml.FullLoader)
+            print(inputs)
             my_inputs = {}
             for key in inputs:
                 value = inputs[key]
