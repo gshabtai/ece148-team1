@@ -92,6 +92,10 @@ class IntakeProcess(Node):
                 # TODO: PUBLISH NEW STATE: SEARCHING. INCREMENT BALLS COLLETED  [state,increment?]
                 self.pub_data.data = self.pub_data.data + 1
                 self.num_balls.publish(self.pub_data)
+        
+        # is there no ball detected, and fan is on?
+        elif (ball_detected == False and self.cur_fan_on == True):
+            self.fan_off()
 
 def main(args=None):
     rclpy.init(args=args)
