@@ -20,14 +20,14 @@ def generate_launch_description():
         'config',
         config_file)
 
-    collision_avoidance_node = Node(
+    capture_node = Node(
         package = pkg,
         executable = node_name,
         output = 'screen',
-        parameter=[config]
+        parameters = [config]
     )
     
     # Add actions to launch description
-    ld.add_action(collision_avoidance_node)
+    ld.add_action(capture_node)
 
     return ld
