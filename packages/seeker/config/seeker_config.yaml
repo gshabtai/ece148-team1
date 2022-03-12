@@ -3,10 +3,10 @@ webcam: 0
 intel: 0
 adafruit: 1
 collision_node: 1
-state_node: 1
-webcam_centroid: 1
-simple_modes: 1
+state_machine : 1
+webcam_centroid_node: 1
+simple_states_node: 1
 robocar_align_node: 1
-intake_system: 1
+intake_system_node: 1
 collision_avoidance_node: 1
 capture_node: 1
