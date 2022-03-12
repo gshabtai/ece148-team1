@@ -56,6 +56,7 @@ def generate_launch_description():
     for key in my_packages_dict:
         pkg_name = my_packages_dict[key][0]
         launch_name = my_packages_dict[key][1]
+        print(launch_name)
         component_type = my_packages_dict[key][2]
         # ld_list = []
         try:
