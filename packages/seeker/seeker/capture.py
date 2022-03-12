@@ -36,7 +36,7 @@ class CaptureControl(Node):
         #         ('max_right_steering', 1.0),
         #         ('max_left_steering', -1.0)
         #     ])
-        self.declare_parameters('Kp_steering')
+        self.declare_parameters(parameters= ['Kp_steering'])
 
         self.dyn_cmd = DynamicCenteringControl()
 
