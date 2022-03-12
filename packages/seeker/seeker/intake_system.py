@@ -4,6 +4,7 @@ from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
 from std_msgs.msg import Int8
 import RPi.GPIO as GPIO
+import math
 
 NODE_NAME = 'intake_system_node'
 TOPIC_NAME = '/webcam_centroid'
@@ -30,7 +31,9 @@ class IntakeProcess(Node):
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
         
         self.cur_fan_on = False     # keeps track if the fan is on
-        self.cur_ball_detected = False # keeps track if a ball has been detected
+        self.prev_ball_detected = False # keeps track if a ball has been detected
+        self.prev_ball_relX = 0
+        self.prev_ball_relY = 0
 
 
         GPIO.setmode(GPIO.BOARD)
@@ -62,16 +65,26 @@ class IntakeProcess(Node):
         if (ball_detected):
             # TODO: NAVIGATE TO BALL
 
-            self.cur_ball_detected = True
-
             # is the fan off, and is the ball in the area?
             if (self.cur_fan_on == False and self.ball_in_area(relX,relY)):
                 self.fan_on()
 
+            # was the ball previously in the area, and did its centroid jump?
+            JUMP_SENSITIVITY = 5 # if too low, try 10
+            p1 = (relX,relY)
+            p2 = (self.prev_ball_relX,self.prev_ball_relY)
+            if (self.ball_in_area(self.prev_ball_relX,self.prev_ball_relY) and math.dist(p1,p2) > 5):
+                self.pub_data.data = self.pub_data.data + 1
+                self.num_balls.publish(self.pub_data)
+
+            self.prev_ball_detected = True
+            self.prev_ball_relX = relX
+            self.prev_ball_relY = relY
+
             # sleep(5)
         # was a ball being detected before?
-        elif (self.cur_ball_detected == True and ball_detected == False):
-            self.cur_ball_detected = False
+        elif (self.prev_ball_detected == True and ball_detected == False):
+            self.prev_ball_detected = False
             self.fan_off()
 
             # did the ball disappear in the area
