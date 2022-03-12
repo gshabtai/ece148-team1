@@ -107,13 +107,13 @@ def generate_launch_description():
 
     # Dominic
     ld.add_action(webcam_node)
-    ld.add_action(adafruit_node)
-    ld.add_action(lidar_node)
+    # ld.add_action(adafruit_node)
+    # ld.add_action(lidar_node)
 
     # Ours
     ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
-    ld.add_action(simples_states_node)
-    ld.add_action(collision_avoidance_node)
+    # ld.add_action(simples_states_node)
+    # ld.add_action(collision_avoidance_node)
 
     return ld
