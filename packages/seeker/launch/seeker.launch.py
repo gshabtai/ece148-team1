@@ -9,7 +9,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import os
 import yaml
 
-parameter_input_path = '/home/projects/ros2_ws/src/ece148-team1/packages/seeker/config/seeker_calibration.yaml'
+parameter_input_path = '/home/projects/ros2_ws/src/ece148-team1/packages/seeker/config/seeker_config.yaml'
 packages_info_path = '/home/projects/ros2_ws/src/ece148-team1/packages/seeker/config/pkg_locations.yaml'
 
 def update_parameters(parameter_input_path):
