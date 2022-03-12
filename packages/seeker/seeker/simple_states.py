@@ -10,7 +10,7 @@ STATE_TPOIC_NAME = '/state'
 
 class SimpleModes(Node):
     def __init__(self):
-        super().__init__('search_node')
+        super().__init__(NODE_NAME)
         self.twist_publisher = self.create_publisher(Twist, TWIST_TOPIC_NAME, 10)
         self.subscriber = self.create_subscription(String, STATE_TPOIC_NAME, self.set_twist,10)
         self.twist = Twist()
