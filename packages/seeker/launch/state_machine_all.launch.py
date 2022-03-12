@@ -22,7 +22,7 @@ def generate_launch_description():
     lidar_config_file = 'ld06.yaml'
 
     # Define node names
-    fan_controller_node_name = 'intake_system'
+    intake_system_node_name = 'intake_system'
 
     # Define Intel launch file
     intel_launch_file = 'rs_launch.py'
@@ -45,6 +45,11 @@ def generate_launch_description():
 
 
     # Define nodes provided by the Dominic
+    intake_system_node = Node(
+        package = 'seeker',
+        executable = 'intake_system_node',
+        output='screen'
+    )
     webcam_node = Node(
         package = sensor_pkg,
         executable = 'webcam_node',
@@ -113,6 +118,7 @@ def generate_launch_description():
     # Ours
     ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
+    ld.add_action(intake_system_node)
     # ld.add_action(simples_states_node)
     # ld.add_action(collision_avoidance_node)
 
