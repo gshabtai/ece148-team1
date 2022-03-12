@@ -5,15 +5,11 @@ from std_msgs.msg import Float32
 import cv2 as cv
 from cv_bridge import CvBridge
 import numpy as np
-# from geometry_msgs.msg import Twist
-import time
-import os
-import json
 from std_msgs.msg import Float64MultiArray
 
 NODE_NAME = 'centroid_node'
 CAMERA_TOPIC_NAME = '/camera/color/image_raw'
-CENTROID_TOPIC_NAME = '/centroid'
+CENTROID_TOPIC_NAME = '/webcam_centroid'
 
 class FindCentroid(Node):
     def __init__(self):
@@ -22,15 +18,18 @@ class FindCentroid(Node):
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
         self.bridge = CvBridge()
         # Set Color detection paramenters
-        self.lower_hue1 = 0
-        self.lower_sat1 = 98
-        self.lower_val1 = 121
-        self.upper_hue1 = 7
-        self.upper_sat1 = 195
-        self.upper_val1 = 182
-        self.calibration_mode = False
-        # Centroid data
-        self.centroid_info = Float32()
+        self.lower_hue1 = 160
+        self.lower_sat1 = 129
+        self.lower_val1 = 145
+        self.upper_hue1 = 199
+        self.upper_sat1 = 254
+        self.upper_val1 = 179
+        self.msg = Float64MultiArray()
+
+        # Initial moment value
+        self.relX = -50.0
+        self.relY = -50.0
+        self.detected = 0.0
 
     def locate_centroid(self, data):
         # Image processing from rosparams
@@ -56,9 +55,6 @@ class FindCentroid(Node):
         self.mask = cv.bitwise_and(self.mask, out)
 
         self.moment_search()
-        
-        if self.calibration_mode:
-            cv.imshow('Mask', out)
 
     def moment_search(self):
         '''calculate moments of binary image'''
@@ -68,19 +64,22 @@ class FindCentroid(Node):
             # calculate x,y coordinate of center
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
+            self.detected = 1.0
 
-            # self.get_logger().info(f'Centroid found at: {(cX-400,cY-300)}')
+            h, w = np.shape(self.mask)
+            self.relX = 100.0*((cX - w/2)/w)
+            self.relY = 100.0*((h-cY)/h)
 
             # Publish centroid data
-            msg = Float64MultiArray()
-            data = [cX-400.0, cY-300.0]
-            msg.data = data
-            self.centroid_publisher.publish(msg)
-            
-            if self.calibration_mode:
-                # put text and highlight the center
-                cv.circle(self.frame, (cX, cY), 5, (255, 255, 255), -1)
-                cv.putText(self.frame, "centroid", (cX - 25, cY - 25),cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+            self.msg.data = [self.relX, self.relY, self.detected]
+        else:
+            self.detected = 0.0
+            self.msg.data = [self.relX, self.relY, self.detected]
+
+        self.centroid_publisher.publish(self.msg)
+
+        # Debugging
+        # self.get_logger().info(f'Centroid found at: {(self.relX,self.relY,self.detected)}')
     
 def main(args=None):
     rclpy.init(args=args)

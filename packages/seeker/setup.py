@@ -24,12 +24,12 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'capture_node = seeker.capture_node:main',
-            'centroid_node = seeker.centroid_node:main',
-            'fan_node = seeker.fan_node:main',
-            'find_ball_node = seeker.find_ball_node:main',
-            'align_node = seeker.robocar_align_node:main',
-            'seek_node = seeker.robocar_seek_node:main'
+            'webcam_centroid = seeker.webcam_centroid:main',
+            'collision_avoidance_node = seeker.collision_avoidance:main',
+            'intake_system_node = seeker.intake_system:main',
+            'state_machine_node = seeker.state_machine:main',
+            'simple_states_node = seeker.simple_states:main',
+            'capture_node_node = seeker.capture_node:main'
         ],
     },
 )

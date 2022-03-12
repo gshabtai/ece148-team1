@@ -50,7 +50,7 @@ class DetectCircle(JSONManager):
         super().__init__()
 
         # Sequester the video capture device
-        self.cap = cv.VideoCapture(0)
+        self.cap = cv.VideoCapture(1)
 
         # Check if the webcam is opened correctly
         if not self.cap.isOpened():
@@ -93,7 +93,13 @@ class DetectCircle(JSONManager):
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
 
-            print(f'Centroid found at: {(cX,cY)}')
+            h, w = np.shape(self.mask)
+            relX = (cX - w/2)/w
+            relY = (h-cY)/h
+
+            print((int(relX*100),int(relY*100)))
+
+            # print(f'Centroid found at: {(cX-h/2,cY)}')
 
             if self.calibration_mode:
                 # put text and highlight the center
@@ -114,7 +120,7 @@ class DetectCircle(JSONManager):
             biggest_blob = max(countours, key=cv.contourArea)
             cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
-        # cv.imshow('PreMask', self.mask)
+        cv.imshow('PreMask', self.mask)
 
         self.mask = cv.bitwise_and(self.mask, out)
 

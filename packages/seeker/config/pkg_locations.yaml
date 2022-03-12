@@ -1,0 +1,22 @@
+# 
+# param: ['package', 'launch_file', 'sensor_type']
+#
+
+# Lidars
+ld06: ['ucsd_robocar_sensor2_pkg', 'lidar_ld06.launch.py', 'lidar']
+
+# Cameras
+webcam: ['ucsd_robocar_sensor2_pkg', 'camera_webcam.launch.py', 'camera']
+intel: ['ucsd_robocar_sensor2_pkg', 'camera_intel.launch.py', 'camera']
+
+# Actuators
+adafruit: ['ucsd_robocar_actuator2_pkg', 'adafruit_twist.launch.py','motor']
+
+# Nodes
+capture_node: ['seeker', 'capture_node.launch.py', 'node']
+collision_avoidance_node: ['seeker', 'collision_avoidance.launch.py', 'node']
+intake_system_node: ['seeker', 'intake_system.launch.py', 'node']
+robocar_align_node: ['seeker', 'robocar_align.launch.py', 'node']
+simple_states_node: ['seeker', 'simple_states.launch.py', 'node']
+state_machine_node: ['seeker', 'state_machine.launch.py', 'node']
+webcam_centroid_node: ['seeker', 'webcam_centroid.launch.py', 'node']

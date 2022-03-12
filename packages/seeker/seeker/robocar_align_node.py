@@ -4,9 +4,8 @@ from std_srvs.srv import Trigger
 from geometry_msgs.msg import Twist, Point
 from std_msgs.msg import Bool
 from .dynamic_centering_control import DynamicCenteringControl
-from .parameters import Parameters
 
-NODE_NAME = 'align_node'
+NODE_NAME = 'robocar_align_node'
 BALL_TOPIC_NAME = '/ball_found'
 BALL_CEN_TOPIC_NAME = '/ball_centroid'
 
@@ -17,20 +16,8 @@ class Robocar_align(Node):
         super().__init__(NODE_NAME)
         self.client = self.create_client(Trigger, 'capture')
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
-        #self.find_ball_subscriber = self.create_subscription(Bool, BALL_TOPIC_NAME, self.update_ball, 10)
-        #self.ball_cen_subscriber = self.create_subscription(Point, BALL_CEN_TOPIC_NAME, self.update_ball_cen, 10)
 
-        # self.ball = 0
-        # self.cen.x = 0
-        # self.cen.y = 0
-        # self.cen.depth = 0
         self.twist_cmd = Twist()
-
-        self.param = Parameters()
-
-        while not self.client.wait_for_service(timeout_sec=1.0):
-            # if it is not available, a message is displayed
-            self.get_logger().info('service not available, waiting again...')
 
         # create a Empty request
         self.req = Trigger.Request()
@@ -48,17 +35,17 @@ class Robocar_align(Node):
                 ('max_right_steering', 1.0),
                 ('max_left_steering', -1.0)
             ])
-        self.param.upd_Kp( self.get_parameter('Kp_steering').value) # between [0,1]
-        self.param.upd_Ki( self.get_parameter('Ki_steering').value) # between [0,1]
-        self.param.upd_Kd( self.get_parameter('Kd_steering').value) # between [0,1]
-        self.param.upd_error_threshold( self.get_parameter('error_threshold').value) # between [0,1]
-        self.param.upd_zero_throttle( self.get_parameter('zero_throttle').value) # between [-1,1] but should be around 0
-        self.param.upd_max_throttle( self.get_parameter('max_throttle').value) # between [-1,1]
-        self.param.upd_min_throttle( self.get_parameter('min_throttle').value) # between [-1,1]
-        self.param.upd_max_right_steering( self.get_parameter('max_right_steering').value) # between [-1,1]
-        self.param.upd_max_left_steering( self.get_parameter('max_left_steering').value) # between [-1,1]
-
-        self.dyn_cmd = DynamicCenteringControl(self.param)
+        self.dyn_cmd = DynamicCenteringControl()
+        
+        self.dyn_cmd.Kp_steering( self.get_parameter('Kp_steering').value) # between [0,1]
+        self.dyn_cmd.Ki_steering( self.get_parameter('Ki_steering').value) # between [0,1]
+        self.dyn_cmd.Kd_steering( self.get_parameter('Kd_steering').value) # between [0,1]
+        self.dyn_cmd.error_threshold( self.get_parameter('error_threshold').value) # between [0,1]
+        self.dyn_cmd.zero_throttle( self.get_parameter('zero_throttle').value) # between [-1,1] but should be around 0
+        self.dyn_cmd.max_throttle( self.get_parameter('max_throttle').value) # between [-1,1]
+        self.dyn_cmd.min_throttle( self.get_parameter('min_throttle').value) # between [-1,1]
+        self.dyn_cmd.max_right_steering( self.get_parameter('max_right_steering').value) # between [-1,1]
+        self.dyn_cmd.max_left_steering( self.get_parameter('max_left_steering').value) # between [-1,1]
 
         self.get_logger().info(
             f'\nKp_steering: {self.param.Kp}'

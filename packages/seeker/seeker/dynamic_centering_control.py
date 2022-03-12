@@ -1,7 +1,6 @@
-#Caculate needed throttle and steering to center robocar on ball
-
 class DynamicCenteringControl():
-    def __init__(self, param):
+    '''PID caculate needed throttle and steering to center robocar on ball'''
+    def __init__(self):
         # initializing PID control
         self.Ts = float(1/20)
         self.ek = 0 # current error
@@ -11,26 +10,26 @@ class DynamicCenteringControl():
         self.integral_error = 0 # integral error term for steering
         self.integral_max = 1E-8
 
-        self.Kp = param.Kp
-        self.Ki = param.Ki
-        self.Kd = param.Kd
-        self.error_threshold = param.error_threshold
-        self.zero_throttle = param.zero_throttle
-        self.max_throttle = param.max_throttle
-        self.min_throttle = param.min_throttle
-        self.max_right_steering = param.max_right_steering
-        self.max_left_steering = param.max_left_steering
-
-    def update_ek_1(self, ek_1):
-        self.ek_1 = ek_1
+        #Parameters
+        self.Kp_steering = 1
+        self.Ki_steering = 0
+        self.Kd_steering = 0
+        self.error_threshold = .15
+        self.zero_throttle = 0
+        self.max_throttle = .2
+        self.min_throttle = .1
+        self.max_right_steering = .7
+        self.max_left_steering = -.7
 
     def cal_throttle(self, ek):
+        '''PID calculate throttle'''
         self.inf_throttle = self.min_throttle - (self.min_throttle - self.max_throttle) / (1 - self.error_threshold)
         throttle_float_raw = (self.min_throttle - self.max_throttle) * abs(ek) + self.inf_throttle
         throttle_float = self.clamp(throttle_float_raw, self.max_throttle, self.min_throttle)
         return float(throttle_float)
 
     def cal_steering(self, ek):
+        '''PID calculate steering'''
         self.proportional_error = self.Kp * ek
         self.derivative_error = self.Kd * (ek - self.ek_1) / self.Ts
         self.integral_error += self.Ki * ek * self.Ts
@@ -40,6 +39,7 @@ class DynamicCenteringControl():
         return float(steering_float)
 
     def clamp(self, value, upper_bound, lower_bound=None):
+        '''Bound values to restricted domain'''
         if lower_bound==None:
             lower_bound = -upper_bound # making lower bound symmetric about zero
         if value < lower_bound:
