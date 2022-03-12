@@ -1,5 +1,5 @@
 lidar: 1
-webcam: 1
+webcam: 0
 intel: 0
 adafruit: 1
 collision_node: 1
