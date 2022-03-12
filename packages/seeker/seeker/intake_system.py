@@ -51,6 +51,11 @@ class IntakeProcess(Node):
         self.cur_fan_on = False
         self.get_logger().info('Fan OFF')
 
+    # publishes that it picked up a ball
+    def pickup(self):
+        self.pub_data.data = self.pub_data.data + 1
+        self.num_balls.publish(self.pub_data)
+
     # is the ball in the collection area?
     def ball_in_area(self, relX, relY):
         return (abs(relX) < 30 and abs(relY) < 40)
@@ -74,8 +79,7 @@ class IntakeProcess(Node):
             p1 = (relX,relY)
             p2 = (self.prev_ball_relX,self.prev_ball_relY)
             if (self.ball_in_area(self.prev_ball_relX,self.prev_ball_relY) and math.dist(p1,p2) > 5):
-                self.pub_data.data = self.pub_data.data + 1
-                self.num_balls.publish(self.pub_data)
+                self.pickup()
 
             self.prev_ball_detected = True
             self.prev_ball_relX = relX
@@ -89,9 +93,7 @@ class IntakeProcess(Node):
 
             # did the ball disappear in the area
             if self.ball_in_area(relX,relY):
-                # TODO: PUBLISH NEW STATE: SEARCHING. INCREMENT BALLS COLLETED  [state,increment?]
-                self.pub_data.data = self.pub_data.data + 1
-                self.num_balls.publish(self.pub_data)
+                self.pickup()
         
         # is there no ball detected, and fan is on?
         elif (ball_detected == False and self.cur_fan_on == True):
