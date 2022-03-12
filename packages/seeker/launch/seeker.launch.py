@@ -15,7 +15,6 @@ packages_info_path = '/home/projects/ros2_ws/src/ece148-team1/packages/seeker/co
 def update_parameters(parameter_input_path):
         with open(parameter_input_path, "r") as file:
             inputs = yaml.load(file, Loader=yaml.FullLoader)
-            print(inputs)
             my_inputs = {}
             for key in inputs:
                 value = inputs[key]
@@ -27,7 +26,6 @@ def update_packages(packages_info_path):
     with open(packages_info_path, "r") as file:
             packages_dict = yaml.load(file, Loader=yaml.FullLoader)
             inputs_dict = update_parameters(parameter_input_path)
-            print("INPUT DICT", inputs_dict)
             my_packages = {}
             for key in packages_dict:
                 value = packages_dict[key]
@@ -54,7 +52,6 @@ def generate_a_launch_description(package, launch):
 
 def generate_launch_description():
     my_packages_dict = update_packages(packages_info_path)
-    print("MY PACK DICT", my_packages_dict)
     ld = LaunchDescription()
     for key in my_packages_dict:
         pkg_name = my_packages_dict[key][0]
