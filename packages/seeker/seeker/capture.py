@@ -23,32 +23,30 @@ class CaptureControl(Node):
         self.conduct = 0
         self.ek = 0
 
-        # self.declare_parameters(
-        #     namespace='',
-        #     parameters=[
-        #         ('Kp_steering', 1),
-        #         ('Ki_steering', 0),
-        #         ('Kd_steering', 0),
-        #         ('error_threshold', 0.15),
-        #         ('zero_throttle',0.0),
-        #         ('max_throttle', 0.2),
-        #         ('min_throttle', 0.1),
-        #         ('max_right_steering', 1.0),
-        #         ('max_left_steering', -1.0)
-        #     ])
-        self.declare_parameter('Kp_steering', 1)
-
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('Kp_steering', 1),
+                ('Ki_steering', 0),
+                ('Kd_steering', 0),
+                ('error_threshold', 0.15),
+                ('zero_throttle',0.0),
+                ('max_throttle', 0.2),
+                ('min_throttle', 0.1),
+                ('max_right_steering', 1.0),
+                ('max_left_steering', -1.0)
+            ])
         self.dyn_cmd = DynamicCenteringControl()
 
         self.dyn_cmd.Kp_steering = ( self.get_parameter('Kp_steering').value) # between [0,1]
-        # self.dyn_cmd.Ki_steering = ( self.get_parameter('Ki_steering').value) # between [0,1]
-        # self.dyn_cmd.Kd_steering = ( self.get_parameter('Kd_steering').value) # between [0,1]
-        # self.dyn_cmd.error_threshold = ( self.get_parameter('error_threshold').value) # between [0,1]
-        # self.dyn_cmd.zero_throttle = ( self.get_parameter('zero_throttle').value) # between [-1,1] but should be around 0
-        # self.dyn_cmd.max_throttle = ( self.get_parameter('max_throttle').value) # between [-1,1]
-        # self.dyn_cmd.min_throttle = ( self.get_parameter('min_throttle').value) # between [-1,1]
-        # self.dyn_cmd.max_right_steering = ( self.get_parameter('max_right_steering').value) # between [-1,1]
-        # self.dyn_cmd.max_left_steering = ( self.get_parameter('max_left_steering').value) # between [-1,1]
+        self.dyn_cmd.Ki_steering = ( self.get_parameter('Ki_steering').value) # between [0,1]
+        self.dyn_cmd.Kd_steering = ( self.get_parameter('Kd_steering').value) # between [0,1]
+        self.dyn_cmd.error_threshold = ( self.get_parameter('error_threshold').value) # between [0,1]
+        self.dyn_cmd.zero_throttle = ( self.get_parameter('zero_throttle').value) # between [-1,1] but should be around 0
+        self.dyn_cmd.max_throttle = ( self.get_parameter('max_throttle').value) # between [-1,1]
+        self.dyn_cmd.min_throttle = ( self.get_parameter('min_throttle').value) # between [-1,1]
+        self.dyn_cmd.max_right_steering = ( self.get_parameter('max_right_steering').value) # between [-1,1]
+        self.dyn_cmd.max_left_steering = ( self.get_parameter('max_left_steering').value) # between [-1,1]
 
         self.get_logger().info(
             f'\nKp_steering: {self.dyn_cmd.Kp_steering}'
