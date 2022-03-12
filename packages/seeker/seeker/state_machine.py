@@ -20,7 +20,7 @@ WEBCAM_CEN_TOPIC_NAME = '/webcam_centroid'
 
 class StateController(Node):
     def __init__(self) -> None:
-        super().__init__('state_controller')
+        super().__init__(NODE_NAME)
         self.state_publisher = self.create_publisher(String, STATE_TPOIC_NAME, 10)
         self.collision_avoidance_state = self.create_subscription(Bool,COLLISION_TOPIC_NAME, self.collison_update, 10)
         self.webcam_subscriber = self.create_subscription(Float64MultiArray, WEBCAM_CEN_TOPIC_NAME, self.set_webcam_sees_ball, 10)
