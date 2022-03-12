@@ -24,7 +24,7 @@ def generate_launch_description():
         package = pkg,
         executable = node_name,
         output = 'screen'
-        #parameter=[config]
+        #parameters = [config]
     )
     
     # Add actions to launch description
