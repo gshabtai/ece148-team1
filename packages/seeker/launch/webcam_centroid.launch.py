@@ -16,11 +16,11 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # config = os.path.join(
-    #     get_package_share_directory(sensor_pkg),
+    #     get_package_share_directory(pkg),
     #     'config',
     #     config_file)
 
-    collision_avoidance_node = Node(
+    webcame_node = Node(
         package = pkg,
         executable = node_name,
         output = 'screen'
@@ -28,6 +28,6 @@ def generate_launch_description():
     )
     
     # Add actions to launch description
-    ld.add_action(collision_avoidance_node)
+    ld.add_action(webcame_node)
 
     return ld
