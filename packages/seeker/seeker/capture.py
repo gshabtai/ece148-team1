@@ -49,15 +49,15 @@ class CaptureControl(Node):
         self.dyn_cmd.max_left_steering = ( self.get_parameter('max_left_steering').value) # between [-1,1]
 
         self.get_logger().info(
-            f'\nKp_steering: {self.param.Kp}'
-            f'\nKi_steering: {self.param.Ki}'
-            f'\nKd_steering: {self.param.Kd}'
-            f'\nerror_threshold: {self.param.error_threshold}'
-            f'\nzero_throttle: {self.param.zero_throttle}'
-            f'\nmax_throttle: {self.param.max_throttle}'
-            f'\nmin_throttle: {self.param.min_throttle}'
-            f'\nmax_right_steering: {self.param.max_right_steering}'
-            f'\nmax_left_steering: {self.param.max_left_steering}'
+            f'\nKp_steering: {self.dyn_cmd.Kp_steering}'
+            f'\nKi_steering: {self.dyn_cmd.Ki_steering}'
+            f'\nKd_steering: {self.dyn_cmd.Kd_steering}'
+            f'\nerror_threshold: {self.dyn_cmd.error_threshold}'
+            f'\nzero_throttle: {self.dyn_cmd.zero_throttle}'
+            f'\nmax_throttle: {self.dyn_cmd.max_throttle}'
+            f'\nmin_throttle: {self.dyn_cmd.min_throttle}'
+            f'\nmax_right_steering: {self.dyn_cmd.max_right_steering}'
+            f'\nmax_left_steering: {self.dyn_cmd.max_left_steering}'
         )
 
     def update_state(self, data):
