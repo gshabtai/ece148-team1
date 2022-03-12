@@ -29,7 +29,7 @@ setup(
             'intake_system_node = seeker.intake_system:main',
             'state_machine_node = seeker.state_machine:main',
             'simple_states_node = seeker.simple_states:main',
-            'capture_node_node = seeker.capture:main'
+            'capture_node = seeker.capture:main'
         ],
     },
 )
