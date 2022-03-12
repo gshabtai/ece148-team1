@@ -69,27 +69,27 @@ def generate_launch_description():
     # Define nodes
     webcam_publish_centroid_node = Node(
         package = seeker_pkg,
-        executable = 'webcam_publish_centroid',
+        executable = 'webcam_centroid_node',
         output='screen',
         parameters=[config_seeker]
     )
 
     state_machine = Node(
         package = seeker_pkg,
-        executable = 'state_controller',
+        executable = 'state_machine_node',
         output = 'screen',
         parameters=[config_seeker]
     )
 
     collision_avoidance_node = Node(
         package = seeker_pkg,
-        executable = 'collision_avoidance',
+        executable = 'collision_avoidance_node',
         output = 'screen'
     )
 
     simples_states_node = Node(
         package = seeker_pkg,
-        executable = 'simple_states',
+        executable = 'simple_states_node',
         output = 'screen'
     )
 
