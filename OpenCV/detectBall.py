@@ -50,7 +50,7 @@ class DetectCircle(JSONManager):
         super().__init__()
 
         # Sequester the video capture device
-        self.cap = cv.VideoCapture(1)
+        self.cap = cv.VideoCapture(2)
 
         # Check if the webcam is opened correctly
         if not self.cap.isOpened():
