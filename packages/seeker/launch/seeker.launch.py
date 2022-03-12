@@ -60,6 +60,7 @@ def generate_launch_description():
         # ld_list = []
         try:
             ld.add_action(generate_a_launch_description(pkg_name, launch_name))
+            print("This added")
         except:
             pass
         print(f"Trying to start {component_type}: {launch_name} from {pkg_name}")
