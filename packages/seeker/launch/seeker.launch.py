@@ -18,7 +18,7 @@ def update_parameters(parameter_input_path):
             my_inputs = {}
             for key in inputs:
                 value = inputs[key]
-                if value==1:
+                if value == 1:
                     my_inputs[key] = value
             return my_inputs
 
