@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 NODE_NAME = 'intake_system_node'
 TOPIC_NAME = '/webcam_centroid'
 
-class AdafruitFan(Node):
+class IntakeProcess(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
 
@@ -70,7 +70,7 @@ class AdafruitFan(Node):
 
             # sleep(5)
         # was a ball being detected before?
-        elif (self.cur_ball_detected == True and ball_detcted == False):
+        elif (self.cur_ball_detected == True and ball_detected == False):
             self.cur_ball_detected = False
             self.fan_off()
 
@@ -80,21 +80,17 @@ class AdafruitFan(Node):
                 self.pub_data.data = self.pub_data.data + 1
                 self.num_balls.publish(self.pub_data)
 
-            
-
-            
-
 def main(args=None):
     rclpy.init(args=args)
-    adafruit_fan = AdafruitFan()
+    intake_system = IntakeProcess()
     try:
-        rclpy.spin(adafruit_fan)
+        rclpy.spin(intake_system)
     except KeyboardInterrupt:
         GPIO.output(int(13), GPIO.LOW)
-        adafruit_fan.get_logger().info(f'Could not connect to Adafruit, Shutting down {NODE_NAME}...')
-        adafruit_fan.destroy_node()
+        intake_system.get_logger().info(f'Could not connect to Adafruit, Shutting down {NODE_NAME}...')
+        intake_system.destroy_node()
         rclpy.shutdown()
-        adafruit_fan.get_logger().info(f'{NODE_NAME} shut down successfully.')
+        intake_system.get_logger().info(f'{NODE_NAME} shut down successfully.')
 
 
 if __name__ == '__main__':
