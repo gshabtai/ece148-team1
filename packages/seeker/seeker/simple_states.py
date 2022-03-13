@@ -13,7 +13,22 @@ class SimpleModes(Node):
         self.twist_publisher = self.create_publisher(Twist, TWIST_TOPIC_NAME, 10)
         self.subscriber = self.create_subscription(String, STATE_TPOIC_NAME, self.set_twist,10)
         self.twist = Twist()
-        # self.create_timer(0.2, self.update)
+
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('max_throttle', 0.2)
+                ('min_throttle', 0.1)
+            ]
+        )
+        
+        self.max_throttle = self.get_parameter('max_throttle').value
+        self.min_throttle = self.get_parameter('min_throttle').value
+
+        self.get_logger().info(
+            f'\nKd_steering: {self.max_throttle}'
+            f'\nKd_steering: {self.min_throttle}'
+        )
 
     def __del__(self):
         self.twist.angular.x = 0.0
@@ -31,7 +46,7 @@ class SimpleModes(Node):
             self.twist.angular.x = 0.0
             self.twist.angular.y = 0.0
             self.twist.angular.z = -1.0
-            self.twist.linear.x = 0.2
+            self.twist.linear.x = float(self.max_throttle)
             self.twist.linear.y = 0.0
             self.twist.linear.z = 0.0
             self.twist_publisher.publish(self.twist)
@@ -49,7 +64,7 @@ class SimpleModes(Node):
             self.twist.angular.x = 0.0
             self.twist.angular.y = 0.0
             self.twist.angular.z = 0.0
-            self.twist.linear.x = -0.2
+            self.twist.linear.x = float(-(self.max_throttle))
             self.twist.linear.y = 0.0
             self.twist.linear.z = 0.0
             self.twist_publisher.publish(self.twist)
