@@ -1,4 +1,3 @@
-from packages.seeker.seeker.state_machine import STATE_TPOIC_NAME
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
