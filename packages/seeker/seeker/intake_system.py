@@ -68,7 +68,7 @@ class IntakeProcess(Node):
 
     # is the ball in the collection area?
     def ball_in_area(self, relX, relY):
-        return (abs(relX) < 30 and abs(relY) < 30)
+        return (abs(relX) < 30 and abs(relY) < 40)
 
     # updates when input from cam is new
     def update(self, data):
