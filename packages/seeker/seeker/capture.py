@@ -77,7 +77,7 @@ class CaptureControl(Node):
             # Publish values
             try:
                 # publish control signals
-                self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
+                self.twist_cmd.linear.x = 7./2.*self.dyn_cmd.cal_throttle(self.ek)
                 self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek)
                 self.twist_publisher.publish(self.twist_cmd)
 
