@@ -1,3 +1,4 @@
+from re import S
 import rclpy 
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -39,6 +40,7 @@ class StateController(Node):
         self.proposed_num_collected_balls = 0
         self.imminent_collision = False
         self.webcam_sees_ball = False
+        self.intel_sees_ball =False
 
     def set_num_balls(self, data):
         self.proposed_num_collected_balls = data.data
@@ -88,8 +90,22 @@ class StateController(Node):
                 return STATE['collision_avoidance']
             elif self.webcam_sees_ball:
                 return STATE['collect_ball']
+            elif self.intel_sees_ball:
+                return STATE['navigate']
             else:
                 return STATE['search_mode']
+
+        ########## ON NAVIGATE MODE ###########
+        elif  self.current_state == STATE['navigate']:
+            if self.imminent_collision:
+                return STATE['collision_avoidance']
+            elif self.webcam_sees_ball:
+                return STATE['collect_ball']
+            elif not self.intel_sees_ball:
+                self.ball_lost_time = time() # Start time
+                return STATE['drive_back']
+            else:
+                return STATE['navigate']
 
         ########## ON COLLECT BALL MODE ##########
         elif self.current_state == STATE['collect_ball']:
@@ -106,7 +122,6 @@ class StateController(Node):
             else:
                 return STATE['collect_ball']
             
-        
         ########## ON DRIVE BACK MODE ##########
         elif self.current_state == STATE['drive_back']:
             if abs(time()-self.ball_lost_time) > self.time_threshold: # Ball has been lost for this much time
