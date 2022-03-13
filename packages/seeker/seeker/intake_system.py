@@ -75,36 +75,41 @@ class IntakeProcess(Node):
         relX = int(data.data[0])
         relY = int(data.data[1])
 
-        # is a ball being detcted?
-        if (ball_detected):
-            # is the fan off, and is the ball in the area?
-            if (self.cur_fan_on == False and self.ball_in_area(relX,relY)):
-                self.fan_on()
-
-            # was the ball previously in the area, and did its centroid jump?
-            JUMP_SENSITIVITY = 5 # if too low, try 10
-            p1 = (relX,relY)
-            p2 = (self.prev_ball_relX,self.prev_ball_relY)
-            if (self.ball_in_area(self.prev_ball_relX,self.prev_ball_relY) and math.dist(p1,p2) > 5):
-                self.pickup()
-
-            self.prev_ball_detected = True
-            self.prev_ball_relX = relX
-            self.prev_ball_relY = relY
-
-            # sleep(5)
-        # was a ball being detected before?
-        elif (self.prev_ball_detected == True and ball_detected == False):
-            self.prev_ball_detected = False
+        if( ball_detected and self.ball_in_area(relX,relY)):
+            self.fan_on()
+        else:
             self.fan_off()
 
-            # did the ball disappear in the area
-            if self.ball_in_area(relX,relY):
-                self.pickup()
+        # # is a ball being detcted?
+        # if (ball_detected):
+        #     # is the fan off, and is the ball in the area?
+        #     if (self.cur_fan_on == False and self.ball_in_area(relX,relY)):
+        #         self.fan_on()
+
+        #     # was the ball previously in the area, and did its centroid jump?
+        #     JUMP_SENSITIVITY = 5 # if too low, try 10
+        #     p1 = (relX,relY)
+        #     p2 = (self.prev_ball_relX,self.prev_ball_relY)
+        #     if (self.ball_in_area(self.prev_ball_relX,self.prev_ball_relY) and math.dist(p1,p2) > 5):
+        #         self.pickup()
+
+        #     self.prev_ball_detected = True
+        #     self.prev_ball_relX = relX
+        #     self.prev_ball_relY = relY
+
+        #     # sleep(5)
+        # # was a ball being detected before?
+        # elif (self.prev_ball_detected == True and ball_detected == False):
+        #     self.prev_ball_detected = False
+        #     self.fan_off()
+
+        #     # did the ball disappear in the area
+        #     if self.ball_in_area(relX,relY):
+        #         self.pickup()
         
-        # is there no ball detected, and fan is on?
-        elif (ball_detected == False and self.cur_fan_on == True):
-            self.fan_off()
+        # # is there no ball detected, and fan is on?
+        # elif (ball_detected == False and self.cur_fan_on == True):
+        #     self.fan_off()
 
 def main(args=None):
     rclpy.init(args=args)
