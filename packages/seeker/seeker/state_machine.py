@@ -20,6 +20,7 @@ NODE_NAME = 'state_machine_node'
 STATE_TPOIC_NAME = '/state'
 COLLISION_TOPIC_NAME = '/collision_avoidance_state'
 WEBCAM_CEN_TOPIC_NAME = '/webcam_centroid'
+INTEL_CEN_TOPIC_NAME = '/intel/color/image_raw'
 
 class StateController(Node):
     def __init__(self) -> None:
@@ -27,6 +28,7 @@ class StateController(Node):
         self.state_publisher = self.create_publisher(String, STATE_TPOIC_NAME, 10)
         self.collision_avoidance_state = self.create_subscription(Bool,COLLISION_TOPIC_NAME, self.collison_update, 10)
         self.webcam_subscriber = self.create_subscription(Float64MultiArray, WEBCAM_CEN_TOPIC_NAME, self.set_webcam_sees_ball, 10)
+        self.webcam_subscriber = self.create_subscription(Float64MultiArray, INTEL_CEN_TOPIC_NAME, self.set_intel_sees_ball, 10)
         self.num_ball_subscriber = self.create_subscription(Int8, '/num_ball_picked_up', self.set_num_balls, 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
@@ -44,6 +46,9 @@ class StateController(Node):
 
     def set_num_balls(self, data):
         self.proposed_num_collected_balls = data.data
+
+    def set_intel_sees_ball(self, obj):
+        self.intel_sees_ball = obj.data[2] == 1.0
 
     def set_webcam_sees_ball(self, obj):
         self.webcam_sees_ball = obj.data[2] == 1.0
