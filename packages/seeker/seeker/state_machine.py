@@ -74,9 +74,7 @@ class StateController(Node):
 
         ########## ON IDLE ##########
         if self.current_state == STATE['idle']:
-            if self.number_loaded_ball < 4:
-                self.get_logger().info('sleepin')
-                sleep(20)
+            if self.number_loaded_ball < 4 and abs(time()-self.ball_lost_time) > 10:
                 return STATE['search_mode']
             else:
                 return STATE['idle']
