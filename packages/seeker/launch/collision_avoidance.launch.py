@@ -20,6 +20,13 @@ def generate_launch_description():
         'config',
         config_file)
 
+    state_machine = Node(
+        package = pkg,
+        executable = 'state_machine_node',
+        output = 'screen',
+        parameters=[config]
+    )
+
     collision_avoidance_node = Node(
         package = pkg,
         executable = node_name,
@@ -29,5 +36,6 @@ def generate_launch_description():
     
     # Add actions to launch description
     ld.add_action(collision_avoidance_node)
+    ld.add_action(state_machine)
 
     return ld
