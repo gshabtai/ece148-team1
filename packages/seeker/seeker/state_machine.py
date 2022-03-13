@@ -129,9 +129,7 @@ class StateController(Node):
             
         ########## ON DRIVE BACK MODE ##########
         elif self.current_state == STATE['drive_back']:
-            if abs(time()-self.ball_lost_time) < 2.0:
-                return STATE['drive_back']
-            elif abs(time()-self.ball_lost_time) > self.time_threshold: # Ball has been lost for this much time
+            if abs(time()-self.ball_lost_time) > self.time_threshold: # Ball has been lost for this much time
                 return STATE['search_mode']
             elif self.webcam_sees_ball:
                 return STATE['collect_ball']
