@@ -15,14 +15,14 @@ class CollisionAvoidance(Node):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
         super().__init__(NODE_NAME)
 
-        self.declare_parameter('r_outer')
-        self.declare_parameter('r_inner')
-        self.declare_parameter('r_reverse')
+        self.declare_parameter('r_outer',.5)
+        self.declare_parameter('r_inner',.15)
+        self.declare_parameter('r_reverse',.2)
 
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
+        #self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
 
         self.data_range = 10 #these will be used if I decide to filter out data
         self.count = 0
@@ -34,11 +34,11 @@ class CollisionAvoidance(Node):
         self.twist_cmd = Twist()
 
     def set_state(self,data):
-        self.onoff = data.data
+        #self.onoff = data.data
 
     def steering_out(self,distance,angle,index,reverse):
-        if self.onoff != "collision_avoidance":
-            return
+        #if self.onoff != "collision_avoidance":
+            #return
 
         sensitivity_turn = .25
         sensitivity_forward = .04

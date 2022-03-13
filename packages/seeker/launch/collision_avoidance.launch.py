@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
-#from ament_index_python.packages import get_package_share_directory
+from ament_index_python.packages import get_package_share_directory
 import os
 import yaml
 
@@ -10,7 +10,7 @@ def generate_launch_description():
     node_name = 'collision_avoidance_node'
 
     # Define yaml config files
-    config_file = 'seeker_config.yaml'
+    config_file = 'seeker_calibration.yaml'
 
     # Lanuch Descriptions
     ld = LaunchDescription()

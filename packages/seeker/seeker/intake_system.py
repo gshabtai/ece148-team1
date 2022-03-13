@@ -65,7 +65,7 @@ class IntakeProcess(Node):
     def pickup(self):
         self.pub_data.data = self.pub_data.data + 1
         self.num_balls.publish(self.pub_data)
-        sleep(2)
+        sleep(1)
 
     # is the ball in the collection area?
     def ball_in_area(self, relX, relY):
@@ -81,6 +81,7 @@ class IntakeProcess(Node):
             self.fan_on()
             self.tracking_ball = True
         else:
+            sleep(1)
             self.fan_off()
 
             if self.tracking_ball:
