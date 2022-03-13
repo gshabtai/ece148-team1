@@ -19,6 +19,8 @@ class CollisionAvoidance(Node):
         self.declare_parameter('r_inner',.15)
         self.declare_parameter('r_reverse',.2)
 
+        self.r_inner = self.get_parameter('r_outer').value
+
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -34,6 +36,7 @@ class CollisionAvoidance(Node):
         self.twist_cmd = Twist()
 
     def set_state(self,data):
+        pass
         #self.onoff = data.data
 
     def steering_out(self,distance,angle,index,reverse):
@@ -62,9 +65,8 @@ class CollisionAvoidance(Node):
         # to-do: optimization
         r_outer = self.get_parameter('r_outer')
         r_reverse = self.get_parameter('r_reverse')
-        r_inner = self.get_parameter('r_inner')
         for num in collected_data:
-            if num < r_inner:
+            if num < self.r_inner:
                 collected_data[collected_data.index(num)] = 999
 
 #        collected_data = np.where(collected_data < np.zeros((1,len(collected_data))) + 0.45, collected_data, 999)
