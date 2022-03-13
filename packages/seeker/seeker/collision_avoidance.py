@@ -46,8 +46,8 @@ class CollisionAvoidance(Node):
             return
 
         sensitivity_turn = .25
-        sensitivity_forward = .04
-        speed = sensitivity_forward*(distance)**reverse
+        #sensitivity_forward = .04
+        speed = .04
 
         # Publish values
         try:
@@ -56,8 +56,8 @@ class CollisionAvoidance(Node):
             self.twist_publisher.publish(self.twist_cmd)
 
         except KeyboardInterrupt:
-            #self.twist_cmd.linear.x = self.zero_throttle
-            self.twist_publisher.publish(self.twist_cmd)
+            self.twist_cmd.linear.x = 0
+            #self.twist_publisher.publish(self.twist_cmd)
 
     def talker_callback(self, data):
         
