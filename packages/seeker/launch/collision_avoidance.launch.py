@@ -10,7 +10,7 @@ def generate_launch_description():
     node_name = 'collision_avoidance_node'
 
     # Define yaml config files
-    #config_file = 'seeker_config.yaml'
+    config_file = 'seeker_calibration.yaml'
 
     # Lanuch Descriptions
     ld = LaunchDescription()
