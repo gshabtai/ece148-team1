@@ -64,4 +64,5 @@ def generate_launch_description():
             print(f"Trying to start {component_type}: {launch_name} from {pkg_name}")
         except:
             pass
+        print("ALMOST")
     return ld
