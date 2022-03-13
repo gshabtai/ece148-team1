@@ -14,7 +14,7 @@ def generate_launch_description():
     seeker_pkg = 'seeker'
     actuator_pkg = 'ucsd_robocar_actuator2_pkg'
     sensor_pkg = 'ucsd_robocar_sensor2_pkg'
-    intel_pkg_name = 'realsense2_camera'
+    intel_pkg_name = 'ucsd_robocar_sensor2_pkg'
 
     # Define yaml config files
     seeker_calibration_file = 'seeker_calibration.yaml'
@@ -25,7 +25,7 @@ def generate_launch_description():
     intake_system_node_name = 'intake_system'
 
     # Define Intel launch file
-    intel_launch_file = 'rs_launch.py'
+    intel_launch_file = 'camera_intel.launch.py'
 
     # Tell ros2 to use the yaml config files
     config_seeker = os.path.join(
