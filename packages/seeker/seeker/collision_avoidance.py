@@ -81,7 +81,7 @@ class CollisionAvoidance(Node):
             while abs(timer-time()) < 2:
                 steering = 0
                 throttle = -0.4
-                self.steering_out(self, steering, throttle)
+                self.steering_out(steering, throttle)
             return
 
         # Calculate values
