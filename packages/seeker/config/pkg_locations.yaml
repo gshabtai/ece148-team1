@@ -6,7 +6,7 @@
 ld06: ['ucsd_robocar_sensor2_pkg', 'lidar_ld06.launch.py', 'lidar']
 
 # Cameras
-webcam: ['ucsd_robocar_sensor2_pkg', 'camera_webcam.launch.py', 'camera']
+webcam: ['seeker', 'webcam.launch.py', 'camera']
 intel: ['ucsd_robocar_sensor2_pkg', 'camera_intel.launch.py', 'camera']
 
 # Actuators

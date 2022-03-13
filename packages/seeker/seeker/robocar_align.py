@@ -7,7 +7,7 @@ from std_srvs.srv import Trigger
 from .dynamic_centering_control import DynamicCenteringControl
 
 NODE_NAME = 'robocar_align_node'
-CENTROID_TOPIC_NAME = '/webcam_centroid'
+CENTROID_TOPIC_NAME = '/intel_centroid'
 ACTUATOR_TOPIC_NAME = '/cmd_vel'
 STATE_TOPIC_NAME = '/state'
 
@@ -15,7 +15,7 @@ class CaptureControl(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
         self.twist_publisher = self.create_publisher(Twist, ACTUATOR_TOPIC_NAME, 10)
-        self.centroid_subscription = self.create_subscription(Float64MultiArray, CENTROID_TOPIC_NAME, self.compute_capture, 10)
+        self.centroid_subscription = self.create_subscription(Float64MultiArray, CENTROID_TOPIC_NAME, self.compute_maneuver, 10)
         self.state_subscription = self.create_subscription(String, STATE_TOPIC_NAME, self.update_state, 10)
         self.twist_cmd = Twist()
 
@@ -64,10 +64,10 @@ class CaptureControl(Node):
         '''Update state for catpure node object'''
         self.state = data.data
 
-    def compute_capture(self, data):
-        '''PID Controler and Twist Pulbisher for ball capture'''
+    def compute_maneuver(self, data):
+        '''PID Controler and Twist Pulbisher for robo-movement capture'''
 
-        if self.state != 'collect_ball':
+        if self.state != 'navigate':
             return
         else:
             # setting up PID control
