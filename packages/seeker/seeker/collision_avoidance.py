@@ -28,7 +28,7 @@ class CollisionAvoidance(Node):
                 ('r_outer', .5),
                 ('r_inner', .15),
                 ('r_reverse', .2),
-                ('max_throttle', 0.2)
+                ('max_throttle', 0.2),
                 ('min_throttle', 0.1)
             ]
         )
