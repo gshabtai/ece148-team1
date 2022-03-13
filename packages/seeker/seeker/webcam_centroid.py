@@ -8,7 +8,7 @@ import numpy as np
 from std_msgs.msg import Float64MultiArray
 
 NODE_NAME = 'webcam_centroid_node'
-CAMERA_TOPIC_NAME = '/camera/color/image_raw'
+CAMERA_TOPIC_NAME = '/webcam/color/image_raw'
 CENTROID_TOPIC_NAME = '/webcam_centroid'
 
 class FindCentroid(Node):

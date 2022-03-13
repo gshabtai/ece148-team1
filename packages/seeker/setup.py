@@ -24,12 +24,13 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'webcam_centroid_node = seeker.webcam_centroid:main',
+            'capture_node = seeker.capture:main',
             'collision_avoidance_node = seeker.collision_avoidance:main',
             'intake_system_node = seeker.intake_system:main',
+            'robocar_align_node = seeker.align_node:main',
             'state_machine_node = seeker.state_machine:main',
             'simple_states_node = seeker.simple_states:main',
-            'capture_node = seeker.capture:main'
+            'webcam_centroid_node = seeker.webcam_centroid:main'
         ],
     },
 )
