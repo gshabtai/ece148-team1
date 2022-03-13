@@ -1,3 +1,5 @@
+from ctypes.wintypes import MAX_PATH
+from threading import main_thread
 import rclpy 
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
@@ -6,94 +8,131 @@ import numpy as np
 from std_msgs.msg import Bool, String
 import math
 from rcl_interfaces.msg import ParameterType
+import time
 
 
 NODE_NAME = 'collision_avoidance_node'
- 
 class CollisionAvoidance(Node):
     def __init__(self):
         # call super() in the constructor in order to initialize the Node object with node name as only parameter
         super().__init__(NODE_NAME)
 
-        self.declare_parameter('r_outer',.5)
-        self.declare_parameter('r_inner',.15)
-        self.declare_parameter('r_reverse',.2)
-
+        self.subscriber = self.create_subscription(LaserScan, '/scan', self.controller,10)
+        self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
+        self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
+        
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('r_outer', .5),
+                ('r_inner', .15),
+                ('r_reverse', .2)
+            ]
+        )
+        
         self.r_inner = self.get_parameter('r_inner').value
         self.r_outer = self.get_parameter('r_outer').value
         self.r_reverse = self.get_parameter('r_reverse').value
 
-        self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
-        self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
-        self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
+        self.get_logger().info(
+            f'\nKp_steering: {self.r_inner}'
+            f'\nKi_steering: {self.r_outer}'
+            f'\nKd_steering: {self.r_reverse}'
+        )
 
         self.data_range = 10 #these will be used if I decide to filter out data
         self.count = 0
         self.collected_data_log = np.zeros(self.data_range)
 
-        self.onoff = "Idle"
+        self.state = "Idle"
 
         self.bool_cmd = Bool()
         self.twist_cmd = Twist()
 
     def set_state(self,data):
         pass
-        self.onoff = data.data
+        self.state = data.data
 
-    def steering_out(self,distance,angle,index,reverse):
-        if self.onoff != "collision_avoidance":
+    def steering_out(self, steering, throttle):
+        if self.state != "collision_avoidance":
+            return
+        else:
+            try:
+                self.twist_cmd.linear.x = throttle
+                self.twist_cmd.angular.z = steering
+                self.twist_publisher.publish(self.twist_cmd)
+
+            except KeyboardInterrupt:
+                pass
+
+    def logic(self, distance, angle):
+        #, reverse = minVal > self.r_reverse
+        if self.state != "collision_avoidance":
             return
 
         sensitivity_turn = .25
         sensitivity_forward = .04
-        speed = sensitivity_forward*(distance)**reverse
+        max_throttle = .4
+        min_throttle = .2
 
-        # Publish values
-        try:
-            self.twist_cmd.linear.x = speed*reverse
-            self.twist_cmd.angular.z = -(abs(angle) - 90)*math.copysign(sensitivity_turn/90,angle)*(reverse+1)
-            self.twist_publisher.publish(self.twist_cmd)
+        if abs(angle) < 15:
+            timer = time() #Start timmer
+            while timer < 2:
+                self.twist.angular.x = 0.0
+                self.twist.angular.y = 0.0
+                self.twist.angular.z = 0.0
+                self.twist.linear.x = -0.4
+                self.twist.linear.y = 0.0
+                self.twist.linear.z = 0.0
+                self.twist_publisher.publish(self.twist)
+            return
 
-        except KeyboardInterrupt:
-            #self.twist_cmd.linear.x = self.zero_throttle
-            self.twist_publisher.publish(self.twist_cmd)
+        # Calculate values
+        steering = -(abs(angle) - 90)/90
+        throttle = min_throttle + (max_throttle - min_throttle) * (1 - abs(steering))
+        if throttle < min_throttle:
+            throttle = min_throttle
+        elif throttle > max_throttle:
+            throttle = max_throttle
 
-    def talker_callback(self, data):
-        
+        self.steering_out(steering, throttle)
 
+    def filterdata(self, data):
+        '''returns minval of angle (angle = 0 at front of car)'''
         collected_data = data.ranges[270:359] + data.ranges[0:90]
 
         # to-do: optimization
-        for num in collected_data:
-            if num < self.r_inner:
-                collected_data[collected_data.index(num)] = 999
+        data_filtered = collected_data
+        for i in range(0, collected_data.length):
+            if collected_data[i] < self.r_inner:
+                data_filtered[i] = 999 
 
-#        collected_data = np.where(collected_data < np.zeros((1,len(collected_data))) + 0.45, collected_data, 999)
+        # collected_data = np.where(collected_data < np.zeros((1,len(collected_data))) + 0.45, collected_data, 999)
         minVal = min(collected_data)
         index = collected_data.index(minVal)
         angle = index - 90
 
-        filtered_data = minVal
+        data = [minVal, angle]
 
-        #self.collected_data_log[self.count] = minVal
-        #self.count = self.count + 1
+        return data
 
-        #if self.count == self.data_range:
-        #    self.count = 0
-        #    filtered_data = sum(self.collected_data_log)/self.data_range
-        #else:
-        #    filtered_data = 999
+    def controller(self, data):
+        '''Logic for collision Avoidance'''
 
-        if filtered_data > self.r_outer:
+        collected_data = data.ranges[270:359] + data.ranges[0:90]
+
+        minVal, angle = self.filterdata(data)
+
+        if minVal > self.r_outer:
             self.get_logger().info("No Object Within Range")
             self.bool_cmd.data = False
             self.collision__avoidance_state.publish(self.bool_cmd)
         else:
-            self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
+            self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(minVal))
             self.bool_cmd.data = True
             self.collision__avoidance_state.publish(self.bool_cmd)
-            self.steering_out(distance = filtered_data, angle = angle, index = index, reverse = math.copysign(1,(filtered_data - self.r_reverse)))          
+            self.logic(minVal, angle)          
 
             
 def main(args=None):
