@@ -51,7 +51,7 @@ class FindCentroid(Node):
         if len(countours):
             biggest_blob = max(countours, key=cv.contourArea)
             area = cv.contourArea(biggest_blob)
-            if area > 40.0:
+            if area > 70.0:
                 cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
         self.mask = cv.bitwise_and(self.mask, out)
