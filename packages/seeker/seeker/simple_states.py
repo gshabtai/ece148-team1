@@ -38,10 +38,10 @@ class SimpleModes(Node):
             self.twist_publisher.publish(self.twist)
 
         elif state == 'drive_back':
-            self.twist.angular.x = -.5
+            self.twist.angular.x = 0.0
             self.twist.angular.y = 0.0
             self.twist.angular.z = 0.0
-            self.twist.linear.x = 0.0
+            self.twist.linear.x = -0.4
             self.twist.linear.y = 0.0
             self.twist.linear.z = 0.0
             self.twist_publisher.publish(self.twist)
