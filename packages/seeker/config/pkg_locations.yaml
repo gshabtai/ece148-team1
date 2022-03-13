@@ -13,7 +13,7 @@ intel: ['ucsd_robocar_sensor2_pkg', 'camera_intel.launch.py', 'camera']
 adafruit: ['ucsd_robocar_actuator2_pkg', 'adafruit_twist.launch.py','motor']
 
 # Nodes
-capture_node: ['seeker', 'capture_node.launch.py', 'node']
+capture_node: ['seeker', 'capture.launch.py', 'node']
 collision_avoidance_node: ['seeker', 'collision_avoidance.launch.py', 'node']
 intake_system_node: ['seeker', 'intake_system.launch.py', 'node']
 robocar_align_node: ['seeker', 'robocar_align.launch.py', 'node']

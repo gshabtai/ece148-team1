@@ -17,7 +17,7 @@ class ImagePublisher(Node):
         # publish a message every 0.1 seconds
         self.timer_period = 1 / 30 
         self.timer = self.create_timer(self.timer_period, self.live_cam_feed)  # Create the timer
-        self.cap = cv2.VideoCapture(0)  # Create a VideoCapture object
+        self.cap = cv2.VideoCapture(-1)  # Create a VideoCapture object
         self.bridge = CvBridge()
 
     def live_cam_feed(self):
