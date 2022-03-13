@@ -10,6 +10,7 @@ STATE = {
     'idle':                         'idle',
     'collision_avoidance':          'collision_avoidance',
     'search_mode':                  'search_mode',
+    'navigate':                     'navigate',
     'collect_ball':                 'collect_ball',
     'drive_back':                   'drive_back'
 }
