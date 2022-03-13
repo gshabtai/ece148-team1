@@ -27,11 +27,10 @@ class IntakeProcess(Node):
             namespace='',
             parameters=[
                 ('bus_num', int(1)),
-                ('fan1_channel', int(13)),
-                ('fan2_channel', int(15))
+                ('fan_channel', int(13)),
             ])
         self.bus_num = int(self.get_parameter('bus_num').value)
-        self.fan1_channel = int(self.get_parameter('fan1_channel').value)
+        self.fan1_channel = int(self.get_parameter('fan_channel').value)
         
         self.cur_fan_on = False     # keeps track if the fan is on
         self.prev_in_rect = False # keeps track if a ball has been detected
