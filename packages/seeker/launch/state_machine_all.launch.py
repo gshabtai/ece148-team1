@@ -51,7 +51,7 @@ def generate_launch_description():
         output='screen'
     )
     webcam_node = Node(
-        package = sensor_pkg,
+        package = seeker_pkg,
         executable = 'webcam_node',
         output='screen',
         parameters=[config_actuator]
