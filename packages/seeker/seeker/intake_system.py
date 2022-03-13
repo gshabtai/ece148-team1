@@ -3,6 +3,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
 from std_msgs.msg import Int8
+from std_msgs.msg import String
 import RPi.GPIO as GPIO
 import math
 
@@ -15,6 +16,7 @@ class IntakeProcess(Node):
 
         # update called every time topic publishes new value
         self.webcam_subscriber = self.create_subscription(Float64MultiArray, TOPIC_NAME, self.update, 10)
+        self.state_subscrition = self.create_subscription(String, '/state', self.set_state, 10)
         self.num_balls = self.create_publisher(Int8,'/num_ball_picked_up', 10)
 
         self.pub_data = Int8()
@@ -34,13 +36,20 @@ class IntakeProcess(Node):
         self.prev_ball_detected = False # keeps track if a ball has been detected
         self.prev_ball_relX = 0
         self.prev_ball_relY = 0
+        self.current_state = 'idle'
 
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.fan1_channel, GPIO.OUT)
 
+    def set_state(self, data):
+        self.current_state = data.data
+
     # turn on fan
     def fan_on(self):
+        if self.current_state != 'collect_ball':
+            return 
+        
         GPIO.output(self.fan1_channel, GPIO.HIGH)
         self.cur_fan_on = True
         self.get_logger().info('Fan ON')
