@@ -104,7 +104,7 @@ class CollisionAvoidance(Node):
 
         # to-do: optimization
         data_filtered = collected_data
-        for i in range(0, collected_data.length):
+        for i in range(0, len(collected_data)):
             if collected_data[i] < self.r_inner:
                 data_filtered[i] = 999 
 
