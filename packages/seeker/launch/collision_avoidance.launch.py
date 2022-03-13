@@ -7,7 +7,7 @@ import yaml
 def generate_launch_description():
     # Define package names
     pkg = 'seeker'
-    node_name = 'collision_avoidance_node'
+    node_name = 'collision_avoidance'
 
     # Define yaml config files
     #config_file = 'seeker_config.yaml'
