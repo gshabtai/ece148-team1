@@ -22,7 +22,7 @@ class CollisionAvoidance(Node):
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
         self.twist_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
+        #self.subscriber_state_node = self.create_subscription(String, '/state', self.set_state,10)
 
         self.data_range = 10 #these will be used if I decide to filter out data
         self.count = 0
@@ -34,11 +34,11 @@ class CollisionAvoidance(Node):
         self.twist_cmd = Twist()
 
     def set_state(self,data):
-        self.onoff = data.data
+        #self.onoff = data.data
 
     def steering_out(self,distance,angle,index,reverse):
-        if self.onoff != "collision_avoidance":
-            return
+        #if self.onoff != "collision_avoidance":
+            #return
 
         sensitivity_turn = .25
         sensitivity_forward = .04
