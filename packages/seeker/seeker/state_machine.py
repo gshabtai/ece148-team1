@@ -5,7 +5,7 @@ from std_msgs.msg import String
 from std_msgs.msg import Bool
 from std_msgs.msg import Float64MultiArray
 from std_msgs.msg import Int8
-from time import time
+from time import time, sleep
 
 STATE = {
     'idle':                         'idle',
@@ -35,7 +35,7 @@ class StateController(Node):
         self.next_state = 'idle'
         self.msg = String()
         self.time_threshold = 2
-        self.ball_lost_time = 0 # Init time var
+        self.ball_lost_time = time() # Init time var
 
         # Set starting params
         self.number_loaded_ball = 0
@@ -75,6 +75,8 @@ class StateController(Node):
         ########## ON IDLE ##########
         if self.current_state == STATE['idle']:
             if self.number_loaded_ball < 4:
+                self.get_logger().info('sleepin')
+                sleep(20)
                 return STATE['search_mode']
             else:
                 return STATE['idle']
