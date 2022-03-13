@@ -47,7 +47,7 @@ class CollisionAvoidance(Node):
 
         sensitivity_turn = .25
         sensitivity_forward = .04
-        speed = sensitivity_forward*(distance)^reverse
+        speed = sensitivity_forward*(distance)**reverse
 
         # Publish values
         try:
