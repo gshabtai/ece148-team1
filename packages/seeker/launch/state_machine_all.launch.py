@@ -105,14 +105,14 @@ def generate_launch_description():
         parameters = [config_seeker]
     )
 
-    # intel_launch = IncludeLaunchDescription(
-    #         PythonLaunchDescriptionSource(
-    #             os.path.join(
-    #                 get_package_share_directory(intel_pkg_name),
-    #                 'launch',
-    #                 intel_launch_file)
-    #         )
-    #     )
+    intel_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory(intel_pkg_name),
+                    'launch',
+                    intel_launch_file)
+            )
+        )
     
     # Add actions to launch description
     ld = LaunchDescription()
@@ -126,6 +126,7 @@ def generate_launch_description():
     ld.add_action(webcam_publish_centroid_node)
     ld.add_action(state_machine)
     ld.add_action(intake_system_node)
+    ld.add_action(intel_launch)
     # ld.add_action(capture_node)
     # ld.add_action(simples_states_node)
     # ld.add_action(collision_avoidance_node)
