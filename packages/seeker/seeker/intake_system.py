@@ -58,7 +58,7 @@ class IntakeProcess(Node):
 
     # is the ball in the collection area?
     def ball_in_area(self, relX, relY):
-        return (abs(relX) < 30 and abs(relY) < 40)
+        return (abs(relX) < 30 and abs(relY) < 30)
 
     # updates when input from cam is new
     def update(self, data):
@@ -68,8 +68,6 @@ class IntakeProcess(Node):
 
         # is a ball being detcted?
         if (ball_detected):
-            # TODO: NAVIGATE TO BALL
-
             # is the fan off, and is the ball in the area?
             if (self.cur_fan_on == False and self.ball_in_area(relX,relY)):
                 self.fan_on()
