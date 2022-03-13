@@ -92,6 +92,8 @@ class CollisionAvoidance(Node):
         elif throttle > max_throttle:
             throttle = max_throttle
 
+        print("STEERING", steering)
+        print("THROTTLE", throttle)
         self.steering_out(steering, throttle)
 
     def filterdata(self, data):
