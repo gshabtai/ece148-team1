@@ -39,11 +39,11 @@ class CollisionAvoidance(Node):
 
     def set_state(self,data):
         pass
-        #self.onoff = data.data
+        self.onoff = data.data
 
     def steering_out(self,distance,angle,index,reverse):
-        #if self.onoff != "collision_avoidance":
-            #return
+        if self.onoff != "collision_avoidance":
+            return
 
         sensitivity_turn = .25
         sensitivity_forward = .04
