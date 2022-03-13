@@ -81,7 +81,7 @@ class CollisionAvoidance(Node):
             timer = time() #Start timmer
             while abs(timer-time()) < 2:
                 steering = float(0)
-                throttle = float(-0.4)
+                throttle = float(-(self.max_throttle))
                 self.steering_out(steering, throttle)
             return
 
