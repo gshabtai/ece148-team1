@@ -19,7 +19,9 @@ class CollisionAvoidance(Node):
         self.declare_parameter('r_inner',.15)
         self.declare_parameter('r_reverse',.2)
 
-        self.r_inner = self.get_parameter('r_outer').value
+        self.r_inner = self.get_parameter('r_inner').value
+        self.r_outer = self.get_parameter('r_outer').value
+        self.r_reverse = self.get_parameter('r_reverse').value
 
         self.subscriber = self.create_subscription(LaserScan, '/scan', self.talker_callback,10)
         self.collision__avoidance_state = self.create_publisher(Bool, '/collision_avoidance_state', 10)
@@ -63,8 +65,6 @@ class CollisionAvoidance(Node):
         collected_data = data.ranges[270:359] + data.ranges[0:90]
 
         # to-do: optimization
-        r_outer = self.get_parameter('r_outer')
-        r_reverse = self.get_parameter('r_reverse')
         for num in collected_data:
             if num < self.r_inner:
                 collected_data[collected_data.index(num)] = 999
@@ -85,7 +85,7 @@ class CollisionAvoidance(Node):
         #else:
         #    filtered_data = 999
 
-        if filtered_data > r_outer:
+        if filtered_data > self.r_outer:
             self.get_logger().info("No Object Within Range")
             self.bool_cmd.data = False
             self.collision__avoidance_state.publish(self.bool_cmd)
@@ -93,7 +93,7 @@ class CollisionAvoidance(Node):
             self.get_logger().info("Angle: " + str(angle) + ", AvgDistance: " + str(filtered_data))
             self.bool_cmd.data = True
             self.collision__avoidance_state.publish(self.bool_cmd)
-            self.steering_out(distance = filtered_data, angle = angle, index = index, reverse = math.copysign(1,(filtered_data - r_reverse)))          
+            self.steering_out(distance = filtered_data, angle = angle, index = index, reverse = math.copysign(1,(filtered_data - self.r_reverse)))          
 
             
 def main(args=None):
