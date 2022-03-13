@@ -50,7 +50,7 @@ class DetectCircle(JSONManager):
         super().__init__()
 
         # Sequester the video capture device
-        self.cap = cv.VideoCapture(3)
+        self.cap = cv.VideoCapture(2)
 
         # Check if the webcam is opened correctly
         if not self.cap.isOpened():
@@ -118,7 +118,9 @@ class DetectCircle(JSONManager):
 
         if len(countours):
             biggest_blob = max(countours, key=cv.contourArea)
-            cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
+            area = cv.contourArea(biggest_blob)
+            if area > 20.0:
+                cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
         cv.imshow('PreMask', self.mask)
 
