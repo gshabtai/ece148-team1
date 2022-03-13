@@ -1,4 +1,5 @@
 from time import sleep
+from time import time
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
@@ -64,11 +65,10 @@ class IntakeProcess(Node):
     def pickup(self):
         self.pub_data.data = self.pub_data.data + 1
         self.num_balls.publish(self.pub_data)
-        sleep(1)
 
     # is the ball in the collection area?
     def ball_in_area(self, relX, relY):
-        return (abs(relX) < 30 and abs(relY) < 30)
+        return (abs(relX) < 30 and abs(relY) < 40)
 
     # updates when input from cam is new
     def update(self, data):
@@ -78,6 +78,7 @@ class IntakeProcess(Node):
 
         if( ball_detected and self.ball_in_area(relX,relY)):
             self.fan_on()
+            self.timer = time()
             self.tracking_ball = True
         else:
             sleep(1)
@@ -85,7 +86,9 @@ class IntakeProcess(Node):
 
             if self.tracking_ball:
                 self.tracking_ball = False
-                self.pickup()
+                sleep(1)
+                if abs(time()-self.timer) > 5:
+                    self.pickup()
 
         self.prev_in_rect = self.ball_in_area(relX,relY)
 

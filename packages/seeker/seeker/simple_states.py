@@ -1,4 +1,3 @@
-from packages.seeker.seeker.state_machine import STATE_TPOIC_NAME
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
@@ -16,6 +15,15 @@ class SimpleModes(Node):
         self.twist = Twist()
         # self.create_timer(0.2, self.update)
 
+    def __del__(self):
+        self.twist.angular.x = 0.0
+        self.twist.angular.y = 0.0
+        self.twist.angular.z = 0.0
+        self.twist.linear.x = 0.0
+        self.twist.linear.y = 0.0
+        self.twist.linear.z = 0.0
+        self.twist_publisher.publish(self.twist)
+
     def set_twist(self, data):
         state = data.data
 
@@ -23,7 +31,7 @@ class SimpleModes(Node):
             self.twist.angular.x = 0.0
             self.twist.angular.y = 0.0
             self.twist.angular.z = -1.0
-            self.twist.linear.x = 0.05
+            self.twist.linear.x = 0.07
             self.twist.linear.y = 0.0
             self.twist.linear.z = 0.0
             self.twist_publisher.publish(self.twist)

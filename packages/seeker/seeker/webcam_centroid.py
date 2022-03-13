@@ -18,12 +18,12 @@ class FindCentroid(Node):
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
         self.bridge = CvBridge()
         # Set Color detection paramenters
-        self.lower_hue1 = 175
-        self.lower_sat1 = 135
-        self.lower_val1 = 97
-        self.upper_hue1 = 181
-        self.upper_sat1 = 254
-        self.upper_val1 = 219
+        self.lower_hue1 = 153
+        self.lower_sat1 = 139
+        self.lower_val1 = 56
+        self.upper_hue1 = 179
+        self.upper_sat1 = 194
+        self.upper_val1 = 218
         self.msg = Float64MultiArray()
 
         # Initial moment value
@@ -50,7 +50,9 @@ class FindCentroid(Node):
 
         if len(countours):
             biggest_blob = max(countours, key=cv.contourArea)
-            cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
+            area = cv.contourArea(biggest_blob)
+            if area > 70.0:
+                cv.drawContours(out, [biggest_blob], -1, 255, cv.FILLED)
         
         self.mask = cv.bitwise_and(self.mask, out)
 
