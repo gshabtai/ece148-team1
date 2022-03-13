@@ -21,6 +21,7 @@ class IntakeProcess(Node):
 
         self.pub_data = Int8()
         self.pub_data.data = 0
+        self.tracking_ball = False
 
         self.declare_parameters(
             namespace='',
@@ -33,7 +34,7 @@ class IntakeProcess(Node):
         self.fan1_channel = int(self.get_parameter('fan1_channel').value)
         
         self.cur_fan_on = False     # keeps track if the fan is on
-        self.prev_ball_detected = False # keeps track if a ball has been detected
+        self.prev_in_rect = False # keeps track if a ball has been detected
         self.prev_ball_relX = 0
         self.prev_ball_relY = 0
         self.current_state = 'idle'
@@ -77,8 +78,15 @@ class IntakeProcess(Node):
 
         if( ball_detected and self.ball_in_area(relX,relY)):
             self.fan_on()
+            self.tracking_ball = True
         else:
             self.fan_off()
+
+            if self.tracking_ball:
+                self.tracking_ball = False
+                self.pickup()
+
+        self.prev_in_rect = self.ball_in_area(relX,relY)
 
         # # is a ball being detcted?
         # if (ball_detected):
