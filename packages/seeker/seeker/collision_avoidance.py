@@ -27,18 +27,24 @@ class CollisionAvoidance(Node):
             parameters=[
                 ('r_outer', .5),
                 ('r_inner', .15),
-                ('r_reverse', .2)
+                ('r_reverse', .2),
+                ('max_throttle', 0.2)
+                ('min_throttle', 0.1)
             ]
         )
         
         self.r_inner = self.get_parameter('r_inner').value
         self.r_outer = self.get_parameter('r_outer').value
         self.r_reverse = self.get_parameter('r_reverse').value
+        self.max_throttle = self.get_parameter('max_throttle').value
+        self.min_throttle = self.get_parameter('min_throttle').value
 
         self.get_logger().info(
             f'\nKp_steering: {self.r_inner}'
             f'\nKi_steering: {self.r_outer}'
             f'\nKd_steering: {self.r_reverse}'
+            f'\nKd_steering: {self.max_throttle}'
+            f'\nKd_steering: {self.min_throttle}'
         )
 
         self.data_range = 10 #these will be used if I decide to filter out data
@@ -71,11 +77,6 @@ class CollisionAvoidance(Node):
         if self.state != "collision_avoidance":
             return
 
-        sensitivity_turn = .25
-        sensitivity_forward = .04
-        max_throttle = .4
-        min_throttle = .2
-
         if abs(angle) < 15:
             timer = time() #Start timmer
             while abs(timer-time()) < 2:
@@ -86,11 +87,11 @@ class CollisionAvoidance(Node):
 
         # Calculate values
         steering = -(abs(angle) - 90)/90
-        throttle = min_throttle + (max_throttle - min_throttle) * (1 - abs(steering))
-        if throttle < min_throttle:
-            throttle = min_throttle
-        elif throttle > max_throttle:
-            throttle = max_throttle
+        throttle = self.min_throttle + (self.max_throttle - self.min_throttle) * (1 - abs(steering))
+        if throttle < self.min_throttle:
+            throttle = self.min_throttle
+        elif throttle > self.max_throttle:
+            throttle = self.max_throttle
 
         print("STEERING", steering)
         print("THROTTLE", throttle)
