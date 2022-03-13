@@ -8,7 +8,7 @@ import numpy as np
 from std_msgs.msg import Bool, String
 import math
 from rcl_interfaces.msg import ParameterType
-import time
+from time import time
 
 
 NODE_NAME = 'collision_avoidance_node'
@@ -78,14 +78,10 @@ class CollisionAvoidance(Node):
 
         if abs(angle) < 15:
             timer = time() #Start timmer
-            while timer < 2:
-                self.twist.angular.x = 0.0
-                self.twist.angular.y = 0.0
-                self.twist.angular.z = 0.0
-                self.twist.linear.x = -0.4
-                self.twist.linear.y = 0.0
-                self.twist.linear.z = 0.0
-                self.twist_publisher.publish(self.twist)
+            while abs(timer-time()) < 2:
+                steering = 0
+                throttle = -0.4
+                self.steering_out(self, steering, throttle)
             return
 
         # Calculate values
