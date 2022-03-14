@@ -17,7 +17,7 @@ NODE_NAME = 'state_machine_node'
 STATE_TPOIC_NAME = '/state'
 COLLISION_TOPIC_NAME = '/collision_avoidance_state'
 WEBCAM_CEN_TOPIC_NAME = '/webcam_centroid'
-INTEL_CEN_TOPIC_NAME = '/intel/color/image_raw'
+INTEL_CEN_TOPIC_NAME = '/intel_centroid'
 BALL_TOPIC_NAME = '/num_ball_picked_up'
 
 class StateController(Node):
