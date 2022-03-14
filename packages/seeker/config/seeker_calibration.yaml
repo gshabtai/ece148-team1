@@ -20,7 +20,7 @@ robocar_align_node:
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
-    cen_offset : 40
+    cen_offset : 5
 intake_system_node:
   ros__parameters:
     bus_num : 1

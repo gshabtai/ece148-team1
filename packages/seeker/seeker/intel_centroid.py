@@ -20,9 +20,9 @@ class FindCentroid(Node):
         self.lower_hue1 = 141
         self.lower_sat1 = 135
         self.lower_val1 = 108
-        self.upper_hue1 = 180
-        self.upper_sat1 = 180
-        self.upper_val1 = 180
+        self.upper_hue1 = 254
+        self.upper_sat1 = 254
+        self.upper_val1 = 254
         self.msg = Float64MultiArray()
 
         # Initial moment value
@@ -32,7 +32,7 @@ class FindCentroid(Node):
 
     def locate_centroid(self, data):
         # Image processing from rosparams
-        self.frame = self.bridge.imgmsg_to_cv2(data)
+        self.frame = self.bridge.imgmsg_to_cv2(data, desired_encoding= 'rgb8')
 
         self.hsv_search()
         cv.waitKey(1)
@@ -82,11 +82,11 @@ class FindCentroid(Node):
     
 def main(args=None):
     rclpy.init(args=args)
-    centroid_publisher = FindCentroid()
+    intel_centroid_publisher = FindCentroid()
     try:
-        rclpy.spin(centroid_publisher)
+        rclpy.spin(intel_centroid_publisher)
     except KeyboardInterrupt:
-        centroid_publisher.destroy_node()
+        intel_centroid_publisher.destroy_node()
         rclpy.shutdown()
         cv.destroyAllWindows()
         robocar_seek.get_logger().info(f'{NODE_NAME} shut down successfully.')
