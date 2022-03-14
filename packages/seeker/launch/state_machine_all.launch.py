@@ -137,6 +137,6 @@ def generate_launch_description():
     ld.add_action(intel_centroid)
     ld.add_action(capture_node)
     ld.add_action(simples_states_node)
-    ld.add_action(collision_avoidance_node)
+    # ld.add_action(collision_avoidance_node)
 
     return ld

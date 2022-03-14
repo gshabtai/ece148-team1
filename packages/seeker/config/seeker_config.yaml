@@ -5,6 +5,7 @@ adafruit: 1
 capture_node: 1
 collision_avoidance_node: 0
 intake_system_node: 1
+intel_centroid_node: 1
 state_machine_node : 1
 webcam_centroid_node: 1
 simple_states_node: 1
