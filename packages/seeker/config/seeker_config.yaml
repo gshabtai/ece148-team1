@@ -1,6 +1,6 @@
 ld06: 0
 webcam: 1
-intel: 0
+intel: 1
 adafruit: 1
 capture_node: 1
 collision_avoidance_node: 0
@@ -8,4 +8,4 @@ intake_system_node: 1
 state_machine_node : 1
 webcam_centroid_node: 1
 simple_states_node: 1
-robocar_align_node: 0
+robocar_align_node: 1

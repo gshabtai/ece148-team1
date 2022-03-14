@@ -111,6 +111,10 @@ class StateController(Node):
                 return STATE['search_mode']
             else:
                 return STATE['collect_ball']
+                
+        ########## ON INVALID STATE, RETURN TO IDLE ##########
+        else:
+            return STATE['idle']
 
     #Goal State Machine
     def calc_next_state_goal(self):
