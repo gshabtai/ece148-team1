@@ -1,7 +1,7 @@
 ld06: 1
-webcam: 0
-intel: 0
-adafruit: 0
+webcam: 1
+intel: 1
+adafruit: 1
 capture_node: 1
 collision_avoidance_node: 1
 intake_system_node: 1
