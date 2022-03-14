@@ -93,6 +93,9 @@ class StateController(Node):
             elif self.number_loaded_ball != self.proposed_num_collected_balls: # Success in ball collections
                 self.number_loaded_ball = self.proposed_num_collected_balls
                 return STATE['search_mode']
+            elif not self.webcam_sees_ball:
+                self.ball_lost_time = time() # Start time
+                return STATE['search_mode']
             else:
                 return STATE['collect_ball']
 
