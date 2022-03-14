@@ -101,6 +101,7 @@ class IntakeProcess(Node):
             if abs(time()-self.timer) > 2:
                 self.pickup_success()
 
+
         # # is a ball being detcted?
         # if (ball_detected):
         #     # is the fan off, and is the ball in the area?
