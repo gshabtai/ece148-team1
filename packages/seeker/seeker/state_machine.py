@@ -44,6 +44,18 @@ class StateController(Node):
         self.webcam_sees_ball = False
         self.intel_sees_ball =False
 
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('capture_full', 4),
+            ])
+        
+        self.capture_full = self.get_parameter('capture_full').value
+
+        self.get_logger().info(
+            f'\ncapture_full: {self.capture_full}'
+        )
+
     def set_num_balls(self, data):
         self.proposed_num_collected_balls = data.data
 
@@ -75,7 +87,7 @@ class StateController(Node):
         
         ########## ON IDLE ##########
         if self.current_state == STATE['idle']:
-            if self.number_loaded_ball < 4 and abs(time()-self.ball_lost_time) > 20:
+            if self.number_loaded_ball < self.capture_full and abs(time()-self.ball_lost_time) > 20:
                 return STATE['search_mode']
             else:
                 return STATE['idle']
@@ -88,7 +100,7 @@ class StateController(Node):
 
         ########## ON COLLECT BALL MODE ##########
         elif self.current_state == STATE['collect_ball']:
-            if self.number_loaded_ball >= 4:
+            if self.number_loaded_ball >= self.capture_full:
                 return STATE['idle']
             elif self.number_loaded_ball != self.proposed_num_collected_balls: # Success in ball collections
                 self.number_loaded_ball = self.proposed_num_collected_balls

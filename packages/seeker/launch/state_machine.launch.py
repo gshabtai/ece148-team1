@@ -10,21 +10,21 @@ def generate_launch_description():
     node_name = 'state_machine_node'
 
     # Define yaml config files
-    # config_file = ''
+    config_file = 'seeker_calibration.yaml'
 
     # Lanuch Descriptions
     ld = LaunchDescription()
 
-    # config = os.path.join(
-    #     get_package_share_directory(pkg),
-    #     'config',
-    #     config_file)
+    config = os.path.join(
+        get_package_share_directory(pkg),
+        'config',
+        config_file)
 
     state_machine_node = Node(
         package = pkg,
         executable = node_name,
         output = 'screen',
-        #parameters = [config]
+        parameters = [config]
     )
     
     # Add actions to launch description

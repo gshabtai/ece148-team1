@@ -35,3 +35,6 @@ simple_states_node:
   ros__parameters:
     max_throttle: 0.2
     min_throttle: 0.05
+state_machine_node:
+  ros__parameters:
+    capture_full: 20
