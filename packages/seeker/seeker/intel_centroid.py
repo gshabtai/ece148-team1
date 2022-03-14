@@ -32,9 +32,8 @@ class FindCentroid(Node):
 
     def locate_centroid(self, data):
         # Image processing from rosparams
-        self.frame = self.bridge.imgmsg_to_cv2(data)
-
         self.get_logger().info('MADE it to here')
+        self.frame = self.bridge.imgmsg_to_cv2(data)
 
         self.hsv_search()
         cv.waitKey(1)
