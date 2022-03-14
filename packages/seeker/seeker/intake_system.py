@@ -92,7 +92,7 @@ class IntakeProcess(Node):
             self.tracking_ball = True
 
         #Ball Capture success
-        elif (self.ball_in_area(relX, relY, ball_detected) and self.tracking_ball):
+        elif (not self.ball_in_area(relX, relY, ball_detected) and self.tracking_ball):
             sleep(1)
             self.fan_off()
 
