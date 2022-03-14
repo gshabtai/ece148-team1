@@ -34,7 +34,8 @@ class FindCentroid(Node):
         # Image processing from rosparams
         self.frame = self.bridge.imgmsg_to_cv2(data, desired_encoding= 'rgb8')
 
-        self.hsv_search()
+        self.get_logger().info('MADE IT HEEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+        #self.hsv_search()
         cv.waitKey(1)
 
     def hsv_search(self):
