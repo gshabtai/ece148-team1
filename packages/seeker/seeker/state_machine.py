@@ -92,6 +92,7 @@ class StateController(Node):
             else:
                 return STATE['idle']
 
+        ########## ON SEARCH MODE ##########
         elif self.current_state == STATE['search_mode']:
             if self.webcam_sees_ball:
                 return STATE['collect_ball']
@@ -112,6 +113,16 @@ class StateController(Node):
             else:
                 return STATE['collect_ball']
                 
+        ########## ON NAVIGATE MODE ###########
+        elif  self.current_state == STATE['navigate']:
+            if self.webcam_sees_ball:
+                return STATE['collect_ball']
+            elif not self.intel_sees_ball:
+                self.ball_lost_time = time() # Start time
+                return STATE['search_mode']
+            else:
+                return STATE['navigate']
+
         ########## ON INVALID STATE, RETURN TO IDLE ##########
         else:
             return STATE['idle']
