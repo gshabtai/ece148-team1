@@ -70,7 +70,34 @@ class StateController(Node):
         # Set next_state as current_state
         self.current_state = self.next_state
 
+    # TESTING State Machine
     def calc_next_state(self):
+        
+        ########## ON IDLE ##########
+        if self.current_state == STATE['idle']:
+            if self.number_loaded_ball < 4 and abs(time()-self.ball_lost_time) > 20:
+                return STATE['search_mode']
+            else:
+                return STATE['idle']
+
+        elif self.current_state == STATE['search_mode']:
+            if self.webcam_sees_ball:
+                return STATE['collect_ball']
+            else:
+                return STATE['search_mode']
+
+        ########## ON COLLECT BALL MODE ##########
+        elif self.current_state == STATE['collect_ball']:
+            if self.number_loaded_ball >= 4:
+                return STATE['idle']
+            elif self.number_loaded_ball != self.proposed_num_collected_balls: # Success in ball collections
+                self.number_loaded_ball = self.proposed_num_collected_balls
+                return STATE['search_mode']
+            else:
+                return STATE['collect_ball']
+
+    #Goal State Machine
+    def calc_next_state_goal(self):
 
         ########## ON IDLE ##########
         if self.current_state == STATE['idle']:

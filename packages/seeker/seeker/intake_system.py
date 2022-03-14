@@ -1,24 +1,23 @@
-from time import sleep
-from time import time
+from time import sleep, time
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float64MultiArray
-from std_msgs.msg import Int8
-from std_msgs.msg import String
+from std_msgs.msg import Float64MultiArray, Int8, String
 import RPi.GPIO as GPIO
 import math
 
 NODE_NAME = 'intake_system_node'
-TOPIC_NAME = '/webcam_centroid'
+WEBCAM_CEN_TOPIC_NAME = '/webcam_centroid'
+STATE_TOPIC_NAME = '/state'
+BALL_TOPIC_NAME = '/num_ball_picked_up'
 
 class IntakeProcess(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
 
         # update called every time topic publishes new value
-        self.webcam_subscriber = self.create_subscription(Float64MultiArray, TOPIC_NAME, self.update, 10)
-        self.state_subscrition = self.create_subscription(String, '/state', self.set_state, 10)
-        self.num_balls = self.create_publisher(Int8,'/num_ball_picked_up', 10)
+        self.webcam_subscriber = self.create_subscription(Float64MultiArray, WEBCAM_CEN_TOPIC_NAME, self.update, 10)
+        self.state_subscrition = self.create_subscription(String, STATE_TOPIC_NAME, self.set_state, 10)
+        self.num_balls = self.create_publisher(Int8, BALL_TOPIC_NAME, 10)
 
         self.pub_data = Int8()
         self.pub_data.data = 0
@@ -31,66 +30,76 @@ class IntakeProcess(Node):
                 ('fan_channel', int(13)),
             ])
         self.bus_num = int(self.get_parameter('bus_num').value)
-        self.fan1_channel = int(self.get_parameter('fan_channel').value)
+        self.fan_channel = int(self.get_parameter('fan_channel').value)
         
         self.cur_fan_on = False     # keeps track if the fan is on
+        self.state = 'idle'
+
+        #Unused
         self.prev_in_rect = False # keeps track if a ball has been detected
         self.prev_ball_relX = 0
         self.prev_ball_relY = 0
-        self.current_state = 'idle'
 
 
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(self.fan1_channel, GPIO.OUT)
+        GPIO.setup(self.fan_channel, GPIO.OUT)
 
     def set_state(self, data):
-        self.current_state = data.data
+        self.state = data.data
 
     # turn on fan
     def fan_on(self):
-        if self.current_state != 'collect_ball':
-            return 
-        
-        GPIO.output(self.fan1_channel, GPIO.HIGH)
-        self.cur_fan_on = True
-        self.get_logger().info('Fan ON')
+        if not self.cur_fan_on:
+            GPIO.output(self.fan_channel, GPIO.HIGH)
+            self.cur_fan_on = True
+            self.get_logger().info('Fan ON')
 
     # turn off fan
     def fan_off(self):
-        GPIO.output(self.fan1_channel, GPIO.LOW)
-        self.cur_fan_on = False
-        self.get_logger().info('Fan OFF')
+        if self.cur_fan_on:
+            GPIO.output(self.fan_channel, GPIO.LOW)
+            self.cur_fan_on = False
+            self.get_logger().info('Fan OFF')
 
     # publishes that it picked up a ball
-    def pickup(self):
+    def pickup_success(self):
         self.pub_data.data = self.pub_data.data + 1
         self.num_balls.publish(self.pub_data)
 
     # is the ball in the collection area?
-    def ball_in_area(self, relX, relY):
-        return (abs(relX) < 30 and abs(relY) < 40)
+    def ball_in_area(self, relX, relY, ball_detected):
+        if (ball_detected):
+            return (abs(relX) < 30 and abs(relY) < 40)
+        else:
+            return False
 
     # updates when input from cam is new
     def update(self, data):
+        '''Update detection of ball based on centroid to switch fans on/off'''
+
+        if self.state != 'collect_ball':
+            return
+
         ball_detected = int(data.data[2])
         relX = int(data.data[0])
         relY = int(data.data[1])
 
-        if( ball_detected and self.ball_in_area(relX,relY)):
+        #Capture ball
+        if (ball_detected and self.ball_in_area(relX, relY, ball_detected)):
             self.fan_on()
             self.timer = time()
             self.tracking_ball = True
-        else:
+
+        #Ball Capture success
+        elif (self.ball_in_area(relX, relY, ball_detected) and self.tracking_ball):
             sleep(1)
             self.fan_off()
 
-            if self.tracking_ball:
-                self.tracking_ball = False
-                sleep(1)
-                if abs(time()-self.timer) > 5:
-                    self.pickup()
-
-        self.prev_in_rect = self.ball_in_area(relX,relY)
+            self.tracking_ball = False
+            sleep(1)
+            # Why wait a second and why > 5 for success?
+            if abs(time()-self.timer) > 5:
+                self.pickup_success()
 
         # # is a ball being detcted?
         # if (ball_detected):

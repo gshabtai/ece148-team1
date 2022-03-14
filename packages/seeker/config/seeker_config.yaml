@@ -1,9 +1,9 @@
-ld06: 1
+ld06: 0
 webcam: 1
-intel: 1
+intel: 0
 adafruit: 1
 capture_node: 1
-collision_avoidance_node: 1
+collision_avoidance_node: 0
 intake_system_node: 1
 state_machine_node : 1
 webcam_centroid_node: 1

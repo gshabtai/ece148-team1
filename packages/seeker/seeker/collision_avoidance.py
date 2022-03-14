@@ -30,8 +30,7 @@ class CollisionAvoidance(Node):
                 ('r_reverse', .2),
                 ('max_throttle', 0.2),
                 ('min_throttle', 0.1)
-            ]
-        )
+            ])
         
         self.r_inner = self.get_parameter('r_inner').value
         self.r_outer = self.get_parameter('r_outer').value
@@ -57,7 +56,6 @@ class CollisionAvoidance(Node):
         self.twist_cmd = Twist()
 
     def set_state(self,data):
-        pass
         self.state = data.data
 
     def steering_out(self, steering, throttle):
@@ -73,7 +71,6 @@ class CollisionAvoidance(Node):
                 pass
 
     def logic(self, distance, angle):
-        #, reverse = minVal > self.r_reverse
         if self.state != "collision_avoidance":
             return
 
