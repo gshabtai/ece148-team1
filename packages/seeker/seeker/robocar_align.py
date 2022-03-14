@@ -60,7 +60,7 @@ class CaptureControl(Node):
             f'\nmin_throttle: {self.dyn_cmd.min_throttle}'
             f'\nmax_right_steering: {self.dyn_cmd.max_right_steering}'
             f'\nmax_left_steering: {self.dyn_cmd.max_left_steering}'
-            f'\nmax_left_steering: {self.cen_offset}'
+            f'\ncen_offest: {self.cen_offset}'
         )
 
     def update_state(self, data):
@@ -78,13 +78,14 @@ class CaptureControl(Node):
             self.ek = float(data.data[0] / scale)
 
             #Offset for ball alignment
-            self.ek = self.ek - self.cen_offset
+            # self.ek = self.ek - self.cen_offset
             
             # Publish values
             try:
                 # publish control signals
                 self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
                 self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek)
+                self.get_logger().info("X: {self.twist_cmd.liear.x}")
                 self.twist_publisher.publish(self.twist_cmd)
 
                 # shift current time and error values to previous values
