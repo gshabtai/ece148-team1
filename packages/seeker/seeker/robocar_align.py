@@ -75,11 +75,11 @@ class CaptureControl(Node):
         else:
             
             #Offset for ball alignment
-            self.ek = self.ek + self.cen_offset
+            self.ek = data.data[0] + self.cen_offset
 
             # setting up PID control
             scale = 50
-            self.ek = float(data.data[0] / scale)
+            self.ek = float(self.ek / scale)
 
             
             # Publish values
