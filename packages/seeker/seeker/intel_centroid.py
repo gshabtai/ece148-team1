@@ -1,11 +1,10 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32
+from std_msgs.msg import Float64MultiArray
 import cv2 as cv
 from cv_bridge import CvBridge
 import numpy as np
-from std_msgs.msg import Float64MultiArray
 
 NODE_NAME = 'intel_centroid_node'
 CAMERA_TOPIC_NAME = '/camera/color/image_raw'
@@ -34,6 +33,8 @@ class FindCentroid(Node):
     def locate_centroid(self, data):
         # Image processing from rosparams
         self.frame = self.bridge.imgmsg_to_cv2(data)
+
+        self.get_logger().info('MADE it to here')
 
         self.hsv_search()
         cv.waitKey(1)
