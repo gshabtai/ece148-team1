@@ -79,7 +79,7 @@ class FindCentroid(Node):
         self.centroid_publisher.publish(self.msg)
 
         # Debugging
-        # self.get_logger().info(f'Centroid found at: {(self.relX,self.relY,self.detected)}')
+        self.get_logger().info(f'Centroid found at: {(self.relX,self.relY,self.detected)}')
     
 def main(args=None):
     rclpy.init(args=args)
