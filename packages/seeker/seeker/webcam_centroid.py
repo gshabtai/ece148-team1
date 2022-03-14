@@ -1,11 +1,10 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32
+from std_msgs.msg import Float64MultiArray
 import cv2 as cv
 from cv_bridge import CvBridge
 import numpy as np
-from std_msgs.msg import Float64MultiArray
 
 NODE_NAME = 'webcam_centroid_node'
 CAMERA_TOPIC_NAME = '/webcam/color/image_raw'

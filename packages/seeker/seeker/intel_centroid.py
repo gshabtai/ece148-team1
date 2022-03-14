@@ -7,7 +7,7 @@ from cv_bridge import CvBridge
 import numpy as np
 
 NODE_NAME = 'intel_centroid_node'
-CAMERA_TOPIC_NAME = '/camera/color/image_raw'
+CAMERA_TOPIC_NAME = '/webcam/color/image_raw'
 CENTROID_TOPIC_NAME = '/intel_centroid'
 
 class FindCentroid(Node):
