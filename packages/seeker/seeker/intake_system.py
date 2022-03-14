@@ -87,7 +87,8 @@ class IntakeProcess(Node):
         #Capture ball
         if (ball_detected and self.ball_in_area(relX, relY, ball_detected)):
             self.fan_on()
-            self.timer = time()
+            if not self.tracking_ball:
+                self.timer = time()
             self.tracking_ball = True
 
         #Ball Capture success
@@ -96,9 +97,8 @@ class IntakeProcess(Node):
             self.fan_off()
 
             self.tracking_ball = False
-            sleep(1)
             # Why wait a second and why > 5 for success?
-            if abs(time()-self.timer) > 5:
+            if abs(time()-self.timer) > 2:
                 self.pickup_success()
 
         # # is a ball being detcted?
