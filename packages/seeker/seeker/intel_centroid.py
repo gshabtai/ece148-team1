@@ -32,7 +32,6 @@ class FindCentroid(Node):
 
     def locate_centroid(self, data):
         # Image processing from rosparams
-        self.get_logger().info('MADE it to here')
         self.frame = self.bridge.imgmsg_to_cv2(data)
 
         self.hsv_search()
@@ -79,7 +78,7 @@ class FindCentroid(Node):
         self.centroid_publisher.publish(self.msg)
 
         # Debugging
-        self.get_logger().info(f'Centroid found at: {(self.relX,self.relY,self.detected)}')
+        # self.get_logger().info(f'Centroid found at: {(self.relX,self.relY,self.detected)}')
     
 def main(args=None):
     rclpy.init(args=args)
