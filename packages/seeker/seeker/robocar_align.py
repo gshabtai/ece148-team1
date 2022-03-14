@@ -3,7 +3,6 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64MultiArray, String
-from std_srvs.srv import Trigger
 from .dynamic_centering_control import DynamicCenteringControl
 
 NODE_NAME = 'robocar_align_node'
@@ -34,7 +33,8 @@ class CaptureControl(Node):
                 ('max_throttle', 0.04),
                 ('min_throttle', 0.02),
                 ('max_right_steering', 1.0),
-                ('max_left_steering', -1.0)
+                ('max_left_steering', -1.0),
+                ('cen_offset', 0)
             ])
         self.dyn_cmd = DynamicCenteringControl()
 
@@ -47,6 +47,8 @@ class CaptureControl(Node):
         self.dyn_cmd.min_throttle = ( self.get_parameter('min_throttle').value) # between [-1,1]
         self.dyn_cmd.max_right_steering = ( self.get_parameter('max_right_steering').value) # between [-1,1]
         self.dyn_cmd.max_left_steering = ( self.get_parameter('max_left_steering').value) # between [-1,1]
+        
+        self.cen_offset = ( self.get_parameter('cen_offset').value) # pixal val
 
         self.get_logger().info(
             f'\nKp_steering: {self.dyn_cmd.Kp_steering}'
@@ -58,14 +60,15 @@ class CaptureControl(Node):
             f'\nmin_throttle: {self.dyn_cmd.min_throttle}'
             f'\nmax_right_steering: {self.dyn_cmd.max_right_steering}'
             f'\nmax_left_steering: {self.dyn_cmd.max_left_steering}'
+            f'\nmax_left_steering: {self.cen_offset}'
         )
 
     def update_state(self, data):
-        '''Update state for catpure node object'''
+        '''Update state for align node object'''
         self.state = data.data
 
     def compute_maneuver(self, data):
-        '''PID Controler and Twist Pulbisher for robo-movement capture'''
+        '''PID Controler and Twist Pulbisher for robo-movement navigate'''
 
         if self.state != 'navigate':
             return
@@ -75,7 +78,7 @@ class CaptureControl(Node):
             self.ek = float(data.data[0] / scale)
 
             #Offset for ball alignment
-            self.ek = self.ek - 20
+            self.ek = self.ek - self.cen_offset
             
             # Publish values
             try:

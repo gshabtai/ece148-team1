@@ -16,10 +16,11 @@ robocar_align_node:
     Kd_steering : 0.0 
     zero_throttle  : 0 
     max_throttle : 0.05
-    min_throttle : 0.04
+    min_throttle : 0.03
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
+    cen_offset : 40
 intake_system_node:
   ros__parameters:
     bus_num : 1
@@ -34,7 +35,7 @@ collision_avoidance_node:
 simple_states_node:
   ros__parameters:
     max_throttle: 0.05
-    min_throttle: 0.03
+    min_throttle: 0.04
 state_machine_node:
   ros__parameters:
     capture_full: 20

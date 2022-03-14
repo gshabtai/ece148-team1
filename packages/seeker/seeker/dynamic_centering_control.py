@@ -16,8 +16,8 @@ class DynamicCenteringControl():
         self.Kd_steering = 0
         self.error_threshold = .15
         self.zero_throttle = 0
-        self.max_throttle = .2
-        self.min_throttle = .1
+        self.max_throttle = .04
+        self.min_throttle = .03
         self.max_right_steering = .7
         self.max_left_steering = -.7
 
