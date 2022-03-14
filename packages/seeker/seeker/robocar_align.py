@@ -78,8 +78,8 @@ class CaptureControl(Node):
             self.ek = data.data[0] - self.cen_offset
 
             # setting up PID control
-            scale = 50
-            self.ek = float(self.ek / scale)
+            scale = 50.0
+            self.ek = self.ek / scale
 
             
             # Publish values
