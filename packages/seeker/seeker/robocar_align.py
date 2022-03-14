@@ -73,12 +73,14 @@ class CaptureControl(Node):
         if self.state != 'navigate':
             return
         else:
+            
+            #Offset for ball alignment
+            self.ek = self.ek + self.cen_offset
+
             # setting up PID control
             scale = 50
             self.ek = float(data.data[0] / scale)
 
-            #Offset for ball alignment
-            # self.ek = self.ek - self.cen_offset
             
             # Publish values
             try:
