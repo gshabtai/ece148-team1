@@ -56,7 +56,6 @@ def generate_launch_description():
     for key in my_packages_dict:
         pkg_name = my_packages_dict[key][0]
         launch_name = my_packages_dict[key][1]
-        print(launch_name)
         component_type = my_packages_dict[key][2]
         # ld_list = []
         try:
@@ -64,5 +63,4 @@ def generate_launch_description():
             print(f"Trying to start {component_type}: {launch_name} from {pkg_name}")
         except:
             pass
-        print("ALMOST")
     return ld
