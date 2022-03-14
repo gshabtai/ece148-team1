@@ -87,7 +87,6 @@ class CaptureControl(Node):
                 # publish control signals
                 self.twist_cmd.linear.x = self.dyn_cmd.cal_throttle(self.ek)
                 self.twist_cmd.angular.z = self.dyn_cmd.cal_steering(self.ek)
-                self.get_logger().info("X: {self.twist_cmd.liear.x}")
                 self.twist_publisher.publish(self.twist_cmd)
 
                 # shift current time and error values to previous values
