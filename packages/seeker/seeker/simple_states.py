@@ -17,10 +17,9 @@ class SimpleModes(Node):
         self.declare_parameters(
             namespace='',
             parameters=[
-                ('max_throttle', 0.2)
+                ('max_throttle', 0.2),
                 ('min_throttle', 0.1)
-            ]
-        )
+            ])
         
         self.max_throttle = self.get_parameter('max_throttle').value
         self.min_throttle = self.get_parameter('min_throttle').value

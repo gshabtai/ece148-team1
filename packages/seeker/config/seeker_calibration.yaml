@@ -31,3 +31,7 @@ collision_avoidance_node:
     r_reverse: .25
     max_throttle: 0.2
     min_throttle: 0.05
+simple_states_node:
+  ros__parameters:
+    max_throttle: 0.2
+    min_throttle: 0.05
