@@ -1,16 +1,13 @@
 from re import S
 import rclpy 
 from rclpy.node import Node
-from std_msgs.msg import String
-from std_msgs.msg import Bool
-from std_msgs.msg import Float64MultiArray
-from std_msgs.msg import Int8
+from std_msgs.msg import String, Bool, Float64MultiArray, Int8
 from time import time, sleep
 
 STATE = {
     'idle':                         'idle',
     'collision_avoidance':          'collision_avoidance',
-    'search_mode':                  'search_mode',
+    'search':                       'search',
     'navigate':                     'navigate',
     'collect_ball':                 'collect_ball',
     'drive_back':                   'drive_back'
@@ -21,6 +18,7 @@ STATE_TPOIC_NAME = '/state'
 COLLISION_TOPIC_NAME = '/collision_avoidance_state'
 WEBCAM_CEN_TOPIC_NAME = '/webcam_centroid'
 INTEL_CEN_TOPIC_NAME = '/intel/color/image_raw'
+BALL_TOPIC_NAME = '/num_ball_picked_up'
 
 class StateController(Node):
     def __init__(self) -> None:
@@ -29,7 +27,7 @@ class StateController(Node):
         self.collision_avoidance_state = self.create_subscription(Bool,COLLISION_TOPIC_NAME, self.collison_update, 10)
         self.webcam_subscriber = self.create_subscription(Float64MultiArray, WEBCAM_CEN_TOPIC_NAME, self.set_webcam_sees_ball, 10)
         self.webcam_subscriber = self.create_subscription(Float64MultiArray, INTEL_CEN_TOPIC_NAME, self.set_intel_sees_ball, 10)
-        self.num_ball_subscriber = self.create_subscription(Int8, '/num_ball_picked_up', self.set_num_balls, 10)
+        self.num_ball_subscriber = self.create_subscription(Int8, BALL_TOPIC_NAME, self.set_num_balls, 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
         self.next_state = 'idle'
@@ -88,16 +86,18 @@ class StateController(Node):
         ########## ON IDLE ##########
         if self.current_state == STATE['idle']:
             if self.number_loaded_ball < self.capture_full and abs(time()-self.ball_lost_time) > 20:
-                return STATE['search_mode']
+                return STATE['search']
             else:
                 return STATE['idle']
 
         ########## ON SEARCH MODE ##########
-        elif self.current_state == STATE['search_mode']:
+        elif self.current_state == STATE['search']:
             if self.webcam_sees_ball:
                 return STATE['collect_ball']
+            elif self.intel_sees_ball:
+                return STATE['navigate']
             else:
-                return STATE['search_mode']
+                return STATE['search']
 
         ########## ON COLLECT BALL MODE ##########
         elif self.current_state == STATE['collect_ball']:
@@ -106,20 +106,20 @@ class StateController(Node):
             elif self.number_loaded_ball != self.proposed_num_collected_balls: # Success in ball collections
                 self.number_loaded_ball = self.proposed_num_collected_balls
                 self.get_logger().info(f'Number of balls collected: {self.number_loaded_ball}')
-                return STATE['search_mode']
+                return STATE['search']
             elif not self.webcam_sees_ball:
                 self.ball_lost_time = time() # Start time
-                return STATE['search_mode']
+                return STATE['search']
             else:
                 return STATE['collect_ball']
                 
         ########## ON NAVIGATE MODE ###########
-        elif  self.current_state == STATE['navigate']:
+        elif self.current_state == STATE['navigate']:
             if self.webcam_sees_ball:
                 return STATE['collect_ball']
             elif not self.intel_sees_ball:
                 self.ball_lost_time = time() # Start time
-                return STATE['search_mode']
+                return STATE['search']
             else:
                 return STATE['navigate']
 
@@ -133,7 +133,7 @@ class StateController(Node):
         ########## ON IDLE ##########
         if self.current_state == STATE['idle']:
             if self.number_loaded_ball < 4 and abs(time()-self.ball_lost_time) > 20:
-                return STATE['search_mode']
+                return STATE['search']
             else:
                 return STATE['idle']
 
@@ -145,10 +145,10 @@ class StateController(Node):
                 if self.webcam_sees_ball:
                     return STATE['collect_ball']
                 else:
-                    return STATE['search_mode']
+                    return STATE['search']
         
         ########## ON SEARCH MODE ##########
-        elif self.current_state == STATE['search_mode']:
+        elif self.current_state == STATE['search']:
             if self.imminent_collision:
                 return STATE['collision_avoidance']
             elif self.webcam_sees_ball:
@@ -156,7 +156,7 @@ class StateController(Node):
             elif self.intel_sees_ball:
                 return STATE['navigate']
             else:
-                return STATE['search_mode']
+                return STATE['search']
 
         ########## ON NAVIGATE MODE ###########
         elif  self.current_state == STATE['navigate']:
@@ -178,7 +178,7 @@ class StateController(Node):
                 return STATE['collision_avoidance']
             elif self.number_loaded_ball != self.proposed_num_collected_balls: # Success in ball collections
                 self.number_loaded_ball = self.proposed_num_collected_balls
-                return STATE['search_mode']
+                return STATE['search']
             elif not self.webcam_sees_ball:
                 self.ball_lost_time = time() # Start time
                 return STATE['drive_back']
@@ -188,7 +188,7 @@ class StateController(Node):
         ########## ON DRIVE BACK MODE ##########
         elif self.current_state == STATE['drive_back']:
             if abs(time()-self.ball_lost_time) > self.time_threshold: # Ball has been lost for this much time
-                return STATE['search_mode']
+                return STATE['search']
             elif self.webcam_sees_ball:
                 return STATE['collect_ball']
             else:

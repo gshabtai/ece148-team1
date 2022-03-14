@@ -41,7 +41,7 @@ class SimpleModes(Node):
     def set_twist(self, data):
         state = data.data
 
-        if state == 'search_mode':
+        if state == 'search':
             self.twist.angular.x = 0.0
             self.twist.angular.y = 0.0
             self.twist.angular.z = -1.0
