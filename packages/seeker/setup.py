@@ -28,7 +28,7 @@ setup(
             'collision_avoidance_node = seeker.collision_avoidance:main',
             'intake_system_node = seeker.intake_system:main',
             'intel_centroid_node = seeker.intel_centroid:main',
-            'robocar_align_node = seeker.align_node:main',
+            'robocar_align_node = seeker.robocar_align:main',
             'state_machine_node = seeker.state_machine:main',
             'simple_states_node = seeker.simple_states:main',
             'webcam_centroid_node = seeker.webcam_centroid:main',
