@@ -23,9 +23,9 @@ class FindCentroid(Node):
         # self.upper_hue1 = 254
         # self.upper_sat1 = 254
         # self.upper_val1 = 254
-        self.lower_hue1 = 20
-        self.lower_sat1 = 20
-        self.lower_val1 = 20
+        self.lower_hue1 = 70
+        self.lower_sat1 = 65
+        self.lower_val1 = 55
         self.upper_hue1 = 254
         self.upper_sat1 = 254
         self.upper_val1 = 254
