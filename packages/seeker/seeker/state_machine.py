@@ -40,7 +40,8 @@ class StateController(Node):
         self.proposed_num_collected_balls = 0
         self.imminent_collision = False
         self.webcam_sees_ball = False
-        self.intel_sees_ball =False
+        self.intel_sees_ball = False
+        self.tracking = False
 
         self.declare_parameters(
             namespace='',
@@ -95,6 +96,7 @@ class StateController(Node):
             if self.webcam_sees_ball:
                 return STATE['collect_ball']
             elif self.intel_sees_ball:
+                self.tracking = True
                 return STATE['navigate']
             else:
                 return STATE['search']
@@ -117,8 +119,13 @@ class StateController(Node):
         elif self.current_state == STATE['navigate']:
             if self.webcam_sees_ball:
                 return STATE['collect_ball']
-            elif not self.intel_sees_ball:
+            elif not self.intel_sees_ball and self.tracking:
                 self.ball_lost_time = time() # Start time
+                self.tracking = False
+                return STATE['navigate']
+            elif not self.intel_sees_ball and (time() - self.ball_lost_time) < 1:
+                return STATE['navigate']
+            elif not self.intel_sees_ball and (time() - self.ball_lost_time) > 1:
                 return STATE['search']
             else:
                 return STATE['navigate']
