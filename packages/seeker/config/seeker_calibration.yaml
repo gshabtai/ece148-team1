@@ -4,8 +4,8 @@ capture_node:
     Ki_steering : 0.0 
     Kd_steering : 0.0 
     zero_throttle  : 0 
-    max_throttle : 0.065
-    min_throttle : 0.06
+    max_throttle : 0.055
+    min_throttle : 0.04
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
@@ -15,8 +15,8 @@ robocar_align_node:
     Ki_steering : 0.0 
     Kd_steering : 0.0 
     zero_throttle  : 0 
-    max_throttle : 0.065
-    min_throttle : 0.06
+    max_throttle : 0.06
+    min_throttle : 0.05
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
@@ -34,8 +34,8 @@ collision_avoidance_node:
     min_throttle: 0.05
 simple_states_node:
   ros__parameters:
-    max_throttle: 0.065
-    min_throttle: 0.06
+    max_throttle: 0.06
+    min_throttle: 0.05
 state_machine_node:
   ros__parameters:
     capture_full: 100
