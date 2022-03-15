@@ -17,12 +17,18 @@ class FindCentroid(Node):
         self.camera_subscription = self.create_subscription(Image, CAMERA_TOPIC_NAME, self.locate_centroid, 10)
         self.bridge = CvBridge()
         # Set Color detection paramenters
-        self.lower_hue1 = 153
-        self.lower_sat1 = 139
-        self.lower_val1 = 56
-        self.upper_hue1 = 179
-        self.upper_sat1 = 194
-        self.upper_val1 = 218
+        # self.lower_hue1 = 153
+        # self.lower_sat1 = 139
+        # self.lower_val1 = 56
+        # self.upper_hue1 = 179
+        # self.upper_sat1 = 194
+        # self.upper_val1 = 218
+        self.lower_hue1 = 0
+        self.lower_sat1 = 84
+        self.lower_val1 = 131
+        self.upper_hue1 = 12
+        self.upper_sat1 = 215
+        self.upper_val1 = 254
         self.msg = Float64MultiArray()
 
         # Initial moment value
