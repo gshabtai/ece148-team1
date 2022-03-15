@@ -4,8 +4,8 @@ capture_node:
     Ki_steering : 0.0 
     Kd_steering : 0.0 
     zero_throttle  : 0 
-    max_throttle : 0.04
-    min_throttle : 0.035
+    max_throttle : 0.045
+    min_throttle : 0.04
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
@@ -16,7 +16,7 @@ robocar_align_node:
     Kd_steering : 0.0 
     zero_throttle  : 0 
     max_throttle : 0.05
-    min_throttle : 0.035
+    min_throttle : 0.04
     error_threshold : 0.16 
     max_right_steering : 0.75
     max_left_steering : -0.75
