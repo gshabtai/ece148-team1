@@ -81,8 +81,9 @@ class StateController(Node):
         # Set next_state as current_state
         self.current_state = self.next_state
 
-    # TESTING State Machine
+    # WORKING State Machine
     def calc_next_state(self):
+        '''State Machine Controller'''
         
         ########## ON IDLE ##########
         if self.current_state == STATE['idle']:
