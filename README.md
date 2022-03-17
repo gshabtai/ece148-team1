@@ -4,7 +4,7 @@ MAE/ECE148 Team1 | Winter 2022
 
 # Demo
 
-- Video
+https://www.youtube.com/watch?v=l6U-Yuc_TLY
 
 # About
 
