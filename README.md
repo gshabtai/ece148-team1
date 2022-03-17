@@ -14,15 +14,24 @@ Our robocar, the Seeker, is designed to be able to search for, locate, navigate 
 
 # Demo
 
---video
+Link: https://www.youtube.com/watch?v=l6U-Yuc_TLY
 
 # About
 
-Info:
+## Info
 
-- Phase 1
+### Phase 1
+- Locate ping pong balls in an open and unobstructed environment
+- Pick up ping pong balls
+- Use Lidar for collision avoidance
+- Make decisions on what ping pong balls to pick up first
 
-- Phase 2
+### Phase 2
+- All elements of Phase 1
+- Locate ping pong balls with obstructions where they must be sought out by navigating around the environment
+- ROS1 SLAM
+- Extensive use of Lidar
+
 # Dependencies
 
 - Download Docker
@@ -30,16 +39,16 @@ Info:
 
 # Set-up
 
-# Hardware
+## Hardware
 ![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
 
 ![cad_gluckgluck](https://user-images.githubusercontent.com/98067439/158715137-68999706-a679-466f-b875-2632feceef19.jpg)
 
 
-# Schematic
+## Schematic
 ![circuit_graphic](https://user-images.githubusercontent.com/98067439/158715258-9f1a49e6-a83f-4117-8895-608e33e10c73.jpg)
 
-# Running the Program
+## Running the Program
 
 - Configure config file for phase 1 or 2
 
