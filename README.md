@@ -1,7 +1,11 @@
 # SEEKER | UCSD ROBOCAR
 MAE/ECE148 Team1 | Winter 2022
 
-
+# Team Members
+- Parker Knof (MAE)
+- Jacob (MAE)
+- Moises Lopez (ECE)
+- Guy (ECE)
 # Demo
 
 https://www.youtube.com/watch?v=l6U-Yuc_TLY
