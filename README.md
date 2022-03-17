@@ -1,7 +1,7 @@
 # SEEKER | UCSD ROBOCAR
 MAE/ECE148 Team1 | Winter 2022
 
-This car is designed to be able to search for, locate, navigate to, and collect red ping pong balls.
+Our robocar, the Seeker, is designed to be able to search for, locate, navigate to, and collect red ping pong balls.
 
 # Demo
 
