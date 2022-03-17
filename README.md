@@ -31,7 +31,7 @@ Info:
 # Set-up
 
 # Hardware
-![circuit_graphic](https://user-images.githubusercontent.com/98067439/158715503-0596fb00-64f8-42d6-8f15-d3f30b9daf65.jpg)
+![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
 
 ![cad_gluckgluck](https://user-images.githubusercontent.com/98067439/158715137-68999706-a679-466f-b875-2632feceef19.jpg)
 
