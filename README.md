@@ -18,6 +18,11 @@ Link: https://www.youtube.com/watch?v=l6U-Yuc_TLY
 
 # About
 
+This robot was designed to seek and pick up red ping pong balls scattered around an environment
+
+The robocar will locate the ping pong balls with an RGBD camera. It will then drive to the ball to perform a recovery maneuver using the webcam. It will be equipped with a suction tube to pick up the ping pong balls.
+
+
 ## Info
 
 ### Phase 1
