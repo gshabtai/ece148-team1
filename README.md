@@ -68,7 +68,7 @@ $ # source_ros2
 ```
 5. Run the program
 ``` bash
-$ ./src/ece148-team1/run.sh
+$ ./src/ece148-team1/seeker.sh
 ```
 ## Hardware
 ![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
@@ -78,11 +78,3 @@ $ ./src/ece148-team1/run.sh
 
 ## Schematic
 ![circuit_graphic](https://user-images.githubusercontent.com/98067439/158715258-9f1a49e6-a83f-4117-8895-608e33e10c73.jpg)
-
-## Running the Program
-
-- Configure config file for phase 1 or 2
-
-- . update.sh
-
-- ./ seeker.sh
