@@ -39,15 +39,36 @@ The robocar will locate the ping pong balls with an RGBD camera. It will then dr
 
 # Dependencies
 
+- This project is to be run using linux on a Jetson Nano
+
 - Download Docker: https://hub.docker.com/r/djnighti/ucsd_robocar
 
 $ docker pull djnighti/ucsd_robocar
 
-- Download Repository: 
+- Download Repository: https://github.com/gshabtai/ece148-team1.git
 
-$ 
+$ # Start Docker
+$ # Attach to Docker
+$ source_ros2 
+$ cd src
+$ git clone https://github.com/gshabtai/ece148-team1.git
+$ cd ..
 
 # Set-up
+
+1. Configure the Robot using the schematic
+2. Boot up the Jetson Nano
+3. After coneecting to the nano through SSH, start the docker
+
+$ # Start Docker
+
+4. Source Ros with docker integrated command
+
+$ # source_ros2
+
+5. Run the program
+
+$ ./src/ece148-team1/run.sh
 
 ## Hardware
 ![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
