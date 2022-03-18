@@ -70,7 +70,7 @@ class StateController(Node):
         self.imminent_collision = data.data
 
     def update_ball_distance(self, data):
-        self.ball_distance_bool = data.data
+        self.ball_depth_bool = data.data
 
     def update(self):
         if self.current_state != self.next_state: # Log to console if state has changed
@@ -123,7 +123,7 @@ class StateController(Node):
                 
         ########## ON NAVIGATE MODE ###########
         elif self.current_state == STATE['navigate']:
-            if self.webcam_sees_ball and self.ball_distance_bool:
+            if self.webcam_sees_ball and self.ball_depth_bool:
                 return STATE['collect_ball']
             elif not self.intel_sees_ball and self.tracking:
                 self.ball_lost_time = time() # Start time
