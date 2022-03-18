@@ -7,10 +7,10 @@ MAE/ECE148 Team1 | Winter 2022
 Our robocar, the Seeker, is designed to be able to search for, locate, navigate to, and collect red ping pong balls.
 
 # Team Members
-- Parker Knof (MAE)
-- Jacob (MAE)
+- Parker Knopf (MAE)
+- Jacob Bingham (MAE)
 - Moises Lopez (ECE)
-- Guy (ECE)
+- Guy Shabtai (ECE)
 
 # Demo
 
@@ -39,8 +39,13 @@ The robocar will locate the ping pong balls with an RGBD camera. It will then dr
 
 # Dependencies
 
-- Download Docker
-- Download Repository
+- Download Docker: https://hub.docker.com/r/djnighti/ucsd_robocar
+
+$ docker pull djnighti/ucsd_robocar
+
+- Download Repository: 
+
+$ 
 
 # Set-up
 
