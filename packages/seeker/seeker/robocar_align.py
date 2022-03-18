@@ -2,7 +2,10 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2
 from geometry_msgs.msg import Twist
-from std_msgs.msg import Float64MultiArray, String
+from std_msgs.msg import Float64MultiArray, String, Bool
+import cv2 as cv
+from cv_bridge import CvBridge
+import numpy as np
 from .dynamic_centering_control import DynamicCenteringControl
 
 NODE_NAME = 'robocar_align_node'
@@ -10,6 +13,7 @@ CENTROID_TOPIC_NAME = '/intel_centroid'
 POINT_CLOUD_TOPIC_NAME = '/camer/aligned_depth_to_color/color/points'
 ACTUATOR_TOPIC_NAME = '/cmd_vel'
 STATE_TOPIC_NAME = '/state'
+BALL_DISTANCE_TOPIC_NAME = '/ball_distance_bool'
 
 class CaptureControl(Node):
     def __init__(self):
@@ -18,11 +22,14 @@ class CaptureControl(Node):
         self.centroid_subscription = self.create_subscription(Float64MultiArray, CENTROID_TOPIC_NAME, self.compute_maneuver, 10)
         self.depth_subscription = self.create_subscription(PointCloud2, CENTROID_TOPIC_NAME, self.find_depth, 10)
         self.state_subscription = self.create_subscription(String, STATE_TOPIC_NAME, self.update_state, 10)
+        self.ball_distance_publisher = self.create_publisher(Bool, BALL_DISTANCE_TOPIC_NAME, self.update_ball_distance, 10)
         self.twist_cmd = Twist()
 
         self.state = ''
         self.conduct = 0
         self.ek = 0
+        self.cen_X = 0
+        self.cen_Y = 0
 
         self.declare_parameters(
             namespace='',
@@ -36,7 +43,8 @@ class CaptureControl(Node):
                 ('min_throttle', 0.02),
                 ('max_right_steering', 1.0),
                 ('max_left_steering', -1.0),
-                ('cen_offset', 0)
+                ('cen_offset', 0),
+                ('min_ball_depth', 0)
             ])
         self.dyn_cmd = DynamicCenteringControl()
 
@@ -51,6 +59,7 @@ class CaptureControl(Node):
         self.dyn_cmd.max_left_steering = ( self.get_parameter('max_left_steering').value) # between [-1,1]
         
         self.cen_offset = ( self.get_parameter('cen_offset').value) # pixal val
+        self.min_ball_depth = ( self.get_parameter('min_ball_depth').value) # pixal val
 
         self.get_logger().info(
             f'\nKp_steering: {self.dyn_cmd.Kp_steering}'
@@ -63,6 +72,7 @@ class CaptureControl(Node):
             f'\nmax_right_steering: {self.dyn_cmd.max_right_steering}'
             f'\nmax_left_steering: {self.dyn_cmd.max_left_steering}'
             f'\ncen_offest: {self.cen_offset}'
+            f'\nmin_ball_depth: {self.min_ball_depth}'
         )
 
     def update_state(self, data):
@@ -71,7 +81,15 @@ class CaptureControl(Node):
 
     def find_depth(self, depth_feild):
         '''Sets Point Feild from RealSense Camera'''
-        pass
+        image = self.bridge.imgmsg_to_cv2(depth_feild)
+        #In mm
+        depth = image[int(self.cen_X), int(self.cen_Y)]
+        #In meters
+        depth = depth / 100.0
+
+        if depth < self.min_ball_depth:
+            return self.ball_distance_publisher(True)
+        return self.ball_distance_publisher(False)
     
     def compute_maneuver(self, data):
         '''PID Controler and Twist Pulbisher for robo-movement navigate'''
@@ -80,8 +98,11 @@ class CaptureControl(Node):
             return
         else:
             
+            rel_X = data.data[0]
+            self.cen_Y = data.data[3]
+            self.cen_Y = data.data[4]
             #Offset for ball alignment
-            self.ek = data.data[0] - self.cen_offset
+            self.ek = rel_X - self.cen_offset
 
             # setting up PID control
             scale = 50.0

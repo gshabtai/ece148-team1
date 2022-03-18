@@ -76,7 +76,7 @@ class FindCentroid(Node):
             self.relY = 100.0*((h-cY)/h)
 
             # Publish centroid data
-            self.msg.data = [self.relX, self.relY, self.detected]
+            self.msg.data = [self.relX, self.relY, self.detected, cX, cY]
         else:
             self.detected = 0.0
             self.msg.data = [self.relX, self.relY, self.detected]

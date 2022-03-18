@@ -19,6 +19,7 @@ COLLISION_TOPIC_NAME = '/collision_avoidance_state'
 WEBCAM_CEN_TOPIC_NAME = '/webcam_centroid'
 INTEL_CEN_TOPIC_NAME = '/intel_centroid'
 BALL_TOPIC_NAME = '/num_ball_picked_up'
+BALL_DISTANCE_TOPIC_NAME = '/ball_distance_bool'
 
 class StateController(Node):
     def __init__(self) -> None:
@@ -28,6 +29,7 @@ class StateController(Node):
         self.webcam_subscriber = self.create_subscription(Float64MultiArray, WEBCAM_CEN_TOPIC_NAME, self.set_webcam_sees_ball, 10)
         self.webcam_subscriber = self.create_subscription(Float64MultiArray, INTEL_CEN_TOPIC_NAME, self.set_intel_sees_ball, 10)
         self.num_ball_subscriber = self.create_subscription(Int8, BALL_TOPIC_NAME, self.set_num_balls, 10)
+        self.ball_distance_bool = self.create_subscription(Int8, BALL_DISTANCE_TOPIC_NAME, self.update_ball_distance, 10)
         self.create_timer(0.2, self.update)
         self.current_state = 'idle'
         self.next_state = 'idle'
@@ -66,6 +68,9 @@ class StateController(Node):
 
     def collison_update(self,data):
         self.imminent_collision = data.data
+
+    def update_ball_distance(self, data):
+        self.ball_distance_bool = data.data
 
     def update(self):
         if self.current_state != self.next_state: # Log to console if state has changed
@@ -118,7 +123,7 @@ class StateController(Node):
                 
         ########## ON NAVIGATE MODE ###########
         elif self.current_state == STATE['navigate']:
-            if self.webcam_sees_ball:
+            if self.webcam_sees_ball and self.ball_distance_bool:
                 return STATE['collect_ball']
             elif not self.intel_sees_ball and self.tracking:
                 self.ball_lost_time = time() # Start time

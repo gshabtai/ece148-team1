@@ -21,6 +21,7 @@ robocar_align_node:
     max_right_steering : 0.75
     max_left_steering : -0.75
     cen_offset : 40
+    min_ball_depth : 0.2
 intake_system_node:
   ros__parameters:
     bus_num : 1
