@@ -70,6 +70,7 @@ $ # source_ros2
 ``` bash
 $ ./src/ece148-team1/seeker.sh
 ```
+
 ## Hardware
 ![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
 
@@ -86,6 +87,7 @@ $ ./src/ece148-team1/seeker.sh
 - This model is great for encapsulating robot behavior based on external factors
 
 ### Simple States
+
 ### Idle
 - Descrition: Stops all actuator output
 - Activated: When ball basked is full
@@ -110,6 +112,7 @@ $ ./src/ece148-team1/seeker.sh
 
 ## Dynamic Centering Control PID Controller
 - Designed and provided by Dominic (Our Lord and Savior)
+
 ## CV Centroid Topic Nodes
 - Used by align and capture
 
@@ -120,6 +123,7 @@ How we found the centroid, an overview.
 - Computer get image from webcam and converts it HSV color space.
 - Filter with HSV range, removes noise, and picks biggest blob on the resulting image.
 - A moment search is done on the image to find the centroid of the blob. Which is then remap from -50-to-50 horizontally that is used for steering.
+![HSV](images/hsv.png)
 
 ## Intake System
 
