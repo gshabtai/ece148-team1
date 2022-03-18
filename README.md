@@ -123,6 +123,7 @@ How we found the centroid, an overview.
 - Computer get image from webcam and converts it HSV color space.
 - Filter with HSV range, removes noise, and picks biggest blob on the resulting image.
 - A moment search is done on the image to find the centroid of the blob. Which is then remap from -50-to-50 horizontally that is used for steering.
+
 ![HSV](images/hsv.png)
 
 ## Intake System
