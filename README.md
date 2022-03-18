@@ -78,3 +78,37 @@ $ ./src/ece148-team1/seeker.sh
 
 ## Schematic
 ![circuit_graphic](https://user-images.githubusercontent.com/98067439/158715258-9f1a49e6-a83f-4117-8895-608e33e10c73.jpg)
+
+## State Machine
+![circuit_graphic](images/state_machine.jpg)
+- Nodes subscribe to topic ‘/state’.
+- Nodes only allow to control navigation if on their respective state.
+- This model is great for encapsulating robot behavior based on external factors
+
+### Simple States
+#### Idle
+- Descrition: Stops all actuator output
+- Activated: When ball basked is full
+- Importance: System starts on idle to calibrate the ESC value 0 as topic publish 0
+
+#### Search
+- Description: Turn left on an loop until there is a ball seem by either the RGBD camera or the webcam.
+- Activated: "Default" state when no ball is seem or no collition ahead has been detected.
+
+#### Backwards
+- Description: Reverses the car backwards for a period of two seconds
+- Activated: The state is call when a ball is lost in the align state or capture state, and during collision avoidance.
+
+#### Align
+- Uses the Intel camera for wider range of view
+- Subscribes to depth and rgb of intel camera
+- Uses PID controller to align abll to the right of robot for capture. IOW, it gives us a centroid offset so that the ball will be directed towards the intake system rather than the front of the car.
+
+#### Capture
+- Uses webcam to align ball with intake system.
+- Uses PID controller to align ball to the center of the funner for ping pong ball collection.
+
+#### Dynamic Centering Control PID Controller
+- Designed and provided by Dominic (Our Lord and Savior)
+#### CV Centroid Topic Nodes
+- Used by align and capture
