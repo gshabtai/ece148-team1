@@ -136,7 +136,7 @@ How we found the centroid, an overview.
 - Intake system subscribes to centroid topic.
 - If a ball is detected within the lower region of the camera frame. The fans will turn on.
 - The system then will update the number of balls that have been loaded onto the system.
-- 
+
 ![Intake](images/intake.png)
 
 ## Collision Avoidance State | Using LIDAR
@@ -144,7 +144,7 @@ How we found the centroid, an overview.
 - Half-circle LIDAR shape to detect stationary objects
 - A maximum distance (Ro) is set by the user. The car will ignore all objects outside of this radius, and then turn to avoid any object closer than this radius.
 - Inner radius exists to avoid interference by car parts within range of the LIDAR.
-- 
+
 ![Intake](images/collision.png)
 
 ## Collision Avoidance State | Using SLAM
@@ -155,4 +155,5 @@ How we found the centroid, an overview.
 - Navigation stack would be similar to the TurtleBot from the Navigation Workshop
 - Twist command for angular-z velocity (i.e. theta) would be limited to robocar’s physical constraints. This is “good enough”.
 - Alternative: develop a navigation stack for Ackermann steering. Control theory stuff.
+
 ![Intake](images/slam.png)
