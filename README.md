@@ -91,8 +91,6 @@ Image of the CAD produced in solidworks
 - Nodes only allow to control navigation if on their respective state.
 - This model is great for encapsulating robot behavior based on external factors
 
-### Simple States
-
 ### Idle
 - Descrition: Stops all actuator output
 - Activated: When ball basked is full
