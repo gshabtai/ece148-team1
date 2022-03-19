@@ -74,9 +74,11 @@ $ ./src/ece148-team1/seeker.sh
 ## Hardware
 
 ![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
+
 Image of the assembled hardware
 
 ![cad_gluckgluck](https://user-images.githubusercontent.com/98067439/158715137-68999706-a679-466f-b875-2632feceef19.jpg)
+
 Image of the CAD produced in solidworks
 
 ## Schematic
@@ -84,6 +86,7 @@ Image of the CAD produced in solidworks
 
 ## State Machine
 ![circuit_graphic](images/state_machine.jpg)
+
 - Nodes subscribe to topic ‘/state’.
 - Nodes only allow to control navigation if on their respective state.
 - This model is great for encapsulating robot behavior based on external factors
@@ -133,6 +136,7 @@ How we found the centroid, an overview.
 - Intake system subscribes to centroid topic.
 - If a ball is detected within the lower region of the camera frame. The fans will turn on.
 - The system then will update the number of balls that have been loaded onto the system.
+- 
 ![Intake](images/intake.png)
 
 ## Collision Avoidance State | Using LIDAR
@@ -140,6 +144,7 @@ How we found the centroid, an overview.
 - Half-circle LIDAR shape to detect stationary objects
 - A maximum distance (Ro) is set by the user. The car will ignore all objects outside of this radius, and then turn to avoid any object closer than this radius.
 - Inner radius exists to avoid interference by car parts within range of the LIDAR.
+- 
 ![Intake](images/collision.png)
 
 ## Collision Avoidance State | Using SLAM
