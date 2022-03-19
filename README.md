@@ -57,8 +57,8 @@ $ cd ..
 # Set-up
 
 1. Configure the Robot using the schematic
-2. Boot up the Jetson Nano
-3. After coneecting to the nano through SSH, start the docker
+2. Boot up the Jetson Nano and connect through SSH
+3. Start the docker
 ``` bash
 $ # Start Docker
 ```
@@ -72,10 +72,12 @@ $ ./src/ece148-team1/seeker.sh
 ```
 
 ## Hardware
+
 ![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
+Image of the assembled hardware
 
 ![cad_gluckgluck](https://user-images.githubusercontent.com/98067439/158715137-68999706-a679-466f-b875-2632feceef19.jpg)
-
+Image of the CAD produced in solidworks
 
 ## Schematic
 ![circuit_graphic](https://user-images.githubusercontent.com/98067439/158715258-9f1a49e6-a83f-4117-8895-608e33e10c73.jpg)
