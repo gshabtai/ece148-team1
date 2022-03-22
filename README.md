@@ -90,7 +90,7 @@ All CAD was done using solidworks. A snipit of the intake system CAD can be seen
 
 The intel-camera mount CAD can be seen here:
 
-![cad_intel_camera_mount](/images/intel_camera_mount.jpg)
+![cad_intel_camera_mount](/images/intel_camera_mount.png)
 
 ## Schematic
 
