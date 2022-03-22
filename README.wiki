@@ -1,0 +1,183 @@
+= SEEKER | UCSD ROBOCAR =
+
+MAE/ECE148 Team1 | Winter 2022
+
+[[File:https://user-images.githubusercontent.com/98067439/158714227-57dab3ee-9e0f-4304-a52e-a2eb704b6add.png|frame|none|alt=|caption wow_sexy_car]]
+
+Our robocar, the Seeker, is designed to be able to search for, locate, navigate to, and collect red ping pong balls.
+
+= Team Members =
+
+* Parker Knopf (MAE)
+* Jacob Bingham (MAE)
+* Moises Lopez (ECE)
+* Guy Shabtai (ECE)
+
+[[File:images/team_picture.jpg|frame|none|alt=|caption Team Photo]]
+
+= Demo =
+
+Link: https://www.youtube.com/watch?v=l6U-Yuc_TLY
+
+= About =
+
+This robot was designed to seek and pick up red ping pong balls scattered around an environment
+
+The robocar will locate the ping pong balls with an RGBD camera. It will then drive to the ball to perform a recovery maneuver using the webcam. It will be equipped with a suction tube to pick up the ping pong balls.
+
+== Info ==
+
+=== Phase 1 ===
+
+* Locate ping pong balls in an open and unobstructed environment
+* Pick up ping pong balls
+* Use Lidar for collision avoidance
+* Make decisions on what ping pong balls to pick up first
+
+=== Phase 2 ===
+
+* All elements of Phase 1
+* Locate ping pong balls with obstructions where they must be sought out by navigating around the environment
+* ROS1 SLAM
+* Extensive use of Lidar
+
+= Dependencies =
+
+* This project is to be run using linux on a Jetson Nano
+* Download Docker: https://hub.docker.com/r/djnighti/ucsd_robocar
+
+<source lang="bash">$ docker pull djnighti/ucsd_robocar</source>
+* Download Repository: https://github.com/gshabtai/ece148-team1.git
+
+<source lang="bash">$ # Start Docker
+$ # Attach to Docker
+$ source_ros2 
+$ cd src
+$ git clone https://github.com/gshabtai/ece148-team1.git
+$ cd ..</source>
+= Set-up =
+
+# Configure the Robot using the schematic
+# Boot up the Jetson Nano and connect through SSH
+# Start the docker
+
+<source lang="bash">$ # Start Docker</source>
+<ol start="4" style="list-style-type: decimal;">
+<li>Source Ros with docker integrated command</li></ol>
+
+<source lang="bash">$ # source_ros2</source>
+<ol start="5" style="list-style-type: decimal;">
+<li>Run the program</li></ol>
+
+<source lang="bash">$ ./src/ece148-team1/seeker.sh</source>
+== Hardware ==
+
+This project was hardware intensive as it required a significant amout of additional components to capture and store ping pong balls. In addition to the adustable, intel camera mount, an intake system was designed and fabricated. This intake system was fitted with 2 highspeed fans, creating avacum that would suck the pingpong balls up into the basket.
+
+== Intake System ==
+
+An image of the intake system can be seen here:
+
+[[File:https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg|frame|none|alt=|caption real_gluckgluck]]
+
+All CAD was done using solidworks. A snipit of the intake system CAD can be seen here:
+
+[[File:https://user-images.githubusercontent.com/98067439/158715137-68999706-a679-466f-b875-2632feceef19.jpg|frame|none|alt=|caption cad_gluckgluck]]
+
+== Intel Camera Mount ==
+
+The intel-camera mount CAD can be seen here:
+
+[[File:/images/intel_camera_mount.png|frame|none|alt=|caption cad_intel_camera_mount]]
+
+== Schematic ==
+
+This projected added an additional 3 components of electronic hardware to the provided MAE/ECE 148 kit. In addition to the kit we had a relay, and 2 high speed fans. A schematic for our project can be seen here:
+
+[[File:https://user-images.githubusercontent.com/98067439/158715258-9f1a49e6-a83f-4117-8895-608e33e10c73.jpg|frame|none|alt=|caption circuit_graphic]]
+
+= Programing =
+
+Perhaps the most time intensive asscpet of the project was the programing. With several added nodes and topics this project was a display of enginuity. The Github for this project can be found here: https://github.com/gshabtai/ece148-team1.git
+
+== State Machine ==
+
+[[File:images/state_machine.jpg|frame|none|alt=|caption circuit_graphic]]
+
+* Nodes subscribe to topic ‘/state’.
+* Nodes only allow to control navigation if on their respective state.
+* This model is great for encapsulating robot behavior based on external factors
+
+== Idle ==
+
+* Descrition: Stops all actuator output
+* Activated: When ball basked is full
+* Importance: System starts on idle to calibrate the ESC value 0 as topic publish 0
+
+== Search ==
+
+* Description: Turn left on an loop until there is a ball seem by either the RGBD camera or the webcam.
+* Activated: “Default” state when no ball is seem or no collition ahead has been detected.
+
+== Backwards ==
+
+* Description: Reverses the car backwards for a period of two seconds
+* Activated: The state is call when a ball is lost in the align state or capture state, and during collision avoidance.
+
+== Align ==
+
+* Uses the Intel camera for wider range of view
+* Subscribes to depth and rgb of intel camera
+* Uses PID controller to align abll to the right of robot for capture. IOW, it gives us a centroid offset so that the ball will be directed towards the intake system rather than the front of the car.
+
+== Capture ==
+
+* Uses webcam to align ball with intake system.
+* Uses PID controller to align ball to the center of the funner for ping pong ball collection.
+
+== Dynamic Centering Control PID Controller ==
+
+* Designed and provided by Dominic (Our Lord and Savior)
+
+== CV Centroid Topic Nodes ==
+
+* Used by align and capture
+
+== Computer Vision Ball Detection ==
+
+How we found the centroid, an overview.
+
+* Computer get image from webcam and converts it HSV color space.
+* Filter with HSV range, removes noise, and picks biggest blob on the resulting image.
+* A moment search is done on the image to find the centroid of the blob. Which is then remap from -50-to-50 horizontally that is used for steering.
+
+[[File:images/hsv.png|frame|none|alt=|caption HSV]]
+
+== Intake System ==
+
+* Intake system subscribes to centroid topic.
+* If a ball is detected within the lower region of the camera frame. The fans will turn on.
+* The system then will update the number of balls that have been loaded onto the system.
+
+[[File:images/intake.png|frame|none|alt=|caption Intake]]
+
+== Collision Avoidance State | Using LIDAR ==
+
+* Car uses LIDAR to detect and avoid objects.
+* Half-circle LIDAR shape to detect stationary objects
+* A maximum distance (Ro) is set by the user. The car will ignore all objects outside of this radius, and then turn to avoid any object closer than this radius.
+* Inner radius exists to avoid interference by car parts within range of the LIDAR.
+
+[[File:images/collision.png|frame|none|alt=|caption Intake]]
+
+== Collision Avoidance State | Using SLAM ==
+
+* Another method for navigating an environment with obstacles
+* STEP 1 Use LIDAR to create a map of the environment.
+* STEP 2 Use a navigation stack to issue goal commands (x1,y1) -&gt; (x2,y2)
+* Navigation stack would be similar to the TurtleBot from the Navigation Workshop
+* Twist command for angular-z velocity (i.e. theta) would be limited to robocar’s physical constraints. This is “good enough”.
+* Alternative: develop a navigation stack for Ackermann steering. Control theory stuff.
+
+[[File:images/slam.png|frame|none|alt=|caption Intake]]
+
