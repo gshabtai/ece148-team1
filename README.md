@@ -75,16 +75,32 @@ $ ./src/ece148-team1/seeker.sh
 
 ## Hardware
 
+This project was hardware intensive as it required a significant amout of additional components to capture and store ping pong balls. In addition to the adustable, intel camera mount, an intake system was designed and fabricated. This intake system was fitted with 2 highspeed fans, creating avacum that would suck the pingpong balls up into the basket. 
+
+## Intake System
+An image of the intake system can be seen here:
+
 ![real_gluckgluck](https://user-images.githubusercontent.com/98067439/158715863-e231685e-0ee1-43b5-b0bb-7514beddfc12.jpg)
 
-Image of the assembled hardware
+All CAD was done using solidworks. A snipit of the intake system CAD can be seen here:
 
 ![cad_gluckgluck](https://user-images.githubusercontent.com/98067439/158715137-68999706-a679-466f-b875-2632feceef19.jpg)
 
-Image of the CAD produced in solidworks
+## Intel Camera Mount
+
+The intel-camera mount CAD can be seen here:
+
+![cad_intel_camera_mount](/images/intel_camera_mount.jpg)
 
 ## Schematic
+
+This projected added an additional 3 components of electronic hardware to the provided MAE/ECE 148 kit. In addition to the kit we had a relay, and 2 high speed fans. A schematic for our project can be seen here:
+
 ![circuit_graphic](https://user-images.githubusercontent.com/98067439/158715258-9f1a49e6-a83f-4117-8895-608e33e10c73.jpg)
+
+# Programing
+
+Perhaps the most time intensive asscpet of the project was the programing. With several added nodes and topics this project was a display of enginuity. The Github for this project can be found here: https://github.com/gshabtai/ece148-team1.git
 
 ## State Machine
 ![circuit_graphic](images/state_machine.jpg)
@@ -93,25 +109,25 @@ Image of the CAD produced in solidworks
 - Nodes only allow to control navigation if on their respective state.
 - This model is great for encapsulating robot behavior based on external factors
 
-### Idle
+## Idle
 - Descrition: Stops all actuator output
 - Activated: When ball basked is full
 - Importance: System starts on idle to calibrate the ESC value 0 as topic publish 0
 
-### Search
+## Search
 - Description: Turn left on an loop until there is a ball seem by either the RGBD camera or the webcam.
 - Activated: "Default" state when no ball is seem or no collition ahead has been detected.
 
-### Backwards
+## Backwards
 - Description: Reverses the car backwards for a period of two seconds
 - Activated: The state is call when a ball is lost in the align state or capture state, and during collision avoidance.
 
-### Align
+## Align
 - Uses the Intel camera for wider range of view
 - Subscribes to depth and rgb of intel camera
 - Uses PID controller to align abll to the right of robot for capture. IOW, it gives us a centroid offset so that the ball will be directed towards the intake system rather than the front of the car.
 
-### Capture
+## Capture
 - Uses webcam to align ball with intake system.
 - Uses PID controller to align ball to the center of the funner for ping pong ball collection.
 
