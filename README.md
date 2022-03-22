@@ -12,7 +12,7 @@ Our robocar, the Seeker, is designed to be able to search for, locate, navigate 
 - Moises Lopez (ECE)
 - Guy Shabtai (ECE)
 
-![Team Photo](/images/Team Picture.jpg)
+![Team Photo](images/team_picture.jpg)
 
 # Demo
 
